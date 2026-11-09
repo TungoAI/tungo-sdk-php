@@ -13,8 +13,13 @@ final class TungoWebhooks
 
     public static function verifyHookSignature(string $rawBody, string $signature, string $secret): bool
     {
-        $expected = self::signHookPayload($rawBody, $secret);
-        return hash_equals($expected, trim($signature));
+        $trimmed = trim($signature);
+        if ($trimmed === '' || $secret === '') {
+            return false;
+        }
+        $hex = str_starts_with($trimmed, 'sha256=') ? substr($trimmed, 7) : $trimmed;
+        $expected = hash_hmac('sha256', $rawBody, $secret);
+        return hash_equals(strtolower($expected), strtolower($hex));
     }
 
     public static function verifyWebhook(

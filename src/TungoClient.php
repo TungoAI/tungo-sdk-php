@@ -26,13 +26,13 @@ final class TungoClient
 
     public function __construct(
         private ?string $apiKey = null,
-        private string $baseUrl = 'https://api.tungo.ai',
+        private string $baseUrl = 'https://api.tungo.kz',
         private ?string $workspaceId = null,
         private ?string $companyId = null,
         private int $maxRetries = 2,
     ) {
         $this->apiKey = $this->apiKey ?? (getenv('TUNGO_API_KEY') ?: null);
-        $this->baseUrl = rtrim($this->baseUrl ?: (getenv('TUNGO_BASE_URL') ?: 'https://api.tungo.ai'), '/');
+        $this->baseUrl = rtrim($this->baseUrl ?: (getenv('TUNGO_BASE_URL') ?: 'https://api.tungo.kz'), '/');
         $this->workspaceId = $this->workspaceId ?? (getenv('TUNGO_WORKSPACE_ID') ?: null);
         $this->companyId = $this->companyId ?? (getenv('TUNGO_COMPANY_ID') ?: null);
         $this->workspaces = new WorkspacesResource($this);
@@ -74,18 +74,21 @@ final class TungoClient
     }
 
     /** Быстрый синхронный запрос к ИИ-бухгалтеру (stream = false). */
-    public function ask(string $prompt, ?string $companyId = null, ?string $conversationId = null): array
+    public function ask(string $prompt, ?string $companyId = null, ?string $dialogId = null): array
     {
         $body = ['message' => $prompt, 'stream' => false];
-        if ($conversationId !== null) {
-            $body['conversation_id'] = $conversationId;
+        if ($dialogId !== null) {
+            $body['dialog_id'] = $dialogId;
         }
         $params = $companyId ? ['co' => $companyId] : [];
         $res = $this->chat->create($body, $params);
+        $dlg = $res['dialog_id'] ?? $res['conversation_id'] ?? '';
+        $ans = $res['answer'] ?? $res['assistant_message']['text'] ?? '';
         return [
-            'conversation_id' => $res['conversation_id'] ?? '',
-            'message_id' => $res['assistant_message']['id'] ?? '',
-            'reply' => $res['assistant_message']['text'] ?? '',
+            'dialog_id' => $dlg,
+            'conversation_id' => $dlg,
+            'answer' => $ans,
+            'reply' => $ans,
             'raw' => $res,
         ];
     }
@@ -98,7 +101,63 @@ final class TungoClient
         if ($secret !== null && $secret !== '') {
             $params['X-Signature'] = TungoWebhooks::signHookPayload((string) $raw, $secret);
         }
-        return $this->chat->postHook($token, $payload, $params);
+        return $this->automations->postHook($token, $payload, $params);
+    }
+
+    /** Запустить сценарий автоматизации и дождаться завершения (done / error / cancelled / skipped). */
+    public function runScenarioAndWait(string $scenarioId, array $body = [], ?string $companyId = null, int $timeoutSec = 120): array
+    {
+        $params = $companyId ? ['co' => $companyId] : [];
+        $started = $this->automations->runScenario($scenarioId, $body, $params);
+        return $this->waitForRun((string) ($started['id'] ?? ''), $companyId, $timeoutSec);
+    }
+
+    /** Дождаться завершения запуска сценария автоматизации. */
+    public function waitForRun(string $runId, ?string $companyId = null, int $timeoutSec = 120): array
+    {
+        $params = $companyId ? ['co' => $companyId] : [];
+        $deadline = time() + $timeoutSec;
+        while (true) {
+            $run = $this->automations->getRun($runId, $params);
+            $st = $run['state'] ?? '';
+            if (in_array($st, ['done', 'error', 'cancelled', 'skipped'], true)) {
+                return $run;
+            }
+            if (time() >= $deadline) {
+                throw new TungoError("Превышено время ожидания запуска {$runId}");
+            }
+            sleep(1);
+        }
+    }
+
+    /** Дождаться завершения задания пачки (running === false). */
+    public function waitForBatch(string $batchId, ?string $companyId = null, int $timeoutSec = 120): array
+    {
+        $params = $companyId ? ['co' => $companyId] : [];
+        $deadline = time() + $timeoutSec;
+        while (true) {
+            $job = $this->batches->get($batchId, $params);
+            if (empty($job['running'])) {
+                return $job;
+            }
+            if (time() >= $deadline) {
+                throw new TungoError("Превышено время ожидания пачки {$batchId}");
+            }
+            sleep(1);
+        }
+    }
+
+    /** Загрузить банковскую выписку на разбор в пачку предложений. */
+    public function uploadBankStatement(string $fileName, string $content, bool $isPlainText = false, ?string $companyId = null): array
+    {
+        $params = $companyId ? ['co' => $companyId] : [];
+        $body = ['file_name' => $fileName];
+        if ($isPlainText) {
+            $body['text'] = $content;
+        } else {
+            $body['file'] = base64_encode($content);
+        }
+        return $this->batches->createBankStatement($body, $params);
     }
 
     /** Разбирает строку потока SSE в массив событий. */
@@ -153,12 +212,31 @@ final class TungoClient
         string $auth = 'key',
         bool $idempotent = false,
         bool $retrySafe = false,
+        string $accept = 'application/json',
     ): array {
+        $raw = $this->requestRawString($method, $path, $params, $body, $auth, $idempotent, $retrySafe, $accept);
+        if ($raw === '') {
+            return [];
+        }
+        $decoded = json_decode($raw, true);
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    private function requestRawString(
+        string $method,
+        string $path,
+        array $params = [],
+        ?array $body = null,
+        string $auth = 'key',
+        bool $idempotent = false,
+        bool $retrySafe = false,
+        string $accept = 'application/json',
+    ): string {
         $idemKey = $params['idempotency_key'] ?? ($idempotent ? bin2hex(random_bytes(16)) : null);
         unset($params['idempotency_key']);
         $url = $this->baseUrl . $path . ($params ? '?' . http_build_query($params) : '');
         $headers = [
-            'Accept: application/json',
+            'Accept: ' . $accept,
             'User-Agent: tungo-sdk-php/0.1.0',
         ];
         if ($auth === 'key') {
@@ -176,20 +254,48 @@ final class TungoClient
             $headers[] = 'Content-Type: application/json';
             $content = (string) json_encode($body, JSON_UNESCAPED_UNICODE);
         }
-        $ctx = stream_context_create([
-            'http' => [
-                'method' => $method,
-                'header' => implode("\r\n", $headers),
-                'content' => $content ?? '',
-                'ignore_errors' => true,
-            ],
-        ]);
-        $raw = (string) @file_get_contents($url, false, $ctx);
-        if ($raw === '') {
-            return [];
+        $maxAttempts = ($retrySafe || $idempotent) ? (1 + $this->maxRetries) : 1;
+        for ($attempt = 0; $attempt < $maxAttempts; $attempt++) {
+            $ctx = stream_context_create([
+                'http' => [
+                    'method' => $method,
+                    'header' => implode("\r\n", $headers),
+                    'content' => $content ?? '',
+                    'ignore_errors' => true,
+                    'timeout' => 30,
+                ],
+            ]);
+            $http_response_header = [];
+            $raw = (string) @file_get_contents($url, false, $ctx);
+            $status = 200;
+            $respHeaders = [];
+            foreach ($http_response_header as $hdrLine) {
+                if (preg_match('#^HTTP/\S+\s+(\d{3})#', $hdrLine, $m)) {
+                    $status = (int) $m[1];
+                } elseif (str_contains($hdrLine, ':')) {
+                    [$hk, $hv] = explode(':', $hdrLine, 2);
+                    $respHeaders[strtolower(trim($hk))] = trim($hv);
+                }
+            }
+            if (isset($respHeaders['x-ratelimit-limit'], $respHeaders['x-ratelimit-remaining'], $respHeaders['x-ratelimit-reset'])) {
+                $this->lastRateLimit = [
+                    'limit' => (int) $respHeaders['x-ratelimit-limit'],
+                    'remaining' => (int) $respHeaders['x-ratelimit-remaining'],
+                    'reset' => (int) $respHeaders['x-ratelimit-reset'],
+                ];
+            }
+            if ($status >= 200 && $status < 300) {
+                return $raw;
+            }
+            $apiErr = TungoApiError::fromResponse($status, $raw, $respHeaders);
+            if ($attempt + 1 < $maxAttempts && in_array($status, [429, 502, 503, 504], true)) {
+                $waitUs = (int) (($apiErr->retryAfter ?? (0.25 * (2 ** $attempt))) * 1_000_000);
+                usleep($waitUs);
+                continue;
+            }
+            throw $apiErr;
         }
-        $decoded = json_decode($raw, true);
-        return is_array($decoded) ? $decoded : [];
+        throw new TungoError('Превышено число попыток запроса к Tungo API');
     }
 
     public function requestStream(
@@ -199,7 +305,9 @@ final class TungoClient
         ?array $body = null,
         string $auth = 'key',
     ): Generator {
-        $res = $this->request($method, $path, $params, $body, $auth);
-        yield from $res;
+        $raw = $this->requestRawString($method, $path, $params, $body, $auth, false, false, 'text/event-stream');
+        foreach (self::parseSse($raw) as $event) {
+            yield $event;
+        }
     }
 }

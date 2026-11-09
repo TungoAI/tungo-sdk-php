@@ -19,23 +19,35 @@ final class ConformanceTest
         $v = json_decode($raw, true);
 
         // 1. Svix Webhook
-        $svix = $v['webhook_svix'];
-        $env = TungoWebhooks::verifyWebhook($svix['payload'], $svix['headers'], $svix['secret'], $svix['timestamp'], 300);
-        assert($env['event'] === 'proposal.written');
+        $svix = $v['webhook_verification'];
+        $headers = [
+            'svix-id' => $svix['msg_id'],
+            'svix-timestamp' => (string) $svix['timestamp'],
+            'svix-signature' => $svix['dual_signature'],
+        ];
+        $env = TungoWebhooks::verifyWebhook($svix['body'], $headers, $svix['secret'], $svix['timestamp'], 300);
+        assert(($env['type'] ?? $env['event'] ?? '') === 'proposal.written');
 
         // 2. Incoming Hook HMAC
-        $hook = $v['hook_hmac'];
-        assert(TungoWebhooks::signHookPayload($hook['payload'], $hook['secret']) === $hook['header_signature']);
+        $hook = $v['incoming_hook'];
+        assert(TungoWebhooks::signHookPayload($hook['body'], $hook['secret']) === $hook['prefixed_signature']);
+        assert(TungoWebhooks::verifyHookSignature($hook['body'], $hook['prefixed_signature'], $hook['secret']) === true);
+        assert(TungoWebhooks::verifyHookSignature($hook['body'], $hook['hex_signature'], $hook['secret']) === true);
 
-        // 3. Money
+        // 3. Money & Kazakhstan BIN/IIN
         foreach ($v['money'] as $m) {
             assert(TungoMoney::toTiyn($m['tenge']) === $m['tiyn']);
-            assert(TungoMoney::formatTiyn($m['tiyn'], 'KZT') === $m['formatted_kzt']);
+            assert(TungoMoney::formatTiyn($m['tiyn'], 'KZT') === $m['formatted']);
+        }
+        foreach ($v['bin_iin'] as $b) {
+            assert(TungoMoney::isValidBinIin($b['value']) === $b['valid']);
         }
 
         // 4. Errors
         foreach ($v['errors'] as $e) {
-            $err = TungoApiError::fromResponse($e['status'], (string) json_encode($e['body']));
+            $err = TungoApiError::fromResponse($e['status'], $e['body']);
+            assert($err->errorCode === $e['error_code']);
+            assert($err->hint === $e['hint']);
             if ($e['status'] === 429) {
                 assert($err instanceof TungoRateLimitError);
             }
@@ -45,7 +57,7 @@ final class ConformanceTest
         }
 
         // 5. SSE
-        $events = TungoClient::parseSse($v['sse_stream']['raw']);
-        assert(count($events) === count($v['sse_stream']['expected_events']));
+        $events = TungoClient::parseSse($v['sse']['raw_stream']);
+        assert(count($events) === count($v['sse']['events']));
     }
 }
