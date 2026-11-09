@@ -1,0 +1,43 @@
+name: Publish to Packagist
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Validate composer.json & Run Conformance Tests
+        run: |
+          composer validate --strict
+          find src tests -name "*.php" -exec php -l {} +
+          php tests/ConformanceTest.php
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" --generate-notes --title "${GITHUB_REF_NAME}" || true
+
+      - name: Trigger Packagist Webhook
+        if: env.PACKAGIST_TOKEN != '' && env.PACKAGIST_USERNAME != ''
+        env:
+          PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
+          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            "https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN}" \
+            -d '{"repository":{"url":"https://github.com/TungoAI/tungo-sdk-php"}}'

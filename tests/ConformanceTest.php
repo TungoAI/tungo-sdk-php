@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Tungo\Sdk\Tests;
 
+require_once __DIR__ . '/../src/TungoError.php';
+require_once __DIR__ . '/../src/TungoMoney.php';
+require_once __DIR__ . '/../src/TungoWebhooks.php';
+require_once __DIR__ . '/../src/Types.php';
+require_once __DIR__ . '/../src/Resources.php';
+require_once __DIR__ . '/../src/TungoClient.php';
+
 use Tungo\Sdk\TungoApiError;
 use Tungo\Sdk\TungoClient;
 use Tungo\Sdk\TungoMoney;
@@ -15,7 +22,7 @@ final class ConformanceTest
 {
     public static function run(): void
     {
-        $raw = (string) file_get_contents(__DIR__ . '/../../tungo-sdkgen/conformance/vectors.json');
+        $raw = (string) file_get_contents(__DIR__ . '/../conformance/vectors.json');
         $v = json_decode($raw, true);
 
         // 1. Svix Webhook
@@ -60,4 +67,9 @@ final class ConformanceTest
         $events = TungoClient::parseSse($v['sse']['raw_stream']);
         assert(count($events) === count($v['sse']['events']));
     }
+}
+
+if (PHP_SAPI === 'cli' && isset($_SERVER['SCRIPT_FILENAME']) && realpath((string) $_SERVER['SCRIPT_FILENAME']) === __FILE__) {
+    ConformanceTest::run();
+    echo "PHP ConformanceTest OK\n";
 }

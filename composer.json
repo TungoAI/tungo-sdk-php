@@ -1,8 +1,29 @@
 {
   "name": "tungo/sdk",
-  "description": "Официальный PHP SDK для платформы ИИ-бухгалтерии Tungo AI",
+  "description": "Official PHP SDK for Tungo AI Platform API (1C AI Accountant, Automations, Webhooks)",
   "type": "library",
   "license": "MIT",
+  "homepage": "https://tungo.kz",
+  "keywords": [
+    "tungo",
+    "tungo-ai",
+    "1c",
+    "accounting",
+    "kazakhstan",
+    "sdk",
+    "api"
+  ],
+  "authors": [
+    {
+      "name": "Tungo AI",
+      "email": "dev@tungo.kz",
+      "homepage": "https://tungo.kz"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/TungoAI/tungo-sdk-php/issues",
+    "source": "https://github.com/TungoAI/tungo-sdk-php"
+  },
   "require": {
     "php": ">=8.2",
     "ext-json": "*"

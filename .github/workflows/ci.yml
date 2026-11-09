@@ -11,4 +11,6 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+      - run: composer validate --strict
       - run: find src tests -name "*.php" -exec php -l {} +
+      - run: php tests/ConformanceTest.php
