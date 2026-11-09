@@ -1,0 +1,24 @@
+{
+  "name": "tungo/sdk",
+  "description": "Официальный PHP SDK для платформы ИИ-бухгалтерии Tungo AI",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.2",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tungo\\Sdk\\": "src/"
+    },
+    "files": [
+      "src/TungoError.php",
+      "src/Resources.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tungo\\Sdk\\Tests\\": "tests/"
+    }
+  }
+}
