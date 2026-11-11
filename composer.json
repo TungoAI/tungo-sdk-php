@@ -1,45 +1,72 @@
 {
-  "name": "tungo/sdk",
-  "description": "Official PHP SDK for Tungo AI Platform API (1C AI Accountant, Automations, Webhooks)",
-  "type": "library",
-  "license": "MIT",
-  "homepage": "https://tungo.kz",
-  "keywords": [
-    "tungo",
-    "tungo-ai",
-    "1c",
-    "accounting",
-    "kazakhstan",
-    "sdk",
-    "api"
-  ],
-  "authors": [
-    {
-      "name": "Tungo AI",
-      "email": "dev@tungo.kz",
-      "homepage": "https://tungo.kz"
-    }
-  ],
-  "support": {
-    "issues": "https://github.com/TungoAI/tungo-sdk-php/issues",
-    "source": "https://github.com/TungoAI/tungo-sdk-php"
-  },
-  "require": {
-    "php": ">=8.2",
-    "ext-json": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "Tungo\\Sdk\\": "src/"
+    "name": "tungo/sdk",
+    "description": "Official PHP SDK for the Tungo Platform API (AI accountant for 1C, automations, webhooks)",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://tungo.kz",
+    "keywords": [
+        "tungo",
+        "tungo-ai",
+        "1c",
+        "accounting",
+        "kazakhstan",
+        "sdk",
+        "api"
+    ],
+    "authors": [
+        {
+            "name": "Tungo AI",
+            "email": "dev@tungo.kz",
+            "homepage": "https://tungo.kz"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/TungoAI/tungo-sdk-php/issues",
+        "source": "https://github.com/TungoAI/tungo-sdk-php"
     },
-    "files": [
-      "src/TungoError.php",
-      "src/Resources.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tungo\\Sdk\\Tests\\": "tests/"
+    "require": {
+        "php": ">=8.2",
+        "php-64bit": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "nyholm/psr7": "^1.8",
+        "php-http/discovery": "^1.19",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.1 || ^2.0"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^7.8",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5"
+    },
+    "suggest": {
+        "guzzlehttp/guzzle": "Pass a Guzzle client as httpClient to send requests through Guzzle (streaming included)"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tungo\\Sdk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tungo\\Sdk\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "lint": "find src tests examples -name '*.php' -print0 | xargs -0 -n 1 php -l > /dev/null",
+        "analyse": "phpstan analyse --no-progress --memory-limit=1G",
+        "test": "phpunit",
+        "check": [
+            "@lint",
+            "@analyse",
+            "@test"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        },
+        "sort-packages": true
     }
-  }
 }

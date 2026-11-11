@@ -1,0 +1,7342 @@
+{
+ "ApiKey": {
+  "kind": "object",
+  "sample": {
+   "all_companies": true,
+   "allowed_ips": [
+    "text"
+   ],
+   "company_ids": [
+    "text"
+   ],
+   "created_at": "2026-01-02T03:04:05Z",
+   "created_by": "text",
+   "disabled_at": "2026-01-02T03:04:05Z",
+   "expires_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "last_used_at": "2026-01-02T03:04:05Z",
+   "last_used_ip": "text",
+   "monthly_cap_tiyn": 9007199254740993,
+   "name": "text",
+   "permissions": [
+    "company.read"
+   ],
+   "prefix": "text",
+   "previous_secret_valid_until": "2026-01-02T03:04:05Z",
+   "revoked_at": "2026-01-02T03:04:05Z",
+   "status": "active",
+   "workspace_id": "text",
+   "write_kinds": [
+    "text"
+   ],
+   "write_max_amount_per_day_tiyn": 9007199254740993,
+   "write_max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeyCreate": {
+  "kind": "object",
+  "sample": {
+   "all_companies": true,
+   "allowed_ips": [
+    "text"
+   ],
+   "company_ids": [
+    "text"
+   ],
+   "expires_at": "2026-01-02T03:04:05Z",
+   "monthly_cap_tiyn": 9007199254740993,
+   "name": "text",
+   "permissions": [
+    "text"
+   ],
+   "write_kinds": [
+    "sale"
+   ],
+   "write_max_amount_per_day_tiyn": 9007199254740993,
+   "write_max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeyCreated": {
+  "kind": "object",
+  "sample": {
+   "all_companies": true,
+   "allowed_ips": [
+    "text"
+   ],
+   "company_ids": [
+    "text"
+   ],
+   "created_at": "2026-01-02T03:04:05Z",
+   "created_by": "text",
+   "disabled_at": "2026-01-02T03:04:05Z",
+   "expires_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "key": "text",
+   "key_note": "text",
+   "last_used_at": "2026-01-02T03:04:05Z",
+   "last_used_ip": "text",
+   "monthly_cap_tiyn": 9007199254740993,
+   "name": "text",
+   "permissions": [
+    "company.read"
+   ],
+   "prefix": "text",
+   "previous_secret_valid_until": "2026-01-02T03:04:05Z",
+   "revoked_at": "2026-01-02T03:04:05Z",
+   "status": "active",
+   "warnings": [
+    {
+     "code": "platform_balance_empty",
+     "message": "text"
+    }
+   ],
+   "workspace_id": "text",
+   "write_kinds": [
+    "text"
+   ],
+   "write_max_amount_per_day_tiyn": 9007199254740993,
+   "write_max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeyDetails": {
+  "kind": "object",
+  "sample": {
+   "all_companies": true,
+   "allowed_ips": [
+    "text"
+   ],
+   "blocked_reason": "key_revoked",
+   "company_ids": [
+    "text"
+   ],
+   "created_at": "2026-01-02T03:04:05Z",
+   "created_by": "text",
+   "disabled_at": "2026-01-02T03:04:05Z",
+   "expires_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "last_used_at": "2026-01-02T03:04:05Z",
+   "last_used_ip": "text",
+   "monthly_cap_tiyn": 9007199254740993,
+   "name": "text",
+   "permissions": [
+    "company.read"
+   ],
+   "prefix": "text",
+   "previous_secret_valid_until": "2026-01-02T03:04:05Z",
+   "revoked_at": "2026-01-02T03:04:05Z",
+   "status": "active",
+   "workspace_id": "text",
+   "write_kinds": [
+    "text"
+   ],
+   "write_max_amount_per_day_tiyn": 9007199254740993,
+   "write_max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeyMonth": {
+  "kind": "object",
+  "sample": {
+   "cap_tiyn": 9007199254740993,
+   "month": "text",
+   "spent_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeyPatch": {
+  "kind": "object",
+  "sample": {
+   "all_companies": true,
+   "allowed_ips": [
+    "text"
+   ],
+   "company_ids": [
+    "text"
+   ],
+   "expires_at": "2026-01-02T03:04:05Z",
+   "monthly_cap_tiyn": 9007199254740993,
+   "name": "text",
+   "permissions": [
+    "text"
+   ],
+   "write_kinds": [
+    "sale"
+   ],
+   "write_max_amount_per_day_tiyn": 9007199254740993,
+   "write_max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeyPerson": {
+  "kind": "object",
+  "sample": {
+   "email": "text",
+   "name": "text",
+   "user_id": "text"
+  }
+ },
+ "ApiKeyRoll": {
+  "kind": "object",
+  "sample": {
+   "expires_at": "2026-01-02T03:04:05Z"
+  }
+ },
+ "ApiKeyRolled": {
+  "kind": "object",
+  "sample": {
+   "all_companies": true,
+   "allowed_ips": [
+    "text"
+   ],
+   "company_ids": [
+    "text"
+   ],
+   "created_at": "2026-01-02T03:04:05Z",
+   "created_by": "text",
+   "disabled_at": "2026-01-02T03:04:05Z",
+   "expires_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "key": "text",
+   "last_used_at": "2026-01-02T03:04:05Z",
+   "last_used_ip": "text",
+   "monthly_cap_tiyn": 9007199254740993,
+   "name": "text",
+   "permissions": [
+    "company.read"
+   ],
+   "prefix": "text",
+   "previous_secret_valid_until": "2026-01-02T03:04:05Z",
+   "previous_valid_until": "2026-01-02T03:04:05Z",
+   "revoked_at": "2026-01-02T03:04:05Z",
+   "status": "active",
+   "workspace_id": "text",
+   "write_kinds": [
+    "text"
+   ],
+   "write_max_amount_per_day_tiyn": 9007199254740993,
+   "write_max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeySelf": {
+  "kind": "object",
+  "sample": {
+   "all_companies": true,
+   "allowed_ips": [
+    "text"
+   ],
+   "blocked_reason": "key_revoked",
+   "company_ids": [
+    "text"
+   ],
+   "created_at": "2026-01-02T03:04:05Z",
+   "created_by": "text",
+   "disabled_at": "2026-01-02T03:04:05Z",
+   "expires_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "last_used_at": "2026-01-02T03:04:05Z",
+   "last_used_ip": "text",
+   "month": {
+    "cap_tiyn": 9007199254740993,
+    "month": "text",
+    "spent_tiyn": 9007199254740993
+   },
+   "monthly_cap_tiyn": 9007199254740993,
+   "name": "text",
+   "permissions": [
+    "company.read"
+   ],
+   "prefix": "text",
+   "previous_secret_valid_until": "2026-01-02T03:04:05Z",
+   "rate_limit": {
+    "limit_per_minute": 9007199254740993,
+    "remaining": 9007199254740993,
+    "reset_in_sec": 9007199254740993
+   },
+   "revoked_at": "2026-01-02T03:04:05Z",
+   "status": "active",
+   "workspace": {
+    "id": "text",
+    "kind": "personal",
+    "name": "text"
+   },
+   "workspace_id": "text",
+   "write_kinds": [
+    "text"
+   ],
+   "write_max_amount_per_day_tiyn": 9007199254740993,
+   "write_max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeySelfRateLimit": {
+  "kind": "object",
+  "sample": {
+   "limit_per_minute": 9007199254740993,
+   "remaining": 9007199254740993,
+   "reset_in_sec": 9007199254740993
+  }
+ },
+ "ApiKeySelfWorkspace": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "kind": "personal",
+   "name": "text"
+  }
+ },
+ "ApiKeyTransfer": {
+  "kind": "object",
+  "sample": {
+   "user_id": "text"
+  }
+ },
+ "ApiKeyUpdated": {
+  "kind": "object",
+  "sample": {
+   "all_companies": true,
+   "allowed_ips": [
+    "text"
+   ],
+   "company_ids": [
+    "text"
+   ],
+   "created_at": "2026-01-02T03:04:05Z",
+   "created_by": "text",
+   "disabled_at": "2026-01-02T03:04:05Z",
+   "expires_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "last_used_at": "2026-01-02T03:04:05Z",
+   "last_used_ip": "text",
+   "monthly_cap_tiyn": 9007199254740993,
+   "name": "text",
+   "permissions": [
+    "company.read"
+   ],
+   "prefix": "text",
+   "previous_secret_valid_until": "2026-01-02T03:04:05Z",
+   "revoked_at": "2026-01-02T03:04:05Z",
+   "status": "active",
+   "warnings": [
+    {
+     "code": "platform_balance_empty",
+     "message": "text"
+    }
+   ],
+   "workspace_id": "text",
+   "write_kinds": [
+    "text"
+   ],
+   "write_max_amount_per_day_tiyn": 9007199254740993,
+   "write_max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "ApiKeyUsage": {
+  "kind": "object",
+  "sample": {
+   "by_company": [
+    {
+     "company_id": "text",
+     "cost_tiyn": 9007199254740993,
+     "requests": 9007199254740993
+    }
+   ],
+   "by_day": [
+    {
+     "cost_tiyn": 9007199254740993,
+     "day": "text",
+     "requests": 9007199254740993
+    }
+   ],
+   "by_model": [
+    {
+     "cost_tiyn": 9007199254740993,
+     "model": "text",
+     "requests": 9007199254740993
+    }
+   ],
+   "from": "2026-01-02T03:04:05Z",
+   "key_id": "text",
+   "month": {
+    "cap_tiyn": 9007199254740993,
+    "month": "text",
+    "spent_tiyn": 9007199254740993
+   },
+   "to": "2026-01-02T03:04:05Z",
+   "totals": {
+    "cache_read_tokens": 9007199254740993,
+    "cache_write_tokens": 9007199254740993,
+    "cost_tiyn": 9007199254740993,
+    "input_tokens": 9007199254740993,
+    "output_tokens": 9007199254740993,
+    "requests": 9007199254740993
+   }
+  }
+ },
+ "ApiKeyUsageByCompanyItem": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "cost_tiyn": 9007199254740993,
+   "requests": 9007199254740993
+  }
+ },
+ "ApiKeyUsageByDayItem": {
+  "kind": "object",
+  "sample": {
+   "cost_tiyn": 9007199254740993,
+   "day": "text",
+   "requests": 9007199254740993
+  }
+ },
+ "ApiKeyUsageByModelItem": {
+  "kind": "object",
+  "sample": {
+   "cost_tiyn": 9007199254740993,
+   "model": "text",
+   "requests": 9007199254740993
+  }
+ },
+ "ApiKeyUsageTotals": {
+  "kind": "object",
+  "sample": {
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "output_tokens": 9007199254740993,
+   "requests": 9007199254740993
+  }
+ },
+ "ApiKeyWarning": {
+  "kind": "object",
+  "sample": {
+   "code": "platform_balance_empty",
+   "message": "text"
+  }
+ },
+ "ApproveBatchCompanyProposalsResponse": {
+  "kind": "union",
+  "sample": {
+   "approved": 1.5,
+   "batch_id": "text",
+   "counts": {
+    "key": 1.5
+   },
+   "excluded": 1.5,
+   "failed": 1.5,
+   "limit": 1.5,
+   "message": "text",
+   "ok": true,
+   "requested": 1.5,
+   "results": [
+    {
+     "id": "text",
+     "message": "text",
+     "outcome": "approved",
+     "title": "text"
+    }
+   ],
+   "stopped": {
+    "reason": "text",
+    "remaining": 1.5
+   },
+   "unknown_excluded": [
+    "text"
+   ]
+  }
+ },
+ "ApproveError": {
+  "kind": "object",
+  "sample": {
+   "error": {
+    "batch_id": "text",
+    "blockers": [
+     "text"
+    ],
+    "code": "text",
+    "document": {},
+    "gateway": "text",
+    "level": "text",
+    "limit": 9007199254740993,
+    "marker": "text",
+    "message": "text",
+    "proposal": {
+     "actions": [
+      {
+       "action": "approve",
+       "body": {
+        "key": {
+         "nested": [
+          "a",
+          1
+         ]
+        }
+       },
+       "effect": "text",
+       "enabled": true,
+       "href": "text",
+       "label": "text",
+       "method": "POST"
+      }
+     ],
+     "approval": {
+      "allowed": true,
+      "blocked_by_blockers": true,
+      "requires_right": "proposals.approve"
+     },
+     "blocker_count": 9007199254740993,
+     "blockers": [
+      "text"
+     ],
+     "created_at": "2026-01-02T03:04:05Z",
+     "dialog_id": "text",
+     "header": {
+      "accounts": [
+       {
+        "code": "text",
+        "field": "text",
+        "ref": "text",
+        "title": "text"
+       }
+      ],
+      "date": "text",
+      "document_title": "text",
+      "entity_set": "text",
+      "net": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "total": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      }
+     },
+     "history": [
+      {
+       "actor": "text",
+       "at": "2026-01-02T03:04:05Z",
+       "status": "previewed",
+       "status_title": "text"
+      }
+     ],
+     "href": "text",
+     "id": "text",
+     "intent": {
+      "key": {
+       "nested": [
+        "a",
+        1
+       ]
+      }
+     },
+     "kind": "sale",
+     "kind_title": "text",
+     "level": "L0",
+     "level_title": "text",
+     "line_count": 9007199254740993,
+     "lines": [
+      {
+       "accounts": [
+        {
+         "code": "text",
+         "field": "text",
+         "ref": "text",
+         "title": "text"
+        }
+       ],
+       "item": {
+        "name": "text",
+        "ref": "text"
+       },
+       "no": 9007199254740993,
+       "price": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "quantity": 1.5,
+       "section": "goods",
+       "sum": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "total": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "vat": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "vat_rate_title": "text"
+      }
+     ],
+     "postings": [
+      {
+       "amount": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "computed_by_1c": true,
+       "credit": "text",
+       "debit": "text",
+       "label": "text"
+      }
+     ],
+     "source": {
+      "channel": "mcp"
+     },
+     "status": "previewed",
+     "status_title": "text",
+     "summary": "text",
+     "title": "text",
+     "total": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "vat": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "warning_count": 9007199254740993,
+     "warnings": [
+      "text"
+     ]
+    },
+    "requested": 9007199254740993,
+    "retry_after": 9007199254740993,
+    "retry_safe": true,
+    "status": "text",
+    "status_title": "text",
+    "type": "text",
+    "x_undeclared": "kept"
+   },
+   "request_id": "text",
+   "type": "error"
+  }
+ },
+ "ApproveErrorError": {
+  "kind": "object",
+  "sample": {
+   "batch_id": "text",
+   "blockers": [
+    "text"
+   ],
+   "code": "text",
+   "document": {
+    "number": "text",
+    "posted": true,
+    "ref": "text"
+   },
+   "gateway": "text",
+   "level": "text",
+   "limit": 9007199254740993,
+   "marker": "text",
+   "message": "text",
+   "proposal": {
+    "actions": [
+     {
+      "action": "approve",
+      "body": {
+       "key": {
+        "nested": [
+         "a",
+         1
+        ]
+       }
+      },
+      "effect": "text",
+      "enabled": true,
+      "href": "text",
+      "label": "text",
+      "method": "POST"
+     }
+    ],
+    "advance_offset": {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "credit": "text",
+     "debit": "text",
+     "note": "text",
+     "to_pay": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     }
+    },
+    "approval": {
+     "allowed": true,
+     "blocked_by_blockers": true,
+     "requires_right": "proposals.approve"
+    },
+    "blocker_count": 9007199254740993,
+    "blockers": [
+     "text"
+    ],
+    "counterparty": {
+     "name": "text",
+     "ref": "text"
+    },
+    "created_at": "2026-01-02T03:04:05Z",
+    "dialog_id": "text",
+    "document_number": "text",
+    "header": {
+     "accounts": [
+      {
+       "code": "text",
+       "field": "text",
+       "ref": "text",
+       "title": "text"
+      }
+     ],
+     "date": "text",
+     "document_title": "text",
+     "entity_set": "text",
+     "net": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "total": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "vat": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     }
+    },
+    "history": [
+     {
+      "actor": "text",
+      "at": "2026-01-02T03:04:05Z",
+      "status": "previewed",
+      "status_title": "text"
+     }
+    ],
+    "href": "text",
+    "id": "text",
+    "intent": {
+     "key": {
+      "nested": [
+       "a",
+       1
+      ]
+     }
+    },
+    "kind": "sale",
+    "kind_title": "text",
+    "level": "L0",
+    "level_title": "text",
+    "line_count": 9007199254740993,
+    "lines": [
+     {
+      "accounts": [
+       {
+        "code": "text",
+        "field": "text",
+        "ref": "text",
+        "title": "text"
+       }
+      ],
+      "item": {
+       "name": "text",
+       "ref": "text"
+      },
+      "no": 9007199254740993,
+      "price": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "quantity": 1.5,
+      "section": "goods",
+      "sum": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "total": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat_rate_title": "text"
+     }
+    ],
+    "postings": [
+     {
+      "amount": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "computed_by_1c": true,
+      "credit": "text",
+      "debit": "text",
+      "label": "text"
+     }
+    ],
+    "result": {
+     "mismatches": [
+      "text"
+     ],
+     "number": "text",
+     "postings": [
+      {
+       "amount": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "computed_by_1c": true,
+       "credit": "text",
+       "debit": "text",
+       "label": "text"
+      }
+     ],
+     "ref": "text"
+    },
+    "source": {
+     "channel": "mcp"
+    },
+    "status": "previewed",
+    "status_title": "text",
+    "summary": "text",
+    "title": "text",
+    "total": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "vat": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "warning_count": 9007199254740993,
+    "warnings": [
+     "text"
+    ]
+   },
+   "requested": 9007199254740993,
+   "retry_after": 9007199254740993,
+   "retry_safe": true,
+   "status": "text",
+   "status_title": "text",
+   "type": "text",
+   "x_undeclared": "kept"
+  }
+ },
+ "ApproveRequest": {
+  "kind": "object",
+  "sample": {
+   "idempotency_key": "text",
+   "note": "text",
+   "post": true
+  }
+ },
+ "AuditEntry": {
+  "kind": "object",
+  "sample": {
+   "action": "company.created",
+   "action_title": "text",
+   "actor": {
+    "id": "text",
+    "name": "text",
+    "type": "user"
+   },
+   "at": "2026-01-02T03:04:05Z",
+   "company_id": "text",
+   "data": {
+    "nested": [
+     "a",
+     1
+    ]
+   },
+   "id": "text",
+   "ip": "text",
+   "request_id": "text",
+   "target": {
+    "id": "text",
+    "type": "text"
+   }
+  }
+ },
+ "AuditEntryActor": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "name": "text",
+   "type": "user"
+  }
+ },
+ "AuditEntryTarget": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "type": "text"
+  }
+ },
+ "AutomationAutoApprove": {
+  "kind": "object",
+  "sample": {
+   "directbank": true,
+   "kinds": [
+    "sale"
+   ],
+   "max_amount_per_day_tiyn": 9007199254740993,
+   "max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "AutomationDeleted": {
+  "kind": "object",
+  "sample": {
+   "deleted": true,
+   "id": "text"
+  }
+ },
+ "AutomationEventFilter": {
+  "kind": "object",
+  "sample": {
+   "all": [
+    {
+     "op": "eq",
+     "path": "text"
+    }
+   ]
+  }
+ },
+ "AutomationFilterCondition": {
+  "kind": "object",
+  "sample": {
+   "op": "eq",
+   "path": "text",
+   "value": "text"
+  }
+ },
+ "AutomationFilterConditionValue": {
+  "kind": "union",
+  "sample": "text"
+ },
+ "AutomationFilterConditionValueOption4Item": {
+  "kind": "union",
+  "sample": "text"
+ },
+ "AutomationHook": {
+  "kind": "object",
+  "sample": {
+   "created_at": "2026-01-02T03:04:05Z",
+   "enabled": true,
+   "id": "text",
+   "id_path": "text",
+   "name": "text",
+   "scenarios_url": "text",
+   "signature_header": "text",
+   "signed": true,
+   "token_hint": "text",
+   "updated_at": "2026-01-02T03:04:05Z"
+  }
+ },
+ "AutomationHookAccepted": {
+  "kind": "object",
+  "sample": {
+   "accepted": true,
+   "duplicate": true,
+   "event_id": "text",
+   "run_ids": [
+    "text"
+   ]
+  }
+ },
+ "AutomationHookCreate": {
+  "kind": "object",
+  "sample": {
+   "id_path": "text",
+   "name": "text",
+   "signature_header": "text",
+   "signature_secret": "text"
+  }
+ },
+ "AutomationHookEvent": {
+  "kind": "object",
+  "sample": {
+   "body": "text",
+   "content_type": "text",
+   "encoding": "utf8",
+   "external_id": "text",
+   "hook_id": "text",
+   "id": "text",
+   "received_at": "2026-01-02T03:04:05Z",
+   "size": 9007199254740993,
+   "source": "hook",
+   "type": "text"
+  }
+ },
+ "AutomationHookPatch": {
+  "kind": "object",
+  "sample": {
+   "enabled": true,
+   "id_path": "text",
+   "name": "text",
+   "signature_header": "text",
+   "signature_secret": "text"
+  }
+ },
+ "AutomationHookTestInput": {
+  "kind": "object",
+  "sample": {
+   "body": {
+    "nested": [
+     "a",
+     1
+    ]
+   },
+   "content_type": "text",
+   "run": true
+  }
+ },
+ "AutomationHookTestResult": {
+  "kind": "object",
+  "sample": {
+   "event_id": "text",
+   "external_id": "text",
+   "external_id_note": "text",
+   "external_id_source": "id_path",
+   "hook_id": "text",
+   "json": true,
+   "run_ids": [
+    "text"
+   ],
+   "scenarios": [
+    {
+     "enabled": true,
+     "failed_condition": {
+      "index": 9007199254740993,
+      "op": "text",
+      "path": "text"
+     },
+     "matched": true,
+     "name": "text",
+     "reason": "text",
+     "scenario_id": "text",
+     "would_run": true
+    }
+   ],
+   "signature_note": "text",
+   "signed": true
+  }
+ },
+ "AutomationHookTestScenario": {
+  "kind": "object",
+  "sample": {
+   "enabled": true,
+   "failed_condition": {
+    "index": 9007199254740993,
+    "op": "text",
+    "path": "text"
+   },
+   "matched": true,
+   "name": "text",
+   "reason": "text",
+   "scenario_id": "text",
+   "would_run": true
+  }
+ },
+ "AutomationHookTestScenarioFailedCondition": {
+  "kind": "object",
+  "sample": {
+   "index": 9007199254740993,
+   "op": "text",
+   "path": "text"
+  }
+ },
+ "AutomationHookWithToken": {
+  "kind": "object",
+  "sample": {
+   "created_at": "2026-01-02T03:04:05Z",
+   "enabled": true,
+   "id": "text",
+   "id_path": "text",
+   "name": "text",
+   "scenarios_url": "text",
+   "signature_header": "text",
+   "signed": true,
+   "token": "text",
+   "token_hint": "text",
+   "token_note": "text",
+   "updated_at": "2026-01-02T03:04:05Z",
+   "url": "text"
+  }
+ },
+ "AutomationManualRun": {
+  "kind": "object",
+  "sample": {
+   "answer": "text",
+   "attempt": 9007199254740993,
+   "auto_retries": 9007199254740993,
+   "cancel_requested": true,
+   "cost_tiyn": 9007199254740993,
+   "created_at": "2026-01-02T03:04:05Z",
+   "current_step": 9007199254740993,
+   "error": "text",
+   "error_code": "text",
+   "event_id": "text",
+   "event_type": "text",
+   "external_id": "text",
+   "filter_matched": true,
+   "finished_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "output": {
+    "key": 1.5
+   },
+   "output_error": "not_returned",
+   "output_note": "text",
+   "proposals": [
+    {
+     "attempt": 9007199254740993,
+     "id": "text"
+    }
+   ],
+   "requested_by": "text",
+   "retry_at": "2026-01-02T03:04:05Z",
+   "retryable": true,
+   "scenario_id": "text",
+   "slot_at": "2026-01-02T03:04:05Z",
+   "started_at": "2026-01-02T03:04:05Z",
+   "state": "queued",
+   "steps": [
+    {
+     "action": "agent",
+     "answer": "text",
+     "error": "text",
+     "error_code": "text",
+     "findings": 9007199254740993,
+     "output": {
+      "key": 1.5
+     },
+     "output_error": "not_returned",
+     "output_note": "text",
+     "proposals": [
+      "text"
+     ],
+     "skipped_by": "always",
+     "state": "done",
+     "step": 9007199254740993,
+     "stop_reason": "text"
+    }
+   ],
+   "stop_reason": "text",
+   "tools": [
+    "text"
+   ],
+   "trial": true,
+   "trigger": "hook"
+  }
+ },
+ "AutomationManualRunOutputValue": {
+  "kind": "union",
+  "sample": 1.5
+ },
+ "AutomationOutputField": {
+  "kind": "union",
+  "sample": {
+   "description": "text",
+   "type": "number"
+  }
+ },
+ "AutomationOutputFieldOption1": {
+  "kind": "object",
+  "sample": {
+   "description": "text",
+   "type": "number"
+  }
+ },
+ "AutomationOutputFieldOption2": {
+  "kind": "object",
+  "sample": {
+   "description": "text",
+   "type": "integer"
+  }
+ },
+ "AutomationOutputFieldOption3": {
+  "kind": "object",
+  "sample": {
+   "description": "text",
+   "type": "boolean"
+  }
+ },
+ "AutomationOutputFieldOption4": {
+  "kind": "object",
+  "sample": {
+   "description": "text",
+   "type": "id"
+  }
+ },
+ "AutomationOutputFieldOption5": {
+  "kind": "object",
+  "sample": {
+   "description": "text",
+   "type": "enum",
+   "values": [
+    "text"
+   ]
+  }
+ },
+ "AutomationRun": {
+  "kind": "object",
+  "sample": {
+   "answer": "text",
+   "attempt": 9007199254740993,
+   "auto_retries": 9007199254740993,
+   "cancel_requested": true,
+   "cost_tiyn": 9007199254740993,
+   "created_at": "2026-01-02T03:04:05Z",
+   "current_step": 9007199254740993,
+   "error": "text",
+   "error_code": "text",
+   "event_id": "text",
+   "event_type": "text",
+   "external_id": "text",
+   "finished_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "output": {
+    "key": 1.5
+   },
+   "output_error": "not_returned",
+   "output_note": "text",
+   "proposals": [
+    {
+     "attempt": 9007199254740993,
+     "id": "text"
+    }
+   ],
+   "requested_by": "text",
+   "retry_at": "2026-01-02T03:04:05Z",
+   "retryable": true,
+   "scenario_id": "text",
+   "slot_at": "2026-01-02T03:04:05Z",
+   "started_at": "2026-01-02T03:04:05Z",
+   "state": "queued",
+   "steps": [
+    {
+     "action": "agent",
+     "answer": "text",
+     "error": "text",
+     "error_code": "text",
+     "findings": 9007199254740993,
+     "output": {
+      "key": 1.5
+     },
+     "output_error": "not_returned",
+     "output_note": "text",
+     "proposals": [
+      "text"
+     ],
+     "skipped_by": "always",
+     "state": "done",
+     "step": 9007199254740993,
+     "stop_reason": "text"
+    }
+   ],
+   "stop_reason": "text",
+   "tools": [
+    "text"
+   ],
+   "trial": true,
+   "trigger": "hook"
+  }
+ },
+ "AutomationRunDetail": {
+  "kind": "object",
+  "sample": {
+   "answer": "text",
+   "attempt": 9007199254740993,
+   "auto_retries": 9007199254740993,
+   "cancel_requested": true,
+   "cost_tiyn": 9007199254740993,
+   "created_at": "2026-01-02T03:04:05Z",
+   "current_step": 9007199254740993,
+   "error": "text",
+   "error_code": "text",
+   "event": {
+    "body": "text",
+    "content_type": "text",
+    "encoding": "utf8",
+    "external_id": "text",
+    "hook_id": "text",
+    "id": "text",
+    "received_at": "2026-01-02T03:04:05Z",
+    "size": 9007199254740993,
+    "source": "hook",
+    "type": "text"
+   },
+   "event_id": "text",
+   "event_type": "text",
+   "external_id": "text",
+   "finished_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "output": {
+    "key": 1.5
+   },
+   "output_error": "not_returned",
+   "output_note": "text",
+   "proposals": [
+    {
+     "attempt": 9007199254740993,
+     "id": "text"
+    }
+   ],
+   "requested_by": "text",
+   "retry_at": "2026-01-02T03:04:05Z",
+   "retryable": true,
+   "scenario_id": "text",
+   "slot_at": "2026-01-02T03:04:05Z",
+   "started_at": "2026-01-02T03:04:05Z",
+   "state": "queued",
+   "steps": [
+    {
+     "action": "agent",
+     "answer": "text",
+     "error": "text",
+     "error_code": "text",
+     "findings": 9007199254740993,
+     "output": {
+      "key": 1.5
+     },
+     "output_error": "not_returned",
+     "output_note": "text",
+     "proposals": [
+      "text"
+     ],
+     "skipped_by": "always",
+     "state": "done",
+     "step": 9007199254740993,
+     "stop_reason": "text"
+    }
+   ],
+   "stop_reason": "text",
+   "tools": [
+    "text"
+   ],
+   "trial": true,
+   "trigger": "hook"
+  }
+ },
+ "AutomationRunDetailOutputValue": {
+  "kind": "union",
+  "sample": 1.5
+ },
+ "AutomationRunOutputValue": {
+  "kind": "union",
+  "sample": 1.5
+ },
+ "AutomationRunProposal": {
+  "kind": "object",
+  "sample": {
+   "attempt": 9007199254740993,
+   "auto": "approved",
+   "batch": true,
+   "code": "status",
+   "duplicate_of": "text",
+   "id": "text",
+   "reason": "text"
+  }
+ },
+ "AutomationRunProposalStatus": {
+  "kind": "object",
+  "sample": {
+   "attempt": 9007199254740993,
+   "auto": "approved",
+   "batch": true,
+   "code": "status",
+   "duplicate_of": "text",
+   "id": "text",
+   "reason": "text",
+   "status": "text"
+  }
+ },
+ "AutomationRunStep": {
+  "kind": "object",
+  "sample": {
+   "action": "agent",
+   "answer": "text",
+   "error": "text",
+   "error_code": "text",
+   "findings": 9007199254740993,
+   "output": {
+    "key": 1.5
+   },
+   "output_error": "not_returned",
+   "output_note": "text",
+   "proposals": [
+    "text"
+   ],
+   "skipped_by": "always",
+   "state": "done",
+   "step": 9007199254740993,
+   "stop_reason": "text"
+  }
+ },
+ "AutomationRunStepOutputValue": {
+  "kind": "union",
+  "sample": 1.5
+ },
+ "AutomationScenario": {
+  "kind": "object",
+  "sample": {
+   "action": "agent",
+   "auto_approve": {
+    "directbank": true,
+    "kinds": [
+     "sale"
+    ],
+    "max_amount_per_day_tiyn": 9007199254740993,
+    "max_amount_per_document_tiyn": 9007199254740993
+   },
+   "created_at": "2026-01-02T03:04:05Z",
+   "enabled": true,
+   "id": "text",
+   "instruction": "text",
+   "name": "text",
+   "next_run_at": "2026-01-02T03:04:05Z",
+   "output": {
+    "key": {
+     "description": "text",
+     "type": "number"
+    }
+   },
+   "run_as": "text",
+   "steps": [
+    {
+     "action": "agent",
+     "instruction": "text",
+     "output": {
+      "key": {
+       "description": "text",
+       "type": "number"
+      }
+     },
+     "when": "always"
+    }
+   ],
+   "trigger": {
+    "filter": {
+     "all": [
+      {
+       "op": "eq",
+       "path": "text"
+      }
+     ]
+    },
+    "hook_id": "text",
+    "kind": "hook"
+   },
+   "updated_at": "2026-01-02T03:04:05Z"
+  }
+ },
+ "AutomationScenarioEnabled": {
+  "kind": "object",
+  "sample": {
+   "enabled": true
+  }
+ },
+ "AutomationScenarioInput": {
+  "kind": "object",
+  "sample": {
+   "action": "agent",
+   "auto_approve": {
+    "directbank": true,
+    "kinds": [
+     "sale"
+    ],
+    "max_amount_per_day_tiyn": 9007199254740993,
+    "max_amount_per_document_tiyn": 9007199254740993
+   },
+   "enabled": true,
+   "instruction": "text",
+   "name": "text",
+   "output": {
+    "key": {
+     "description": "text",
+     "type": "number"
+    }
+   },
+   "steps": [
+    {
+     "action": "agent"
+    }
+   ],
+   "trigger": {
+    "filter": {
+     "all": [
+      {
+       "op": "eq",
+       "path": "text"
+      }
+     ]
+    },
+    "hook_id": "text",
+    "kind": "hook"
+   }
+  }
+ },
+ "AutomationScenarioInputAutoApprove": {
+  "kind": "object",
+  "sample": {
+   "directbank": true,
+   "kinds": [
+    "sale"
+   ],
+   "max_amount_per_day_tiyn": 9007199254740993,
+   "max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "AutomationScenarioInputTrigger": {
+  "kind": "union",
+  "sample": {
+   "filter": {
+    "all": [
+     {
+      "op": "eq",
+      "path": "text"
+     }
+    ]
+   },
+   "hook_id": "text",
+   "kind": "hook"
+  }
+ },
+ "AutomationScenarioInputTriggerOption1": {
+  "kind": "object",
+  "sample": {
+   "filter": {
+    "all": [
+     {
+      "op": "eq",
+      "path": "text"
+     }
+    ]
+   },
+   "hook_id": "text",
+   "kind": "hook"
+  }
+ },
+ "AutomationScenarioInputTriggerOption2": {
+  "kind": "object",
+  "sample": {
+   "kind": "schedule",
+   "schedule": {
+    "at": "text",
+    "kind": "daily"
+   }
+  }
+ },
+ "AutomationScenarioInputTriggerOption3": {
+  "kind": "object",
+  "sample": {
+   "event": "proposal.awaiting_approval",
+   "filter": {
+    "all": [
+     {
+      "op": "eq",
+      "path": "text"
+     }
+    ]
+   },
+   "kind": "event"
+  }
+ },
+ "AutomationScenarioInputTriggerOption4": {
+  "kind": "object",
+  "sample": {
+   "kind": "manual"
+  }
+ },
+ "AutomationScenarioRunInput": {
+  "kind": "object",
+  "sample": {
+   "event_id": "text"
+  }
+ },
+ "AutomationScenarioSaved": {
+  "kind": "object",
+  "sample": {
+   "action": "agent",
+   "auto_approve": {
+    "directbank": true,
+    "kinds": [
+     "sale"
+    ],
+    "max_amount_per_day_tiyn": 9007199254740993,
+    "max_amount_per_document_tiyn": 9007199254740993
+   },
+   "created_at": "2026-01-02T03:04:05Z",
+   "enabled": true,
+   "id": "text",
+   "instruction": "text",
+   "name": "text",
+   "next_run_at": "2026-01-02T03:04:05Z",
+   "output": {
+    "key": {
+     "description": "text",
+     "type": "number"
+    }
+   },
+   "run_as": "text",
+   "steps": [
+    {
+     "action": "agent",
+     "instruction": "text",
+     "output": {
+      "key": {
+       "description": "text",
+       "type": "number"
+      }
+     },
+     "when": "always"
+    }
+   ],
+   "trigger": {
+    "filter": {
+     "all": [
+      {
+       "op": "eq",
+       "path": "text"
+      }
+     ]
+    },
+    "hook_id": "text",
+    "kind": "hook"
+   },
+   "updated_at": "2026-01-02T03:04:05Z",
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "AutomationScenarioStep": {
+  "kind": "object",
+  "sample": {
+   "action": "agent",
+   "instruction": "text",
+   "output": {
+    "key": {
+     "description": "text",
+     "type": "number"
+    }
+   },
+   "when": "always"
+  }
+ },
+ "AutomationSchedule": {
+  "kind": "union",
+  "sample": {
+   "at": "text",
+   "kind": "daily"
+  }
+ },
+ "AutomationScheduleDaily": {
+  "kind": "object",
+  "sample": {
+   "at": "text",
+   "kind": "daily"
+  }
+ },
+ "AutomationScheduleInterval": {
+  "kind": "object",
+  "sample": {
+   "days": [
+    7
+   ],
+   "every_hours": 7,
+   "from": "text",
+   "kind": "interval",
+   "to": "text"
+  }
+ },
+ "AutomationScheduleMonthly": {
+  "kind": "object",
+  "sample": {
+   "at": "text",
+   "days": [
+    7
+   ],
+   "kind": "monthly",
+   "last_day": true,
+   "last_workday": true
+  }
+ },
+ "AutomationScheduleWeekly": {
+  "kind": "object",
+  "sample": {
+   "at": "text",
+   "days": [
+    7
+   ],
+   "kind": "weekly"
+  }
+ },
+ "AutomationState": {
+  "kind": "object",
+  "sample": {
+   "paused": true,
+   "paused_at": "2026-01-02T03:04:05Z",
+   "queued": 9007199254740993,
+   "reason": "text",
+   "running": 9007199254740993
+  }
+ },
+ "AutomationStateInput": {
+  "kind": "object",
+  "sample": {
+   "paused": true,
+   "reason": "text"
+  }
+ },
+ "AutomationStep": {
+  "kind": "object",
+  "sample": {
+   "action": "agent",
+   "instruction": "text",
+   "output": {
+    "key": {
+     "description": "text",
+     "type": "number"
+    }
+   },
+   "when": "always"
+  }
+ },
+ "AutomationTrigger": {
+  "kind": "union",
+  "sample": {
+   "filter": {
+    "all": [
+     {
+      "op": "eq",
+      "path": "text"
+     }
+    ]
+   },
+   "hook_id": "text",
+   "kind": "hook"
+  }
+ },
+ "AutomationTriggerEvent": {
+  "kind": "object",
+  "sample": {
+   "event": "proposal.awaiting_approval",
+   "filter": {
+    "all": [
+     {
+      "op": "eq",
+      "path": "text"
+     }
+    ]
+   },
+   "kind": "event"
+  }
+ },
+ "AutomationTriggerHook": {
+  "kind": "object",
+  "sample": {
+   "filter": {
+    "all": [
+     {
+      "op": "eq",
+      "path": "text"
+     }
+    ]
+   },
+   "hook_id": "text",
+   "kind": "hook"
+  }
+ },
+ "AutomationTriggerManual": {
+  "kind": "object",
+  "sample": {
+   "kind": "manual"
+  }
+ },
+ "AutomationTriggerSchedule": {
+  "kind": "object",
+  "sample": {
+   "kind": "schedule",
+   "schedule": {
+    "at": "text",
+    "kind": "daily"
+   },
+   "timezone": "Asia/Almaty"
+  }
+ },
+ "BankStatementJobRequest": {
+  "kind": "object",
+  "sample": {
+   "file": "text",
+   "file_name": "text",
+   "limit": 7,
+   "text": "text"
+  }
+ },
+ "BatchApproveJob": {
+  "kind": "object",
+  "sample": {
+   "async": true,
+   "error": "text",
+   "events": 1.5,
+   "finished_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "kind": "bank_statement",
+   "message": "text",
+   "report": {
+    "approval": {
+     "approved": 1.5,
+     "counts": {
+      "key": 1.5
+     },
+     "excluded": 1.5,
+     "failed": 1.5,
+     "limit": 1.5,
+     "message": "text",
+     "ok": true,
+     "requested": 1.5,
+     "results": [
+      {
+       "id": "text",
+       "message": "text",
+       "outcome": "approved",
+       "title": "text"
+      }
+     ]
+    },
+    "created": 9007199254740993,
+    "duplicates": 9007199254740993,
+    "failed": 9007199254740993,
+    "gateway": {
+     "asked": 9007199254740993,
+     "passed": 9007199254740993
+    },
+    "manual": 9007199254740993,
+    "min_concurrency": 9007199254740993,
+    "pending": 9007199254740993,
+    "rows": [
+     {
+      "key": "text",
+      "status": "created",
+      "title": "text"
+     }
+    ],
+    "skipped": 9007199254740993,
+    "stopped": true,
+    "total": 9007199254740993,
+    "unknown": 9007199254740993,
+    "x_undeclared": "kept"
+   },
+   "requested": 1.5,
+   "running": true,
+   "started_at": "2026-01-02T03:04:05Z",
+   "title": "text"
+  }
+ },
+ "BatchApproveRequest": {
+  "kind": "object",
+  "sample": {
+   "async": true,
+   "batch_id": "text",
+   "exclude": [
+    "text"
+   ],
+   "idempotency_key": "text",
+   "ids": [
+    "text"
+   ],
+   "note": "text",
+   "post": true
+  }
+ },
+ "BatchApproveResponse": {
+  "kind": "object",
+  "sample": {
+   "approved": 1.5,
+   "batch_id": "text",
+   "counts": {
+    "key": 1.5
+   },
+   "excluded": 1.5,
+   "failed": 1.5,
+   "limit": 1.5,
+   "message": "text",
+   "ok": true,
+   "requested": 1.5,
+   "results": [
+    {
+     "id": "text",
+     "message": "text",
+     "outcome": "approved",
+     "title": "text"
+    }
+   ],
+   "stopped": {
+    "reason": "text",
+    "remaining": 1.5
+   },
+   "unknown_excluded": [
+    "text"
+   ]
+  }
+ },
+ "BatchApproveResponseStopped": {
+  "kind": "object",
+  "sample": {
+   "reason": "text",
+   "remaining": 1.5
+  }
+ },
+ "BatchApproveResult": {
+  "kind": "object",
+  "sample": {
+   "document_number": "text",
+   "error": "text",
+   "id": "text",
+   "message": "text",
+   "mismatches": [
+    "text"
+   ],
+   "outcome": "approved",
+   "retry_after": 9007199254740993,
+   "title": "text"
+  }
+ },
+ "BatchJob": {
+  "kind": "object",
+  "sample": {
+   "error": "text",
+   "events": 1.5,
+   "finished_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "kind": "bank_statement",
+   "report": {
+    "approval": {
+     "approved": 1.5,
+     "counts": {
+      "key": 1.5
+     },
+     "excluded": 1.5,
+     "failed": 1.5,
+     "limit": 1.5,
+     "message": "text",
+     "ok": true,
+     "requested": 1.5,
+     "results": [
+      {
+       "id": "text",
+       "message": "text",
+       "outcome": "approved",
+       "title": "text"
+      }
+     ]
+    },
+    "created": 9007199254740993,
+    "duplicates": 9007199254740993,
+    "failed": 9007199254740993,
+    "gateway": {
+     "asked": 9007199254740993,
+     "passed": 9007199254740993
+    },
+    "manual": 9007199254740993,
+    "min_concurrency": 9007199254740993,
+    "pending": 9007199254740993,
+    "rows": [
+     {
+      "key": "text",
+      "status": "created",
+      "title": "text"
+     }
+    ],
+    "skipped": 9007199254740993,
+    "stopped": true,
+    "total": 9007199254740993,
+    "unknown": 9007199254740993,
+    "x_undeclared": "kept"
+   },
+   "running": true,
+   "started_at": "2026-01-02T03:04:05Z",
+   "title": "text"
+  }
+ },
+ "BatchJobList": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "events": 1.5,
+     "id": "text",
+     "kind": "bank_statement",
+     "running": true,
+     "started_at": "2026-01-02T03:04:05Z",
+     "title": "text"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "BatchJobReport": {
+  "kind": "object",
+  "sample": {
+   "approval": {
+    "approved": 1.5,
+    "batch_id": "text",
+    "counts": {
+     "key": 1.5
+    },
+    "excluded": 1.5,
+    "failed": 1.5,
+    "limit": 1.5,
+    "message": "text",
+    "ok": true,
+    "requested": 1.5,
+    "results": [
+     {
+      "id": "text",
+      "message": "text",
+      "outcome": "approved",
+      "title": "text"
+     }
+    ],
+    "stopped": {
+     "reason": "text",
+     "remaining": 1.5
+    },
+    "unknown_excluded": [
+     "text"
+    ]
+   },
+   "created": 9007199254740993,
+   "duplicates": 9007199254740993,
+   "failed": 9007199254740993,
+   "gateway": {
+    "asked": 9007199254740993,
+    "passed": 9007199254740993
+   },
+   "manual": 9007199254740993,
+   "min_concurrency": 9007199254740993,
+   "pending": 9007199254740993,
+   "rows": [
+    {
+     "key": "text",
+     "status": "created",
+     "title": "text"
+    }
+   ],
+   "skipped": 9007199254740993,
+   "stopped": true,
+   "total": 9007199254740993,
+   "unknown": 9007199254740993,
+   "x_undeclared": "kept"
+  }
+ },
+ "BatchJobReportGateway": {
+  "kind": "object",
+  "sample": {
+   "asked": 9007199254740993,
+   "passed": 9007199254740993
+  }
+ },
+ "BatchJobRow": {
+  "kind": "object",
+  "sample": {
+   "blockers": [
+    "text"
+   ],
+   "document_ref": "text",
+   "key": "text",
+   "proposal_id": "text",
+   "question": {
+    "id": "text",
+    "options": [
+     {
+      "description": "text",
+      "label": "text"
+     }
+    ],
+    "text": "text"
+   },
+   "reason": "text",
+   "status": "created",
+   "title": "text",
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "BatchManualRow": {
+  "kind": "object",
+  "sample": {
+   "key": "text",
+   "question": {
+    "nested": [
+     "a",
+     1
+    ]
+   },
+   "reason": "text",
+   "title": "text"
+  }
+ },
+ "BatchRowQuestion": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "options": [
+    {
+     "description": "text",
+     "label": "text"
+    }
+   ],
+   "text": "text"
+  }
+ },
+ "BatchRowQuestionOptionItem": {
+  "kind": "object",
+  "sample": {
+   "description": "text",
+   "label": "text"
+  }
+ },
+ "BatchStopResult": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "stopped": true
+  }
+ },
+ "BatchSummary": {
+  "kind": "object",
+  "sample": {
+   "approve": {
+    "body": {
+     "batch_id": "text",
+     "post": true
+    },
+    "href": "text",
+    "method": "POST"
+   },
+   "can_approve": true,
+   "finished_at": "2026-01-02T03:04:05Z",
+   "job_id": "text",
+   "kind": "bank_statement",
+   "manual_rows": [
+    {
+     "key": "text",
+     "reason": "text",
+     "title": "text"
+    }
+   ],
+   "proposals": [
+    {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "blockers": [
+      "text"
+     ],
+     "id": "text",
+     "outcome": "ready",
+     "status": "previewed",
+     "status_title": "text",
+     "summary": "text",
+     "title": "text",
+     "warnings": [
+      "text"
+     ]
+    }
+   ],
+   "reason": "text",
+   "running": true,
+   "title": "text",
+   "totals": {
+    "blocked": 1.5,
+    "failed": 1.5,
+    "manual": 1.5,
+    "proposals": 1.5,
+    "ready": 1.5,
+    "ready_with_warnings": 1.5,
+    "rejected": 1.5,
+    "rows": 1.5,
+    "sum_all": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "sum_ready": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "written": 1.5
+   }
+  }
+ },
+ "BatchSummaryApprove": {
+  "kind": "object",
+  "sample": {
+   "body": {
+    "batch_id": "text",
+    "post": true
+   },
+   "href": "text",
+   "method": "POST"
+  }
+ },
+ "BatchSummaryApproveBody": {
+  "kind": "object",
+  "sample": {
+   "batch_id": "text",
+   "post": true
+  }
+ },
+ "BatchSummaryProposal": {
+  "kind": "object",
+  "sample": {
+   "amount": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "blockers": [
+    "text"
+   ],
+   "id": "text",
+   "outcome": "ready",
+   "status": "previewed",
+   "status_title": "text",
+   "summary": "text",
+   "title": "text",
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "BatchSummaryTotals": {
+  "kind": "object",
+  "sample": {
+   "blocked": 1.5,
+   "failed": 1.5,
+   "manual": 1.5,
+   "proposals": 1.5,
+   "ready": 1.5,
+   "ready_with_warnings": 1.5,
+   "rejected": 1.5,
+   "rows": 1.5,
+   "sum_all": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "sum_ready": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "written": 1.5
+  }
+ },
+ "CardSession": {
+  "kind": "object",
+  "sample": {
+   "payment_id": "text",
+   "payment_object": {
+    "key": {
+     "nested": [
+      "a",
+      1
+     ]
+    }
+   },
+   "script_url": "text"
+  }
+ },
+ "ChatAnswerRequest": {
+  "kind": "object",
+  "sample": {
+   "answers": [
+    {}
+   ],
+   "choice_id": "text",
+   "stream": true
+  }
+ },
+ "ChatAssistantMessage": {
+  "kind": "object",
+  "sample": {
+   "at": "2026-01-02T03:04:05Z",
+   "blocks": [
+    {
+     "kind": "text",
+     "text": "text"
+    }
+   ],
+   "citations": [
+    {
+     "source": "text",
+     "title": "text"
+    }
+   ],
+   "id": "text",
+   "proposal_ids": [
+    "text"
+   ],
+   "role": "assistant",
+   "state": "done",
+   "thinking": "text"
+  }
+ },
+ "ChatAttachment": {
+  "kind": "object",
+  "sample": {
+   "data": "text",
+   "media_type": "text",
+   "name": "text"
+  }
+ },
+ "ChatAttachmentMeta": {
+  "kind": "object",
+  "sample": {
+   "media_type": "text",
+   "name": "text",
+   "size": 9007199254740993
+  }
+ },
+ "ChatChoiceAnswer": {
+  "kind": "object",
+  "sample": {
+   "other": "text",
+   "selected": [
+    "text"
+   ]
+  }
+ },
+ "ChatChoiceOption": {
+  "kind": "object",
+  "sample": {
+   "description": "text",
+   "label": "text",
+   "ref": "text"
+  }
+ },
+ "ChatChoiceQuestion": {
+  "kind": "object",
+  "sample": {
+   "header": "text",
+   "multi_select": true,
+   "options": [
+    {
+     "description": "text",
+     "label": "text"
+    }
+   ],
+   "question": "text"
+  }
+ },
+ "ChatCitation": {
+  "kind": "object",
+  "sample": {
+   "edition": "text",
+   "source": "text",
+   "title": "text",
+   "url": "text"
+  }
+ },
+ "ChatDialog": {
+  "kind": "object",
+  "sample": {
+   "awaiting": {
+    "choice_id": "text",
+    "questions": [
+     {
+      "header": "text",
+      "multi_select": true,
+      "options": [
+       {
+        "description": "text",
+        "label": "text"
+       }
+      ],
+      "question": "text"
+     }
+    ]
+   },
+   "closed": {
+    "message": "text",
+    "reason": "context_overflow"
+   },
+   "created_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "masked": 1.5,
+   "message_count": 1.5,
+   "messages": [
+    {
+     "at": "2026-01-02T03:04:05Z",
+     "id": "text",
+     "role": "user",
+     "text": "text"
+    }
+   ],
+   "pd_restored": true,
+   "running": true,
+   "title": "text",
+   "turn": 1.5,
+   "updated_at": "2026-01-02T03:04:05Z"
+  }
+ },
+ "ChatDialogClosed": {
+  "kind": "object",
+  "sample": {
+   "message": "text",
+   "reason": "context_overflow"
+  }
+ },
+ "ChatDialogDeleted": {
+  "kind": "object",
+  "sample": {
+   "deleted": true,
+   "id": "text"
+  }
+ },
+ "ChatDialogList": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "id": "text",
+     "message_count": 1.5,
+     "running": true,
+     "title": "text",
+     "updated_at": "2026-01-02T03:04:05Z"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "ChatDialogPatch": {
+  "kind": "object",
+  "sample": {
+   "title": "text"
+  }
+ },
+ "ChatDialogRenamed": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "title": "text"
+  }
+ },
+ "ChatDialogSummary": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "message_count": 1.5,
+   "running": true,
+   "title": "text",
+   "updated_at": "2026-01-02T03:04:05Z"
+  }
+ },
+ "ChatEvent": {
+  "kind": "union",
+  "sample": {
+   "delta": "text",
+   "step": 1.5,
+   "type": "text"
+  }
+ },
+ "ChatEventBatch": {
+  "kind": "object",
+  "sample": {
+   "completed": 1.5,
+   "note": "text",
+   "outcome": "created",
+   "stage": "resolve",
+   "title": "text",
+   "total": 1.5,
+   "type": "batch"
+  }
+ },
+ "ChatEventBatchReport": {
+  "kind": "object",
+  "sample": {
+   "job_id": "text",
+   "report": {
+    "approval": {
+     "approved": 1.5,
+     "counts": {
+      "key": 1.5
+     },
+     "excluded": 1.5,
+     "failed": 1.5,
+     "limit": 1.5,
+     "message": "text",
+     "ok": true,
+     "requested": 1.5,
+     "results": [
+      {
+       "id": "text",
+       "message": "text",
+       "outcome": "approved",
+       "title": "text"
+      }
+     ]
+    },
+    "created": 9007199254740993,
+    "duplicates": 9007199254740993,
+    "failed": 9007199254740993,
+    "gateway": {
+     "asked": 9007199254740993,
+     "passed": 9007199254740993
+    },
+    "manual": 9007199254740993,
+    "min_concurrency": 9007199254740993,
+    "pending": 9007199254740993,
+    "rows": [
+     {
+      "key": "text",
+      "status": "created",
+      "title": "text"
+     }
+    ],
+    "skipped": 9007199254740993,
+    "stopped": true,
+    "total": 9007199254740993,
+    "unknown": 9007199254740993,
+    "x_undeclared": "kept"
+   },
+   "type": "batch_report"
+  }
+ },
+ "ChatEventChoice": {
+  "kind": "object",
+  "sample": {
+   "choice_id": "text",
+   "questions": [
+    {
+     "header": "text",
+     "multi_select": true,
+     "options": [
+      {
+       "description": "text",
+       "label": "text"
+      }
+     ],
+     "question": "text"
+    }
+   ],
+   "type": "choice"
+  }
+ },
+ "ChatEventCitation": {
+  "kind": "object",
+  "sample": {
+   "edition": "text",
+   "source": "text",
+   "title": "text",
+   "type": "citation",
+   "url": "text"
+  }
+ },
+ "ChatEventDone": {
+  "kind": "object",
+  "sample": {
+   "answer": "text",
+   "choice_id": "text",
+   "cost_tiyn": 9007199254740993,
+   "stop_reason": "text",
+   "type": "done",
+   "usage": {
+    "cache_read_tokens": 9007199254740993,
+    "cache_write_tokens": 9007199254740993,
+    "input_tokens": 9007199254740993,
+    "output_tokens": 9007199254740993
+   }
+  }
+ },
+ "ChatEventError": {
+  "kind": "object",
+  "sample": {
+   "error": {
+    "can_request_more": true,
+    "code": "budget",
+    "limit_kind": "day",
+    "message": "text",
+    "type": "text",
+    "x_undeclared": "kept"
+   },
+   "request_id": "text",
+   "type": "error"
+  }
+ },
+ "ChatEventProgress": {
+  "kind": "object",
+  "sample": {
+   "step": 1.5,
+   "text": "text",
+   "type": "progress"
+  }
+ },
+ "ChatEventProposal": {
+  "kind": "object",
+  "sample": {
+   "card": {
+    "actions": [
+     {
+      "action": "approve",
+      "body": {
+       "key": {
+        "nested": [
+         "a",
+         1
+        ]
+       }
+      },
+      "effect": "text",
+      "enabled": true,
+      "href": "text",
+      "label": "text",
+      "method": "POST"
+     }
+    ],
+    "advance_offset": {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "credit": "text",
+     "debit": "text",
+     "note": "text",
+     "to_pay": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     }
+    },
+    "approval": {
+     "allowed": true,
+     "blocked_by_blockers": true,
+     "requires_right": "proposals.approve"
+    },
+    "blocker_count": 9007199254740993,
+    "blockers": [
+     "text"
+    ],
+    "counterparty": {
+     "name": "text",
+     "ref": "text"
+    },
+    "created_at": "2026-01-02T03:04:05Z",
+    "dialog_id": "text",
+    "document_number": "text",
+    "header": {
+     "accounts": [
+      {
+       "code": "text",
+       "field": "text",
+       "ref": "text",
+       "title": "text"
+      }
+     ],
+     "date": "text",
+     "document_title": "text",
+     "entity_set": "text",
+     "net": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "total": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "vat": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     }
+    },
+    "history": [
+     {
+      "actor": "text",
+      "at": "2026-01-02T03:04:05Z",
+      "status": "previewed",
+      "status_title": "text"
+     }
+    ],
+    "href": "text",
+    "id": "text",
+    "intent": {
+     "key": {
+      "nested": [
+       "a",
+       1
+      ]
+     }
+    },
+    "kind": "sale",
+    "kind_title": "text",
+    "level": "L0",
+    "level_title": "text",
+    "line_count": 9007199254740993,
+    "lines": [
+     {
+      "accounts": [
+       {
+        "code": "text",
+        "field": "text",
+        "ref": "text",
+        "title": "text"
+       }
+      ],
+      "item": {
+       "name": "text",
+       "ref": "text"
+      },
+      "no": 9007199254740993,
+      "price": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "quantity": 1.5,
+      "section": "goods",
+      "sum": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "total": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat_rate_title": "text"
+     }
+    ],
+    "postings": [
+     {
+      "amount": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "computed_by_1c": true,
+      "credit": "text",
+      "debit": "text",
+      "label": "text"
+     }
+    ],
+    "result": {
+     "mismatches": [
+      "text"
+     ],
+     "number": "text",
+     "postings": [
+      {
+       "amount": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "computed_by_1c": true,
+       "credit": "text",
+       "debit": "text",
+       "label": "text"
+      }
+     ],
+     "ref": "text"
+    },
+    "source": {
+     "channel": "mcp"
+    },
+    "status": "previewed",
+    "status_title": "text",
+    "summary": "text",
+    "title": "text",
+    "total": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "vat": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "warning_count": 9007199254740993,
+    "warnings": [
+     "text"
+    ]
+   },
+   "proposal_id": "text",
+   "type": "proposal"
+  }
+ },
+ "ChatEventQuestion": {
+  "kind": "object",
+  "sample": {
+   "proposal_id": "text",
+   "text": "text",
+   "type": "question"
+  }
+ },
+ "ChatEventStatus": {
+  "kind": "object",
+  "sample": {
+   "code": "compacting",
+   "text": "text",
+   "type": "status"
+  }
+ },
+ "ChatEventText": {
+  "kind": "object",
+  "sample": {
+   "delta": "text",
+   "step": 1.5,
+   "type": "text"
+  }
+ },
+ "ChatEventThinking": {
+  "kind": "object",
+  "sample": {
+   "delta": "text",
+   "type": "thinking"
+  }
+ },
+ "ChatEventTool": {
+  "kind": "object",
+  "sample": {
+   "detail": "text",
+   "name": "text",
+   "status": "started",
+   "title": "text",
+   "type": "tool"
+  }
+ },
+ "ChatHistoryBlock": {
+  "kind": "union",
+  "sample": {
+   "kind": "text",
+   "text": "text"
+  }
+ },
+ "ChatHistoryError": {
+  "kind": "object",
+  "sample": {
+   "code": "budget",
+   "kind": "error",
+   "message": "text"
+  }
+ },
+ "ChatHistoryProposal": {
+  "kind": "object",
+  "sample": {
+   "kind": "proposal",
+   "proposal_id": "text"
+  }
+ },
+ "ChatHistoryQuestion": {
+  "kind": "object",
+  "sample": {
+   "kind": "question",
+   "proposal_id": "text",
+   "text": "text"
+  }
+ },
+ "ChatHistoryText": {
+  "kind": "object",
+  "sample": {
+   "kind": "text",
+   "text": "text"
+  }
+ },
+ "ChatHistoryTool": {
+  "kind": "object",
+  "sample": {
+   "detail": "text",
+   "kind": "tool",
+   "name": "text",
+   "status": "done",
+   "title": "text"
+  }
+ },
+ "ChatMessage": {
+  "kind": "union",
+  "sample": {
+   "at": "2026-01-02T03:04:05Z",
+   "attachments": [
+    {
+     "media_type": "text",
+     "name": "text",
+     "size": 9007199254740993
+    }
+   ],
+   "id": "text",
+   "pending": true,
+   "role": "user",
+   "text": "text"
+  }
+ },
+ "ChatMessageRequest": {
+  "kind": "object",
+  "sample": {
+   "attachments": [
+    {
+     "data": "text",
+     "name": "text"
+    }
+   ],
+   "capabilities": [
+    "text"
+   ],
+   "dialog_id": "text",
+   "message": "text",
+   "mode": "auto",
+   "new_dialog": true,
+   "proposal_id": "text",
+   "stream": true,
+   "turn": 9007199254740993
+  }
+ },
+ "ChatPendingQuestion": {
+  "kind": "object",
+  "sample": {
+   "choice_id": "text",
+   "questions": [
+    {
+     "header": "text",
+     "multi_select": true,
+     "options": [
+      {
+       "description": "text",
+       "label": "text"
+      }
+     ],
+     "question": "text"
+    }
+   ]
+  }
+ },
+ "ChatQuestion": {
+  "kind": "object",
+  "sample": {
+   "proposal_id": "text",
+   "text": "text"
+  }
+ },
+ "ChatStopResult": {
+  "kind": "object",
+  "sample": {
+   "dismissed": true,
+   "id": "text",
+   "stopped": true
+  }
+ },
+ "ChatTokenCount": {
+  "kind": "object",
+  "sample": {
+   "input_cost_tiyn": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "max_cost_tiyn": 9007199254740993,
+   "max_output_tokens": 9007199254740993,
+   "model": "text"
+  }
+ },
+ "ChatTokenCountRequest": {
+  "kind": "object",
+  "sample": {
+   "attachments": [
+    {
+     "data": "text",
+     "name": "text"
+    }
+   ],
+   "dialog_id": "text",
+   "message": "text",
+   "mode": "auto"
+  }
+ },
+ "ChatTurnError": {
+  "kind": "object",
+  "sample": {
+   "can_request_more": true,
+   "code": "budget",
+   "limit_kind": "day",
+   "message": "text",
+   "type": "text",
+   "x_undeclared": "kept"
+  }
+ },
+ "ChatTurnProposal": {
+  "kind": "object",
+  "sample": {
+   "card": {
+    "actions": [
+     {
+      "action": "approve",
+      "body": {
+       "key": {
+        "nested": [
+         "a",
+         1
+        ]
+       }
+      },
+      "effect": "text",
+      "enabled": true,
+      "href": "text",
+      "label": "text",
+      "method": "POST"
+     }
+    ],
+    "advance_offset": {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "credit": "text",
+     "debit": "text",
+     "note": "text",
+     "to_pay": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     }
+    },
+    "approval": {
+     "allowed": true,
+     "blocked_by_blockers": true,
+     "requires_right": "proposals.approve"
+    },
+    "blocker_count": 9007199254740993,
+    "blockers": [
+     "text"
+    ],
+    "counterparty": {
+     "name": "text",
+     "ref": "text"
+    },
+    "created_at": "2026-01-02T03:04:05Z",
+    "dialog_id": "text",
+    "document_number": "text",
+    "header": {
+     "accounts": [
+      {
+       "code": "text",
+       "field": "text",
+       "ref": "text",
+       "title": "text"
+      }
+     ],
+     "date": "text",
+     "document_title": "text",
+     "entity_set": "text",
+     "net": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "total": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "vat": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     }
+    },
+    "history": [
+     {
+      "actor": "text",
+      "at": "2026-01-02T03:04:05Z",
+      "status": "previewed",
+      "status_title": "text"
+     }
+    ],
+    "href": "text",
+    "id": "text",
+    "intent": {
+     "key": {
+      "nested": [
+       "a",
+       1
+      ]
+     }
+    },
+    "kind": "sale",
+    "kind_title": "text",
+    "level": "L0",
+    "level_title": "text",
+    "line_count": 9007199254740993,
+    "lines": [
+     {
+      "accounts": [
+       {
+        "code": "text",
+        "field": "text",
+        "ref": "text",
+        "title": "text"
+       }
+      ],
+      "item": {
+       "name": "text",
+       "ref": "text"
+      },
+      "no": 9007199254740993,
+      "price": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "quantity": 1.5,
+      "section": "goods",
+      "sum": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "total": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat_rate_title": "text"
+     }
+    ],
+    "postings": [
+     {
+      "amount": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "computed_by_1c": true,
+      "credit": "text",
+      "debit": "text",
+      "label": "text"
+     }
+    ],
+    "result": {
+     "mismatches": [
+      "text"
+     ],
+     "number": "text",
+     "postings": [
+      {
+       "amount": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "computed_by_1c": true,
+       "credit": "text",
+       "debit": "text",
+       "label": "text"
+      }
+     ],
+     "ref": "text"
+    },
+    "source": {
+     "channel": "mcp"
+    },
+    "status": "previewed",
+    "status_title": "text",
+    "summary": "text",
+    "title": "text",
+    "total": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "vat": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "warning_count": 9007199254740993,
+    "warnings": [
+     "text"
+    ]
+   },
+   "id": "text"
+  }
+ },
+ "ChatTurnResult": {
+  "kind": "object",
+  "sample": {
+   "answer": "text",
+   "citations": [
+    {
+     "source": "text",
+     "title": "text"
+    }
+   ],
+   "dialog_id": "text",
+   "errors": [
+    {
+     "code": "budget",
+     "message": "text",
+     "type": "text",
+     "x_undeclared": "kept"
+    }
+   ],
+   "pending_question": {
+    "choice_id": "text",
+    "questions": [
+     {
+      "header": "text",
+      "multi_select": true,
+      "options": [
+       {
+        "description": "text",
+        "label": "text"
+       }
+      ],
+      "question": "text"
+     }
+    ]
+   },
+   "proposals": [
+    {
+     "card": {
+      "actions": [
+       {
+        "action": "approve",
+        "body": {
+         "key": {
+          "nested": [
+           "a",
+           1
+          ]
+         }
+        },
+        "effect": "text",
+        "enabled": true,
+        "href": "text",
+        "label": "text",
+        "method": "POST"
+       }
+      ],
+      "approval": {
+       "allowed": true,
+       "blocked_by_blockers": true,
+       "requires_right": "proposals.approve"
+      },
+      "blocker_count": 9007199254740993,
+      "blockers": [
+       "text"
+      ],
+      "created_at": "2026-01-02T03:04:05Z",
+      "dialog_id": "text",
+      "header": {
+       "accounts": [
+        {
+         "code": "text",
+         "field": "text",
+         "ref": "text",
+         "title": "text"
+        }
+       ],
+       "date": "text",
+       "document_title": "text",
+       "entity_set": "text",
+       "net": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "total": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "vat": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       }
+      },
+      "history": [
+       {
+        "actor": "text",
+        "at": "2026-01-02T03:04:05Z",
+        "status": "previewed",
+        "status_title": "text"
+       }
+      ],
+      "href": "text",
+      "id": "text",
+      "intent": {
+       "key": {
+        "nested": [
+         "a",
+         1
+        ]
+       }
+      },
+      "kind": "sale",
+      "kind_title": "text",
+      "level": "L0",
+      "level_title": "text",
+      "line_count": 9007199254740993,
+      "lines": [
+       {
+        "accounts": [
+         {
+          "code": "text",
+          "field": "text",
+          "ref": "text",
+          "title": "text"
+         }
+        ],
+        "item": {
+         "name": "text",
+         "ref": "text"
+        },
+        "no": 9007199254740993,
+        "price": {
+         "amount": 1.5,
+         "amount_tiyn": 9007199254740993,
+         "formatted": "text"
+        },
+        "quantity": 1.5,
+        "section": "goods",
+        "sum": {
+         "amount": 1.5,
+         "amount_tiyn": 9007199254740993,
+         "formatted": "text"
+        },
+        "total": {
+         "amount": 1.5,
+         "amount_tiyn": 9007199254740993,
+         "formatted": "text"
+        },
+        "vat": {
+         "amount": 1.5,
+         "amount_tiyn": 9007199254740993,
+         "formatted": "text"
+        },
+        "vat_rate_title": "text"
+       }
+      ],
+      "postings": [
+       {
+        "amount": {
+         "amount": 1.5,
+         "amount_tiyn": 9007199254740993,
+         "formatted": "text"
+        },
+        "computed_by_1c": true,
+        "credit": "text",
+        "debit": "text",
+        "label": "text"
+       }
+      ],
+      "source": {
+       "channel": "mcp"
+      },
+      "status": "previewed",
+      "status_title": "text",
+      "summary": "text",
+      "title": "text",
+      "total": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "warning_count": 9007199254740993,
+      "warnings": [
+       "text"
+      ]
+     },
+     "id": "text"
+    }
+   ],
+   "questions": [
+    {
+     "text": "text"
+    }
+   ],
+   "stop_reason": "text",
+   "turn_no": 1.5,
+   "usage": {
+    "cache_read_tokens": 9007199254740993,
+    "cache_write_tokens": 9007199254740993,
+    "cost_tiyn": 9007199254740993,
+    "input_tokens": 9007199254740993,
+    "output_tokens": 9007199254740993
+   }
+  }
+ },
+ "ChatTurnUsage": {
+  "kind": "object",
+  "sample": {
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "output_tokens": 9007199254740993
+  }
+ },
+ "ChatUsage": {
+  "kind": "object",
+  "sample": {
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "output_tokens": 9007199254740993
+  }
+ },
+ "ChatUserMessage": {
+  "kind": "object",
+  "sample": {
+   "at": "2026-01-02T03:04:05Z",
+   "attachments": [
+    {
+     "media_type": "text",
+     "name": "text",
+     "size": 9007199254740993
+    }
+   ],
+   "id": "text",
+   "pending": true,
+   "role": "user",
+   "text": "text"
+  }
+ },
+ "Company": {
+  "kind": "object",
+  "sample": {
+   "bin": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "legal_form": "ip",
+   "name": "text",
+   "permissions": [
+    "company.read"
+   ],
+   "role": "text",
+   "role_name": "text",
+   "status": "active",
+   "workspace_id": "text"
+  }
+ },
+ "CompanyAutonomy": {
+  "kind": "object",
+  "sample": {
+   "custom": {
+    "max_amount_per_day_tiyn": true,
+    "max_amount_per_document_tiyn": true
+   },
+   "defaults": {
+    "max_amount_per_day_tiyn": 9007199254740993,
+    "max_amount_per_document_tiyn": 9007199254740993
+   },
+   "levels": {
+    "advance_report": "L1",
+    "bank_payment": "L1",
+    "bank_receipt": "L1",
+    "cash_order_in": "L1",
+    "cash_order_out": "L1",
+    "contract": "L1",
+    "counterparty": "L1",
+    "inventory_writeoff": "L1",
+    "purchase": "L1",
+    "sale": "L1"
+   },
+   "max_amount_per_day_tiyn": 9007199254740993,
+   "max_amount_per_document_tiyn": 9007199254740993,
+   "updated_at": "2026-01-02T03:04:05Z"
+  }
+ },
+ "CompanyAutonomyCustom": {
+  "kind": "object",
+  "sample": {
+   "max_amount_per_day_tiyn": true,
+   "max_amount_per_document_tiyn": true
+  }
+ },
+ "CompanyAutonomyDefaults": {
+  "kind": "object",
+  "sample": {
+   "max_amount_per_day_tiyn": 9007199254740993,
+   "max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "CompanyAutonomyInput": {
+  "kind": "object",
+  "sample": {
+   "levels": {
+    "advance_report": "L1",
+    "bank_payment": "L1",
+    "bank_receipt": "L1",
+    "cash_order_in": "L1",
+    "cash_order_out": "L1",
+    "contract": "L1",
+    "counterparty": "L1",
+    "inventory_writeoff": "L1",
+    "purchase": "L1",
+    "sale": "L1"
+   },
+   "max_amount_per_day_tiyn": 9007199254740993,
+   "max_amount_per_document_tiyn": 9007199254740993
+  }
+ },
+ "CompanyAutonomyInputLevels": {
+  "kind": "object",
+  "sample": {
+   "advance_report": "L1",
+   "bank_payment": "L1",
+   "bank_receipt": "L1",
+   "cash_order_in": "L1",
+   "cash_order_out": "L1",
+   "contract": "L1",
+   "counterparty": "L1",
+   "inventory_writeoff": "L1",
+   "purchase": "L1",
+   "sale": "L1"
+  }
+ },
+ "CompanyAutonomyLevels": {
+  "kind": "object",
+  "sample": {
+   "advance_report": "L1",
+   "bank_payment": "L1",
+   "bank_receipt": "L1",
+   "cash_order_in": "L1",
+   "cash_order_out": "L1",
+   "contract": "L1",
+   "counterparty": "L1",
+   "inventory_writeoff": "L1",
+   "purchase": "L1",
+   "sale": "L1"
+  }
+ },
+ "CompanyCounts": {
+  "kind": "object",
+  "sample": {
+   "proposals_blocked": 9007199254740993,
+   "proposals_to_decide": 9007199254740993
+  }
+ },
+ "CompanyListItem": {
+  "kind": "object",
+  "sample": {
+   "bin": "text",
+   "counts": {
+    "proposals_blocked": 9007199254740993,
+    "proposals_to_decide": 9007199254740993
+   },
+   "created_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "legal_form": "ip",
+   "name": "text",
+   "permissions": [
+    "company.read"
+   ],
+   "role": "text",
+   "role_name": "text",
+   "status": "active",
+   "workspace_id": "text"
+  }
+ },
+ "DataGapForm": {
+  "kind": "object",
+  "sample": {
+   "cells": 9007199254740993,
+   "form": "text",
+   "periods": [
+    {
+     "code": "text",
+     "title": "text"
+    }
+   ],
+   "title": "text"
+  }
+ },
+ "DataGapFormStatus": {
+  "kind": "object",
+  "sample": {
+   "error": "text",
+   "form": "text",
+   "from": "2026-01-02",
+   "group": "text",
+   "missing": 9007199254740993,
+   "not_computed": 9007199254740993,
+   "period": "text",
+   "period_title": "text",
+   "title": "text",
+   "to": "2026-01-02",
+   "uncovered": 9007199254740993
+  }
+ },
+ "DataGapItem": {
+  "kind": "object",
+  "sample": {
+   "action": "fill_in_1c",
+   "action_title": "text",
+   "forms": [
+    {
+     "cells": 9007199254740993,
+     "form": "text",
+     "periods": [
+      {
+       "code": "text",
+       "title": "text"
+      }
+     ],
+     "title": "text"
+    }
+   ],
+   "id": "text",
+   "objects": [
+    {
+     "name": "text"
+    }
+   ],
+   "what": "text",
+   "where": "text",
+   "why": "text"
+  }
+ },
+ "DataGapObject": {
+  "kind": "object",
+  "sample": {
+   "gap_ids": [
+    "text"
+   ],
+   "name": "text",
+   "ref": "text"
+  }
+ },
+ "DataGaps": {
+  "kind": "object",
+  "sample": {
+   "forms": [
+    {
+     "form": "text",
+     "from": "2026-01-02",
+     "group": "text",
+     "missing": 9007199254740993,
+     "not_computed": 9007199254740993,
+     "period": "text",
+     "period_title": "text",
+     "title": "text",
+     "to": "2026-01-02",
+     "uncovered": 9007199254740993
+    }
+   ],
+   "gaps": [
+    {
+     "action": "fill_in_1c",
+     "action_title": "text",
+     "forms": [
+      {
+       "cells": 9007199254740993,
+       "form": "text",
+       "periods": [
+        {
+         "code": "text",
+         "title": "text"
+        }
+       ],
+       "title": "text"
+      }
+     ],
+     "id": "text",
+     "objects": [
+      {
+       "name": "text"
+      }
+     ],
+     "what": "text",
+     "why": "text"
+    }
+   ],
+   "next": "text",
+   "objects": [
+    {
+     "gap_ids": [
+      "text"
+     ],
+     "name": "text"
+    }
+   ],
+   "summary": {
+    "answer": 9007199254740993,
+    "close_month": 9007199254740993,
+    "fill_in_1c": 9007199254740993,
+    "norm": 9007199254740993,
+    "other_source": 9007199254740993,
+    "wait": 9007199254740993
+   },
+   "year": 9007199254740993
+  }
+ },
+ "DataGapsSummary": {
+  "kind": "object",
+  "sample": {
+   "answer": 9007199254740993,
+   "close_month": 9007199254740993,
+   "fill_in_1c": 9007199254740993,
+   "norm": 9007199254740993,
+   "other_source": 9007199254740993,
+   "wait": 9007199254740993
+  }
+ },
+ "DirectBankPollResult": {
+  "kind": "object",
+  "sample": {
+   "created": 1.5,
+   "documents": 1.5,
+   "job_id": "text"
+  }
+ },
+ "EpayReturnLinks": {
+  "kind": "object",
+  "sample": {
+   "back_link": "https://example.com/hook",
+   "failure_back_link": "https://example.com/hook"
+  }
+ },
+ "Error": {
+  "kind": "object",
+  "sample": {
+   "error": {
+    "allowed_methods": [
+     "email_otp"
+    ],
+    "code": "text",
+    "fields": [
+     {
+      "code": "invalid_type",
+      "message": "text",
+      "path": "text"
+     }
+    ],
+    "message": "text",
+    "permission": "text",
+    "permissions": [
+     "text"
+    ],
+    "resets_at": "2026-01-02T03:04:05Z",
+    "role": "text",
+    "type": "invalid_request_error",
+    "x_undeclared": "kept"
+   },
+   "request_id": "text",
+   "type": "error"
+  }
+ },
+ "ErrorDetail": {
+  "kind": "object",
+  "sample": {
+   "allowed_methods": [
+    "email_otp"
+   ],
+   "code": "text",
+   "fields": [
+    {
+     "code": "invalid_type",
+     "message": "text",
+     "path": "text"
+    }
+   ],
+   "message": "text",
+   "permission": "text",
+   "permissions": [
+    "text"
+   ],
+   "resets_at": "2026-01-02T03:04:05Z",
+   "role": "text",
+   "type": "invalid_request_error",
+   "x_undeclared": "kept"
+  }
+ },
+ "EsfIncomingItem": {
+  "kind": "object",
+  "sample": {
+   "action": "document_found",
+   "action_title": "text",
+   "blockers": [
+    "text"
+   ],
+   "date": "2026-01-02",
+   "esf": "text",
+   "match": {
+    "candidates": 9007199254740993,
+    "document": {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "date": "2026-01-02",
+     "kind": "text",
+     "number": "text"
+    },
+    "linked": true,
+    "status": "matched"
+   },
+   "number": "text",
+   "status": "text",
+   "supplier": "text",
+   "supplier_bin": "text",
+   "total": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "turnover_date": "2026-01-02",
+   "vat": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "EsfIncomingMatch": {
+  "kind": "object",
+  "sample": {
+   "candidates": 9007199254740993,
+   "document": {
+    "amount": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "date": "2026-01-02",
+    "kind": "text",
+    "number": "text"
+   },
+   "linked": true,
+   "status": "matched"
+  }
+ },
+ "EsfIncomingMatchDocument": {
+  "kind": "object",
+  "sample": {
+   "amount": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "date": "2026-01-02",
+   "kind": "text",
+   "number": "text"
+  }
+ },
+ "EsfIncomingReport": {
+  "kind": "object",
+  "sample": {
+   "as_of": "2026-01-02",
+   "data": [
+    {
+     "action": "document_found",
+     "action_title": "text",
+     "blockers": [
+      "text"
+     ],
+     "date": "2026-01-02",
+     "esf": "text",
+     "match": {
+      "status": "matched"
+     },
+     "number": "text",
+     "status": "text",
+     "supplier": "text",
+     "supplier_bin": "text",
+     "total": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "turnover_date": "2026-01-02",
+     "vat": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "warnings": [
+      "text"
+     ]
+    }
+   ],
+   "next_cursor": "text",
+   "since": "2026-01-02",
+   "total": 9007199254740993,
+   "until": "2026-01-02"
+  }
+ },
+ "EsfOutgoingItem": {
+  "kind": "object",
+  "sample": {
+   "age_days": 1.5,
+   "blockers": [
+    "text"
+   ],
+   "esf": {
+    "date": "2026-01-02",
+    "number": "text",
+    "registration_number": "text",
+    "state": "text",
+    "status": "text"
+   },
+   "problem": "text",
+   "sale": {
+    "amount": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "bin": "text",
+    "counterparty": "text",
+    "date": "2026-01-02",
+    "kind": "text",
+    "number": "text",
+    "posted": true
+   },
+   "tax_invoice": {
+    "date": "text",
+    "number": "text",
+    "way": "text"
+   },
+   "verdict": "invoice_not_issued",
+   "verdict_title": "text",
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "EsfOutgoingItemEsf": {
+  "kind": "object",
+  "sample": {
+   "date": "2026-01-02",
+   "number": "text",
+   "registration_number": "text",
+   "state": "text",
+   "status": "text"
+  }
+ },
+ "EsfOutgoingItemTaxInvoice": {
+  "kind": "object",
+  "sample": {
+   "date": "text",
+   "number": "text",
+   "way": "text"
+  }
+ },
+ "EsfOutgoingReport": {
+  "kind": "object",
+  "sample": {
+   "as_of": "2026-01-02",
+   "data": [
+    {
+     "blockers": [
+      "text"
+     ],
+     "problem": "text",
+     "sale": {
+      "amount": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "counterparty": "text",
+      "date": "2026-01-02",
+      "kind": "text",
+      "number": "text"
+     },
+     "verdict": "invoice_not_issued",
+     "verdict_title": "text",
+     "warnings": [
+      "text"
+     ]
+    }
+   ],
+   "next_cursor": "text",
+   "note": "text",
+   "total": 9007199254740993
+  }
+ },
+ "EsfPurchasesJobRequest": {
+  "kind": "object",
+  "sample": {
+   "from": "2026-01-02",
+   "limit": 7,
+   "to": "2026-01-02"
+  }
+ },
+ "EsfSale": {
+  "kind": "object",
+  "sample": {
+   "amount": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "bin": "text",
+   "counterparty": "text",
+   "date": "2026-01-02",
+   "kind": "text",
+   "number": "text",
+   "posted": true
+  }
+ },
+ "FeedAction": {
+  "kind": "object",
+  "sample": {
+   "action": "open",
+   "body": {
+    "key": {
+     "nested": [
+      "a",
+      1
+     ]
+    }
+   },
+   "enabled": true,
+   "hint": "text",
+   "href": "text",
+   "label": "text",
+   "method": "GET"
+  }
+ },
+ "FeedItem": {
+  "kind": "object",
+  "sample": {
+   "actions": [
+    {
+     "action": "open",
+     "enabled": true,
+     "href": "text",
+     "label": "text",
+     "method": "GET"
+    }
+   ],
+   "actor": "text",
+   "actor_name": "text",
+   "amount": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "at": "2026-01-02T03:04:05Z",
+   "batch_id": "text",
+   "cursor": "text",
+   "detail": "text",
+   "dialog_id": "text",
+   "id": "text",
+   "proposal_id": "text",
+   "section": "auto",
+   "section_title": "text",
+   "status": "previewed",
+   "status_title": "text",
+   "title": "text"
+  }
+ },
+ "FeedPage": {
+  "kind": "object",
+  "sample": {
+   "counts": {
+    "auto": 1.5,
+    "decision": 1.5,
+    "question": 1.5
+   },
+   "data": [
+    {
+     "actions": [
+      {
+       "action": "open",
+       "enabled": true,
+       "href": "text",
+       "label": "text",
+       "method": "GET"
+      }
+     ],
+     "at": "2026-01-02T03:04:05Z",
+     "cursor": "text",
+     "id": "text",
+     "section": "auto",
+     "section_title": "text",
+     "title": "text"
+    }
+   ],
+   "next_cursor": "text",
+   "sections": {
+    "auto": "text",
+    "decision": "text",
+    "question": "text"
+   }
+  }
+ },
+ "FeedSectionCounts": {
+  "kind": "object",
+  "sample": {
+   "auto": 1.5,
+   "decision": 1.5,
+   "question": 1.5
+  }
+ },
+ "FeedSectionTitles": {
+  "kind": "object",
+  "sample": {
+   "auto": "text",
+   "decision": "text",
+   "question": "text"
+  }
+ },
+ "FieldError": {
+  "kind": "object",
+  "sample": {
+   "code": "invalid_type",
+   "message": "text",
+   "path": "text"
+  }
+ },
+ "FinancialNotes": {
+  "kind": "object",
+  "sample": {
+   "form": "text",
+   "next": "text",
+   "organization": {
+    "bin": "text",
+    "name": "text"
+   },
+   "period": {
+    "code": "text",
+    "from": "2026-01-02",
+    "kind": "month",
+    "title": "text",
+    "to": "2026-01-02"
+   },
+   "sections": [
+    {
+     "basis": "text",
+     "id": "text",
+     "number": 9007199254740993,
+     "paragraphs": [
+      "text"
+     ],
+     "sources": [
+      "text"
+     ],
+     "tables": [
+      {
+       "columns": [
+        "text"
+       ],
+       "rows": [
+        [
+         "text"
+        ]
+       ]
+      }
+     ],
+     "title": "text",
+     "to_fill": [
+      {
+       "action": "fill_in_1c",
+       "what": "text"
+      }
+     ]
+    }
+   ],
+   "title": "text",
+   "to_fill_total": 9007199254740993,
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "FinancialNotesOrganization": {
+  "kind": "object",
+  "sample": {
+   "bin": "text",
+   "name": "text"
+  }
+ },
+ "FinancialNotesSection": {
+  "kind": "object",
+  "sample": {
+   "basis": "text",
+   "id": "text",
+   "number": 9007199254740993,
+   "paragraphs": [
+    "text"
+   ],
+   "sources": [
+    "text"
+   ],
+   "statement_line": "text",
+   "tables": [
+    {
+     "columns": [
+      "text"
+     ],
+     "rows": [
+      [
+       "text"
+      ]
+     ]
+    }
+   ],
+   "title": "text",
+   "to_fill": [
+    {
+     "action": "fill_in_1c",
+     "what": "text"
+    }
+   ]
+  }
+ },
+ "FinancialNotesTable": {
+  "kind": "object",
+  "sample": {
+   "columns": [
+    "text"
+   ],
+   "rows": [
+    [
+     "text"
+    ]
+   ],
+   "title": "text"
+  }
+ },
+ "FinancialNotesTableRowItemItem": {
+  "kind": "union",
+  "sample": "text"
+ },
+ "FinancialNotesToFill": {
+  "kind": "object",
+  "sample": {
+   "action": "fill_in_1c",
+   "hint": "text",
+   "what": "text",
+   "where": "text"
+  }
+ },
+ "FormMissingData": {
+  "kind": "object",
+  "sample": {
+   "action": "fill_in_1c",
+   "cells": [
+    "text"
+   ],
+   "objects": [
+    {
+     "name": "text"
+    }
+   ],
+   "what": "text",
+   "where": "text",
+   "why": "text"
+  }
+ },
+ "FormOnecObject": {
+  "kind": "object",
+  "sample": {
+   "name": "text",
+   "ref": "text"
+  }
+ },
+ "GetWorkspacePlatformAuditResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "action": "company.created",
+     "action_title": "text",
+     "actor": {
+      "id": "text",
+      "name": "text",
+      "type": "user"
+     },
+     "at": "2026-01-02T03:04:05Z",
+     "company_id": "text",
+     "id": "text",
+     "ip": "text",
+     "request_id": "text",
+     "target": {
+      "id": "text",
+      "type": "text"
+     }
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "GetWorkspacePlatformLedgerResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "amount_tiyn": 9007199254740993,
+     "api_key_id": "text",
+     "at": "2026-01-02T03:04:05Z",
+     "balance_after_tiyn": 9007199254740993,
+     "id": "text",
+     "kind": "purchase",
+     "model": "text",
+     "note": "text",
+     "payment_id": "text",
+     "request_id": "text"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "IsnaFile": {
+  "kind": "object",
+  "sample": {
+   "x_undeclared": "kept"
+  }
+ },
+ "IsnaResponse": {
+  "kind": "union",
+  "sample": {
+   "available": true,
+   "complete": true,
+   "download": {
+    "button": "text",
+    "screen": "text"
+   },
+   "exported": 9007199254740993,
+   "file_name": "text",
+   "for_human": [
+    "text"
+   ],
+   "form": "text",
+   "format": {
+    "note": "text",
+    "verified": true,
+    "version": "text"
+   },
+   "header_from": {
+    "key": "text"
+   },
+   "incomplete_because": [
+    "text"
+   ],
+   "map_edition": "text",
+   "next": "text",
+   "not_in_calculation": 9007199254740993,
+   "period": {
+    "code": "text",
+    "from": "2026-01-02",
+    "title": "text",
+    "to": "2026-01-02"
+   },
+   "reconciliation": {
+    "reference": "text",
+    "totals": {
+     "match": 9007199254740993,
+     "mismatch": 9007199254740993,
+     "no_reference": 9007199254740993,
+     "not_computed": 9007199254740993
+    }
+   },
+   "unmapped": [
+    "text"
+   ],
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "IsnaSummary": {
+  "kind": "object",
+  "sample": {
+   "available": true,
+   "complete": true,
+   "download": {
+    "button": "text",
+    "screen": "text"
+   },
+   "exported": 9007199254740993,
+   "file_name": "text",
+   "for_human": [
+    "text"
+   ],
+   "form": "text",
+   "format": {
+    "note": "text",
+    "verified": true,
+    "version": "text"
+   },
+   "header_from": {
+    "key": "text"
+   },
+   "incomplete_because": [
+    "text"
+   ],
+   "map_edition": "text",
+   "next": "text",
+   "not_in_calculation": 9007199254740993,
+   "period": {
+    "code": "text",
+    "from": "2026-01-02",
+    "title": "text",
+    "to": "2026-01-02"
+   },
+   "reconciliation": {
+    "reference": "text",
+    "totals": {
+     "match": 9007199254740993,
+     "mismatch": 9007199254740993,
+     "no_reference": 9007199254740993,
+     "not_computed": 9007199254740993
+    }
+   },
+   "unmapped": [
+    "text"
+   ],
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "IsnaSummaryDownload": {
+  "kind": "object",
+  "sample": {
+   "button": "text",
+   "screen": "text"
+  }
+ },
+ "IsnaSummaryFormat": {
+  "kind": "object",
+  "sample": {
+   "note": "text",
+   "verified": true,
+   "version": "text"
+  }
+ },
+ "IsnaSummaryPeriod": {
+  "kind": "object",
+  "sample": {
+   "code": "text",
+   "from": "2026-01-02",
+   "title": "text",
+   "to": "2026-01-02"
+  }
+ },
+ "IsnaSummaryReconciliation": {
+  "kind": "object",
+  "sample": {
+   "reference": "text",
+   "totals": {
+    "match": 9007199254740993,
+    "mismatch": 9007199254740993,
+    "no_reference": 9007199254740993,
+    "not_computed": 9007199254740993
+   }
+  }
+ },
+ "ListCompaniesResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "bin": "text",
+     "counts": {
+      "proposals_blocked": 9007199254740993,
+      "proposals_to_decide": 9007199254740993
+     },
+     "created_at": "2026-01-02T03:04:05Z",
+     "id": "text",
+     "legal_form": "ip",
+     "name": "text",
+     "permissions": [
+      "company.read"
+     ],
+     "role": "text",
+     "role_name": "text",
+     "status": "active",
+     "workspace_id": "text"
+    }
+   ]
+  }
+ },
+ "ListCompanyAutomationsHooksResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "created_at": "2026-01-02T03:04:05Z",
+     "enabled": true,
+     "id": "text",
+     "id_path": "text",
+     "name": "text",
+     "scenarios_url": "text",
+     "signature_header": "text",
+     "signed": true,
+     "token_hint": "text",
+     "updated_at": "2026-01-02T03:04:05Z"
+    }
+   ]
+  }
+ },
+ "ListCompanyAutomationsRunsResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "answer": "text",
+     "attempt": 9007199254740993,
+     "auto_retries": 9007199254740993,
+     "cancel_requested": true,
+     "created_at": "2026-01-02T03:04:05Z",
+     "current_step": 9007199254740993,
+     "error": "text",
+     "error_code": "text",
+     "event_id": "text",
+     "event_type": "text",
+     "external_id": "text",
+     "finished_at": "2026-01-02T03:04:05Z",
+     "id": "text",
+     "output": {
+      "key": 1.5
+     },
+     "output_error": "not_returned",
+     "output_note": "text",
+     "proposals": [
+      {
+       "attempt": 9007199254740993,
+       "id": "text"
+      }
+     ],
+     "requested_by": "text",
+     "retry_at": "2026-01-02T03:04:05Z",
+     "retryable": true,
+     "scenario_id": "text",
+     "slot_at": "2026-01-02T03:04:05Z",
+     "started_at": "2026-01-02T03:04:05Z",
+     "state": "queued",
+     "steps": [
+      {
+       "action": "agent",
+       "answer": "text",
+       "error": "text",
+       "error_code": "text",
+       "findings": 9007199254740993,
+       "output": {
+        "key": 1.5
+       },
+       "output_error": "not_returned",
+       "output_note": "text",
+       "proposals": [
+        "text"
+       ],
+       "skipped_by": "always",
+       "state": "done",
+       "step": 9007199254740993,
+       "stop_reason": "text"
+      }
+     ],
+     "stop_reason": "text",
+     "tools": [
+      "text"
+     ],
+     "trial": true,
+     "trigger": "hook"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "ListCompanyAutomationsScenariosResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "action": "agent",
+     "auto_approve": {
+      "kinds": [
+       "sale"
+      ],
+      "max_amount_per_day_tiyn": 9007199254740993,
+      "max_amount_per_document_tiyn": 9007199254740993
+     },
+     "created_at": "2026-01-02T03:04:05Z",
+     "enabled": true,
+     "id": "text",
+     "instruction": "text",
+     "name": "text",
+     "next_run_at": "2026-01-02T03:04:05Z",
+     "output": {
+      "key": {
+       "description": "text",
+       "type": "number"
+      }
+     },
+     "run_as": "text",
+     "steps": [
+      {
+       "action": "agent",
+       "instruction": "text",
+       "output": {
+        "key": {
+         "description": "text",
+         "type": "number"
+        }
+       },
+       "when": "always"
+      }
+     ],
+     "trigger": {
+      "hook_id": "text",
+      "kind": "hook"
+     },
+     "updated_at": "2026-01-02T03:04:05Z"
+    }
+   ]
+  }
+ },
+ "ListUsageRatesResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "cache_read_per_mtok_tiyn": 9007199254740993,
+     "cache_write_per_mtok_tiyn": 9007199254740993,
+     "effective_from": "2026-01-02T03:04:05Z",
+     "input_per_mtok_tiyn": 9007199254740993,
+     "model": "text",
+     "output_per_mtok_tiyn": 9007199254740993
+    }
+   ]
+  }
+ },
+ "ListWorkspacePlatformRequestsResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "api_key_id": "text",
+     "at": "2026-01-02T03:04:05Z",
+     "client_request_id": "text",
+     "company_id": "text",
+     "duration_ms": 9007199254740993,
+     "id": "text",
+     "ip": "text",
+     "method": "text",
+     "path": "text",
+     "query": "text",
+     "request_id": "text",
+     "status": 9007199254740993
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "ListWorkspaceWebhooksEndpointAttemptsResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "created_at": "2026-01-02T03:04:05Z",
+     "endpoint_id": "text",
+     "id": "text",
+     "message_id": "text",
+     "response_duration_ms": 9007199254740993,
+     "response_status_code": 9007199254740993,
+     "status": "succeeded",
+     "trigger": "scheduled",
+     "url": "text"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "ListWorkspaceWebhooksEndpointsResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "channels": [
+      "text"
+     ],
+     "created_at": "2026-01-02T03:04:05Z",
+     "description": "text",
+     "enabled": true,
+     "event_types": [
+      "text"
+     ],
+     "id": "text",
+     "updated_at": "2026-01-02T03:04:05Z",
+     "url": "text"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "ListWorkspaceWebhooksEventTypesResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "description": "text",
+     "example": {
+      "company_id": "text",
+      "created_at": "2026-01-02T03:04:05Z",
+      "data": {
+       "key": {
+        "nested": [
+         "a",
+         1
+        ]
+       }
+      },
+      "id": "text",
+      "type": "text",
+      "workspace_id": "text"
+     },
+     "name": "text",
+     "schema": {
+      "key": {
+       "nested": [
+        "a",
+        1
+       ]
+      }
+     }
+    }
+   ]
+  }
+ },
+ "ListWorkspaceWebhooksMessageAttemptsResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "created_at": "2026-01-02T03:04:05Z",
+     "endpoint_id": "text",
+     "id": "text",
+     "message_id": "text",
+     "response_duration_ms": 9007199254740993,
+     "response_status_code": 9007199254740993,
+     "status": "succeeded",
+     "trigger": "scheduled",
+     "url": "text"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "ListWorkspaceWebhooksMessagesResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "created_at": "2026-01-02T03:04:05Z",
+     "event_type": "text",
+     "id": "text",
+     "svix_message_id": "text"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "ListWorkspacesResponse": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "id": "text",
+     "kind": "personal",
+     "name": "text",
+     "plan": {
+      "code": "text",
+      "is_free": true,
+      "name": "text"
+     },
+     "role": "text"
+    }
+   ]
+  }
+ },
+ "Money": {
+  "kind": "object",
+  "sample": {
+   "amount": 1.5,
+   "amount_tiyn": 9007199254740993,
+   "formatted": "text"
+  }
+ },
+ "MyWorkspace": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "kind": "personal",
+   "name": "text",
+   "plan": {
+    "code": "text",
+    "is_free": true,
+    "name": "text"
+   },
+   "role": "text"
+  }
+ },
+ "OneCCapability": {
+  "kind": "object",
+  "sample": {
+   "id": "core",
+   "reason": "text",
+   "status": "yes",
+   "title": "text"
+  }
+ },
+ "OneCStatus": {
+  "kind": "object",
+  "sample": {
+   "connected": true,
+   "gateway": "odata",
+   "last_check": {
+    "capabilities": [
+     {
+      "id": "core",
+      "reason": "text",
+      "status": "yes",
+      "title": "text"
+     }
+    ],
+    "checked_at": "2026-01-02T03:04:05Z",
+    "stale": true,
+    "summary": "text",
+    "verdict": "ok"
+   },
+   "updated_at": "2026-01-02T03:04:05Z"
+  }
+ },
+ "OneCStatusLastCheck": {
+  "kind": "object",
+  "sample": {
+   "capabilities": [
+    {
+     "id": "core",
+     "reason": "text",
+     "status": "yes",
+     "title": "text"
+    }
+   ],
+   "checked_at": "2026-01-02T03:04:05Z",
+   "stale": true,
+   "summary": "text",
+   "verdict": "ok"
+  }
+ },
+ "PayForm": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "payment_id": "text",
+   "payment_object": {
+    "key": {
+     "nested": [
+      "a",
+      1
+     ]
+    }
+   },
+   "script_url": "text"
+  }
+ },
+ "PaymentMethod": {
+  "kind": "object",
+  "sample": {
+   "card_mask": "text",
+   "card_type": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "is_default": true,
+   "issuer": "text"
+  }
+ },
+ "PlatformAccount": {
+  "kind": "object",
+  "sample": {
+   "auto_reload": {
+    "amount_tiyn": 9007199254740993,
+    "enabled": true,
+    "monthly_limit_tiyn": 9007199254740993,
+    "threshold_tiyn": 9007199254740993
+   },
+   "auto_reload_spent_tiyn": 9007199254740993,
+   "balance_tiyn": 9007199254740993,
+   "blocked_reason": "disabled",
+   "enabled": true,
+   "month": "text",
+   "monthly_cap_tiyn": 9007199254740993,
+   "purchase_limits": {
+    "daily_max_tiyn": 9007199254740993,
+    "max_tiyn": 9007199254740993,
+    "min_tiyn": 9007199254740993
+   },
+   "spent_tiyn": 9007199254740993
+  }
+ },
+ "PlatformAccountPurchaseLimits": {
+  "kind": "object",
+  "sample": {
+   "daily_max_tiyn": 9007199254740993,
+   "max_tiyn": 9007199254740993,
+   "min_tiyn": 9007199254740993
+  }
+ },
+ "PlatformAutoReload": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "enabled": true,
+   "monthly_limit_tiyn": 9007199254740993,
+   "threshold_tiyn": 9007199254740993
+  }
+ },
+ "PlatformLedgerEntry": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "api_key_id": "text",
+   "at": "2026-01-02T03:04:05Z",
+   "balance_after_tiyn": 9007199254740993,
+   "id": "text",
+   "kind": "purchase",
+   "model": "text",
+   "note": "text",
+   "payment_id": "text",
+   "request_id": "text"
+  }
+ },
+ "PlatformLimits": {
+  "kind": "object",
+  "sample": {
+   "concurrent_turns": {
+    "in_use": 9007199254740993,
+    "limit": 9007199254740993
+   },
+   "files": {
+    "attachment_bytes": 9007199254740993,
+    "attachments_per_message": 9007199254740993,
+    "attachments_total_bytes": 9007199254740993,
+    "bank_statement_request_bytes": 9007199254740993,
+    "chat_request_bytes": 9007199254740993,
+    "hook_event_bytes": 9007199254740993,
+    "image_bytes": 9007199254740993,
+    "pdf_pages": 9007199254740993,
+    "request_bytes": 9007199254740993
+   },
+   "rate": {
+    "key": {
+     "limit_per_minute": 9007199254740993,
+     "remaining": 9007199254740993,
+     "reset_in_sec": 9007199254740993
+    },
+    "workspace": {
+     "limit_per_minute": 9007199254740993,
+     "remaining": 9007199254740993,
+     "reset_in_sec": 9007199254740993
+    }
+   }
+  }
+ },
+ "PlatformLimitsConcurrentTurns": {
+  "kind": "object",
+  "sample": {
+   "in_use": 9007199254740993,
+   "limit": 9007199254740993
+  }
+ },
+ "PlatformLimitsFiles": {
+  "kind": "object",
+  "sample": {
+   "attachment_bytes": 9007199254740993,
+   "attachments_per_message": 9007199254740993,
+   "attachments_total_bytes": 9007199254740993,
+   "bank_statement_request_bytes": 9007199254740993,
+   "chat_request_bytes": 9007199254740993,
+   "hook_event_bytes": 9007199254740993,
+   "image_bytes": 9007199254740993,
+   "pdf_pages": 9007199254740993,
+   "request_bytes": 9007199254740993
+  }
+ },
+ "PlatformLimitsRate": {
+  "kind": "object",
+  "sample": {
+   "key": {
+    "limit_per_minute": 9007199254740993,
+    "remaining": 9007199254740993,
+    "reset_in_sec": 9007199254740993
+   },
+   "workspace": {
+    "limit_per_minute": 9007199254740993,
+    "remaining": 9007199254740993,
+    "reset_in_sec": 9007199254740993
+   }
+  }
+ },
+ "PlatformLimitsRateKey": {
+  "kind": "object",
+  "sample": {
+   "limit_per_minute": 9007199254740993,
+   "remaining": 9007199254740993,
+   "reset_in_sec": 9007199254740993
+  }
+ },
+ "PlatformLimitsRateWorkspace": {
+  "kind": "object",
+  "sample": {
+   "limit_per_minute": 9007199254740993,
+   "remaining": 9007199254740993,
+   "reset_in_sec": 9007199254740993
+  }
+ },
+ "PlatformPurchase": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "balance_tiyn": 9007199254740993,
+   "payment_id": "text",
+   "status": "new"
+  }
+ },
+ "PlatformPurchaseInput": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "idempotency_key": "text"
+  }
+ },
+ "PlatformRequest": {
+  "kind": "object",
+  "sample": {
+   "api_key_id": "text",
+   "at": "2026-01-02T03:04:05Z",
+   "client_request_id": "text",
+   "company_id": "text",
+   "duration_ms": 9007199254740993,
+   "id": "text",
+   "ip": "text",
+   "method": "text",
+   "path": "text",
+   "query": "text",
+   "request_id": "text",
+   "status": 9007199254740993
+  }
+ },
+ "PlatformSettingsInput": {
+  "kind": "object",
+  "sample": {
+   "auto_reload": {
+    "amount_tiyn": 9007199254740993,
+    "enabled": true,
+    "monthly_limit_tiyn": 9007199254740993,
+    "threshold_tiyn": 9007199254740993
+   },
+   "enabled": true,
+   "monthly_cap_tiyn": 9007199254740993
+  }
+ },
+ "PlatformSettingsInputAutoReload": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "enabled": true,
+   "monthly_limit_tiyn": 9007199254740993,
+   "threshold_tiyn": 9007199254740993
+  }
+ },
+ "PlatformUsage": {
+  "kind": "object",
+  "sample": {
+   "by_company": [
+    {
+     "cache_read_tokens": 9007199254740993,
+     "cache_write_tokens": 9007199254740993,
+     "company_id": "text",
+     "cost_tiyn": 9007199254740993,
+     "input_tokens": 9007199254740993,
+     "output_tokens": 9007199254740993,
+     "requests": 9007199254740993
+    }
+   ],
+   "by_day": [
+    {
+     "cache_read_tokens": 9007199254740993,
+     "cache_write_tokens": 9007199254740993,
+     "cost_tiyn": 9007199254740993,
+     "day": "text",
+     "input_tokens": 9007199254740993,
+     "output_tokens": 9007199254740993,
+     "requests": 9007199254740993
+    }
+   ],
+   "by_key": [
+    {
+     "api_key_id": "text",
+     "cache_read_tokens": 9007199254740993,
+     "cache_write_tokens": 9007199254740993,
+     "cost_tiyn": 9007199254740993,
+     "input_tokens": 9007199254740993,
+     "output_tokens": 9007199254740993,
+     "requests": 9007199254740993
+    }
+   ],
+   "by_model": [
+    {
+     "cache_read_tokens": 9007199254740993,
+     "cache_write_tokens": 9007199254740993,
+     "cost_tiyn": 9007199254740993,
+     "input_tokens": 9007199254740993,
+     "model": "text",
+     "output_tokens": 9007199254740993,
+     "requests": 9007199254740993
+    }
+   ],
+   "from": "2026-01-02T03:04:05Z",
+   "to": "2026-01-02T03:04:05Z",
+   "totals": {
+    "cache_read_tokens": 9007199254740993,
+    "cache_write_tokens": 9007199254740993,
+    "cost_tiyn": 9007199254740993,
+    "input_tokens": 9007199254740993,
+    "output_tokens": 9007199254740993,
+    "requests": 9007199254740993
+   }
+  }
+ },
+ "PlatformUsageByCompanyItem": {
+  "kind": "object",
+  "sample": {
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "company_id": "text",
+   "cost_tiyn": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "output_tokens": 9007199254740993,
+   "requests": 9007199254740993
+  }
+ },
+ "PlatformUsageByDayItem": {
+  "kind": "object",
+  "sample": {
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "day": "text",
+   "input_tokens": 9007199254740993,
+   "output_tokens": 9007199254740993,
+   "requests": 9007199254740993
+  }
+ },
+ "PlatformUsageByKeyItem": {
+  "kind": "object",
+  "sample": {
+   "api_key_id": "text",
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "output_tokens": 9007199254740993,
+   "requests": 9007199254740993
+  }
+ },
+ "PlatformUsageByModelItem": {
+  "kind": "object",
+  "sample": {
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "model": "text",
+   "output_tokens": 9007199254740993,
+   "requests": 9007199254740993
+  }
+ },
+ "PlatformUsageTotals": {
+  "kind": "object",
+  "sample": {
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "output_tokens": 9007199254740993,
+   "requests": 9007199254740993
+  }
+ },
+ "ProposalAccount": {
+  "kind": "object",
+  "sample": {
+   "code": "text",
+   "field": "text",
+   "ref": "text",
+   "title": "text"
+  }
+ },
+ "ProposalAction": {
+  "kind": "object",
+  "sample": {
+   "action": "approve",
+   "body": {
+    "key": {
+     "nested": [
+      "a",
+      1
+     ]
+    }
+   },
+   "disabled_reason": "text",
+   "effect": "text",
+   "enabled": true,
+   "href": "text",
+   "label": "text",
+   "method": "POST"
+  }
+ },
+ "ProposalAdvanceOffset": {
+  "kind": "object",
+  "sample": {
+   "amount": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "credit": "text",
+   "debit": "text",
+   "note": "text",
+   "to_pay": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   }
+  }
+ },
+ "ProposalApproval": {
+  "kind": "object",
+  "sample": {
+   "allowed": true,
+   "blocked_by_blockers": true,
+   "reason": "text",
+   "requires_right": "proposals.approve"
+  }
+ },
+ "ProposalCard": {
+  "kind": "object",
+  "sample": {
+   "actions": [
+    {
+     "action": "approve",
+     "body": {
+      "key": {
+       "nested": [
+        "a",
+        1
+       ]
+      }
+     },
+     "effect": "text",
+     "enabled": true,
+     "href": "text",
+     "label": "text",
+     "method": "POST"
+    }
+   ],
+   "advance_offset": {
+    "amount": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "credit": "text",
+    "debit": "text",
+    "note": "text",
+    "to_pay": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    }
+   },
+   "approval": {
+    "allowed": true,
+    "blocked_by_blockers": true,
+    "reason": "text",
+    "requires_right": "proposals.approve"
+   },
+   "blocker_count": 9007199254740993,
+   "blockers": [
+    "text"
+   ],
+   "counterparty": {
+    "bin": "text",
+    "name": "text",
+    "ref": "text"
+   },
+   "created_at": "2026-01-02T03:04:05Z",
+   "dialog_id": "text",
+   "document_number": "text",
+   "header": {
+    "accounts": [
+     {
+      "code": "text",
+      "field": "text",
+      "ref": "text",
+      "title": "text"
+     }
+    ],
+    "comment": "text",
+    "contract": {
+     "name": "text",
+     "ref": "text"
+    },
+    "counterparty": {
+     "name": "text",
+     "ref": "text"
+    },
+    "date": "text",
+    "document_title": "text",
+    "entity_set": "text",
+    "net": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "organization": {
+     "name": "text",
+     "ref": "text"
+    },
+    "payment_purpose": "text",
+    "prices_include_vat": true,
+    "total": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "vat": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    }
+   },
+   "history": [
+    {
+     "actor": "text",
+     "at": "2026-01-02T03:04:05Z",
+     "status": "previewed",
+     "status_title": "text"
+    }
+   ],
+   "href": "text",
+   "id": "text",
+   "intent": {
+    "key": {
+     "nested": [
+      "a",
+      1
+     ]
+    }
+   },
+   "kind": "sale",
+   "kind_title": "text",
+   "level": "L0",
+   "level_title": "text",
+   "line_count": 9007199254740993,
+   "lines": [
+    {
+     "accounts": [
+      {
+       "code": "text",
+       "field": "text",
+       "ref": "text",
+       "title": "text"
+      }
+     ],
+     "item": {
+      "name": "text",
+      "ref": "text"
+     },
+     "no": 9007199254740993,
+     "price": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "quantity": 1.5,
+     "section": "goods",
+     "sum": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "total": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "vat": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "vat_rate_title": "text"
+    }
+   ],
+   "postings": [
+    {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "computed_by_1c": true,
+     "credit": "text",
+     "debit": "text",
+     "label": "text"
+    }
+   ],
+   "result": {
+    "mismatches": [
+     "text"
+    ],
+    "number": "text",
+    "postings": [
+     {
+      "amount": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "computed_by_1c": true,
+      "credit": "text",
+      "debit": "text",
+      "label": "text"
+     }
+    ],
+    "ref": "text"
+   },
+   "source": {
+    "channel": "mcp",
+    "note": "text"
+   },
+   "status": "previewed",
+   "status_title": "text",
+   "summary": "text",
+   "title": "text",
+   "total": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "vat": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "warning_count": 9007199254740993,
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "ProposalContract": {
+  "kind": "object",
+  "sample": {
+   "date": "text",
+   "kind": "text",
+   "name": "text",
+   "number": "text",
+   "ref": "text"
+  }
+ },
+ "ProposalDecision": {
+  "kind": "object",
+  "sample": {
+   "document": {
+    "number": "text",
+    "posted": true,
+    "ref": "text"
+   },
+   "message": "text",
+   "mismatches": [
+    "text"
+   ],
+   "ok": true,
+   "postings": [
+    {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "computed_by_1c": true,
+     "credit": "text",
+     "debit": "text",
+     "label": "text"
+    }
+   ],
+   "proposal": {
+    "actions": [
+     {
+      "action": "approve",
+      "body": {
+       "key": {
+        "nested": [
+         "a",
+         1
+        ]
+       }
+      },
+      "effect": "text",
+      "enabled": true,
+      "href": "text",
+      "label": "text",
+      "method": "POST"
+     }
+    ],
+    "advance_offset": {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "credit": "text",
+     "debit": "text",
+     "note": "text",
+     "to_pay": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     }
+    },
+    "approval": {
+     "allowed": true,
+     "blocked_by_blockers": true,
+     "requires_right": "proposals.approve"
+    },
+    "blocker_count": 9007199254740993,
+    "blockers": [
+     "text"
+    ],
+    "counterparty": {
+     "name": "text",
+     "ref": "text"
+    },
+    "created_at": "2026-01-02T03:04:05Z",
+    "dialog_id": "text",
+    "document_number": "text",
+    "header": {
+     "accounts": [
+      {
+       "code": "text",
+       "field": "text",
+       "ref": "text",
+       "title": "text"
+      }
+     ],
+     "date": "text",
+     "document_title": "text",
+     "entity_set": "text",
+     "net": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "total": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "vat": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     }
+    },
+    "history": [
+     {
+      "actor": "text",
+      "at": "2026-01-02T03:04:05Z",
+      "status": "previewed",
+      "status_title": "text"
+     }
+    ],
+    "href": "text",
+    "id": "text",
+    "intent": {
+     "key": {
+      "nested": [
+       "a",
+       1
+      ]
+     }
+    },
+    "kind": "sale",
+    "kind_title": "text",
+    "level": "L0",
+    "level_title": "text",
+    "line_count": 9007199254740993,
+    "lines": [
+     {
+      "accounts": [
+       {
+        "code": "text",
+        "field": "text",
+        "ref": "text",
+        "title": "text"
+       }
+      ],
+      "item": {
+       "name": "text",
+       "ref": "text"
+      },
+      "no": 9007199254740993,
+      "price": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "quantity": 1.5,
+      "section": "goods",
+      "sum": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "total": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "vat_rate_title": "text"
+     }
+    ],
+    "postings": [
+     {
+      "amount": {
+       "amount": 1.5,
+       "amount_tiyn": 9007199254740993,
+       "formatted": "text"
+      },
+      "computed_by_1c": true,
+      "credit": "text",
+      "debit": "text",
+      "label": "text"
+     }
+    ],
+    "result": {
+     "mismatches": [
+      "text"
+     ],
+     "number": "text",
+     "postings": [
+      {
+       "amount": {
+        "amount": 1.5,
+        "amount_tiyn": 9007199254740993,
+        "formatted": "text"
+       },
+       "computed_by_1c": true,
+       "credit": "text",
+       "debit": "text",
+       "label": "text"
+      }
+     ],
+     "ref": "text"
+    },
+    "source": {
+     "channel": "mcp"
+    },
+    "status": "previewed",
+    "status_title": "text",
+    "summary": "text",
+    "title": "text",
+    "total": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "vat": {
+     "amount": 1.5,
+     "amount_tiyn": 9007199254740993,
+     "formatted": "text"
+    },
+    "warning_count": 9007199254740993,
+    "warnings": [
+     "text"
+    ]
+   },
+   "repeated": true
+  }
+ },
+ "ProposalDocument": {
+  "kind": "object",
+  "sample": {
+   "number": "text",
+   "posted": true,
+   "ref": "text"
+  }
+ },
+ "ProposalHeader": {
+  "kind": "object",
+  "sample": {
+   "accounts": [
+    {
+     "code": "text",
+     "field": "text",
+     "ref": "text",
+     "title": "text"
+    }
+   ],
+   "comment": "text",
+   "contract": {
+    "date": "text",
+    "kind": "text",
+    "name": "text",
+    "number": "text",
+    "ref": "text"
+   },
+   "counterparty": {
+    "bin": "text",
+    "name": "text",
+    "ref": "text"
+   },
+   "date": "text",
+   "document_title": "text",
+   "entity_set": "text",
+   "net": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "organization": {
+    "bin": "text",
+    "name": "text",
+    "ref": "text"
+   },
+   "payment_purpose": "text",
+   "prices_include_vat": true,
+   "total": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "vat": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   }
+  }
+ },
+ "ProposalHistoryEvent": {
+  "kind": "object",
+  "sample": {
+   "actor": "text",
+   "at": "2026-01-02T03:04:05Z",
+   "note": "text",
+   "status": "previewed",
+   "status_title": "text"
+  }
+ },
+ "ProposalLine": {
+  "kind": "object",
+  "sample": {
+   "accounts": [
+    {
+     "code": "text",
+     "field": "text",
+     "ref": "text",
+     "title": "text"
+    }
+   ],
+   "description": "text",
+   "item": {
+    "name": "text",
+    "ref": "text"
+   },
+   "no": 9007199254740993,
+   "price": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "quantity": 1.5,
+   "section": "goods",
+   "sum": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "total": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "vat": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "vat_rate": 1.5,
+   "vat_rate_title": "text"
+  }
+ },
+ "ProposalLineItem": {
+  "kind": "object",
+  "sample": {
+   "name": "text",
+   "ref": "text"
+  }
+ },
+ "ProposalListItem": {
+  "kind": "object",
+  "sample": {
+   "approval": {
+    "allowed": true,
+    "blocked_by_blockers": true,
+    "reason": "text",
+    "requires_right": "proposals.approve"
+   },
+   "blocker_count": 9007199254740993,
+   "counterparty": {
+    "bin": "text",
+    "name": "text",
+    "ref": "text"
+   },
+   "created_at": "2026-01-02T03:04:05Z",
+   "dialog_id": "text",
+   "document_number": "text",
+   "href": "text",
+   "id": "text",
+   "kind": "sale",
+   "kind_title": "text",
+   "level": "L0",
+   "level_title": "text",
+   "line_count": 9007199254740993,
+   "status": "previewed",
+   "status_title": "text",
+   "title": "text",
+   "total": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "vat": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "warning_count": 9007199254740993
+  }
+ },
+ "ProposalPage": {
+  "kind": "object",
+  "sample": {
+   "counts": {
+    "key": 1.5
+   },
+   "data": [
+    {
+     "approval": {
+      "allowed": true,
+      "blocked_by_blockers": true,
+      "requires_right": "proposals.approve"
+     },
+     "blocker_count": 9007199254740993,
+     "created_at": "2026-01-02T03:04:05Z",
+     "dialog_id": "text",
+     "href": "text",
+     "id": "text",
+     "kind": "sale",
+     "kind_title": "text",
+     "level": "L0",
+     "level_title": "text",
+     "line_count": 9007199254740993,
+     "status": "previewed",
+     "status_title": "text",
+     "title": "text",
+     "total": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "vat": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "warning_count": 9007199254740993
+    }
+   ],
+   "next_cursor": "text",
+   "total": 1.5
+  }
+ },
+ "ProposalParty": {
+  "kind": "object",
+  "sample": {
+   "bin": "text",
+   "name": "text",
+   "ref": "text"
+  }
+ },
+ "ProposalPosting": {
+  "kind": "object",
+  "sample": {
+   "amount": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "computed_by_1c": true,
+   "credit": "text",
+   "debit": "text",
+   "label": "text"
+  }
+ },
+ "ProposalResult": {
+  "kind": "object",
+  "sample": {
+   "mismatches": [
+    "text"
+   ],
+   "number": "text",
+   "postings": [
+    {
+     "amount": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "computed_by_1c": true,
+     "credit": "text",
+     "debit": "text",
+     "label": "text"
+    }
+   ],
+   "ref": "text"
+  }
+ },
+ "ProposalSource": {
+  "kind": "object",
+  "sample": {
+   "channel": "mcp",
+   "note": "text"
+  }
+ },
+ "RejectRequest": {
+  "kind": "object",
+  "sample": {
+   "confirm_unknown_write": true,
+   "reason": "text"
+  }
+ },
+ "StatementDay": {
+  "kind": "object",
+  "sample": {
+   "counts": {
+    "created": 1.5,
+    "failed": 1.5,
+    "manual": 1.5,
+    "skipped": 1.5,
+    "total": 1.5,
+    "unknown": 1.5
+   },
+   "error": "text",
+   "events": 1.5,
+   "finished_at": "2026-01-02T03:04:05Z",
+   "id": "text",
+   "kind": "bank_statement",
+   "report": {
+    "approval": {
+     "approved": 1.5,
+     "counts": {
+      "key": 1.5
+     },
+     "excluded": 1.5,
+     "failed": 1.5,
+     "limit": 1.5,
+     "message": "text",
+     "ok": true,
+     "requested": 1.5,
+     "results": [
+      {
+       "id": "text",
+       "message": "text",
+       "outcome": "approved",
+       "title": "text"
+      }
+     ]
+    },
+    "created": 9007199254740993,
+    "duplicates": 9007199254740993,
+    "failed": 9007199254740993,
+    "gateway": {
+     "asked": 9007199254740993,
+     "passed": 9007199254740993
+    },
+    "manual": 9007199254740993,
+    "min_concurrency": 9007199254740993,
+    "pending": 9007199254740993,
+    "rows": [
+     {
+      "key": "text",
+      "status": "created",
+      "title": "text"
+     }
+    ],
+    "skipped": 9007199254740993,
+    "stopped": true,
+    "total": 9007199254740993,
+    "unknown": 9007199254740993,
+    "x_undeclared": "kept"
+   },
+   "running": true,
+   "started_at": "2026-01-02T03:04:05Z",
+   "summary": "text",
+   "title": "text"
+  }
+ },
+ "StatementDayCounts": {
+  "kind": "object",
+  "sample": {
+   "created": 1.5,
+   "failed": 1.5,
+   "manual": 1.5,
+   "skipped": 1.5,
+   "total": 1.5,
+   "unknown": 1.5
+  }
+ },
+ "StatementDayList": {
+  "kind": "object",
+  "sample": {
+   "data": [
+    {
+     "events": 1.5,
+     "id": "text",
+     "kind": "bank_statement",
+     "running": true,
+     "started_at": "2026-01-02T03:04:05Z",
+     "summary": "text",
+     "title": "text"
+    }
+   ],
+   "next_cursor": "text"
+  }
+ },
+ "TaxFormCell": {
+  "kind": "object",
+  "sample": {
+   "causes": [
+    {}
+   ],
+   "cell": "text",
+   "diff": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "line": "text",
+   "note": "text",
+   "one_c": "text",
+   "one_c_value": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "ours": "text",
+   "ours_value": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "status": "match",
+   "title": "text",
+   "type": "money"
+  }
+ },
+ "TaxFormCellCause": {
+  "kind": "object",
+  "sample": {
+   "amount": {
+    "amount": 1.5,
+    "amount_tiyn": 9007199254740993,
+    "formatted": "text"
+   },
+   "date": "text",
+   "kind": "text",
+   "number": "text",
+   "records": 9007199254740993,
+   "source": "text",
+   "what": "text"
+  }
+ },
+ "TaxFormCellDiff": {
+  "kind": "union",
+  "sample": {
+   "amount": 1.5,
+   "amount_tiyn": 9007199254740993,
+   "formatted": "text"
+  }
+ },
+ "TaxFormCellOneCValue": {
+  "kind": "union",
+  "sample": {
+   "amount": 1.5,
+   "amount_tiyn": 9007199254740993,
+   "formatted": "text"
+  }
+ },
+ "TaxFormCellOursValue": {
+  "kind": "union",
+  "sample": {
+   "amount": 1.5,
+   "amount_tiyn": 9007199254740993,
+   "formatted": "text"
+  }
+ },
+ "TaxFormDue": {
+  "kind": "object",
+  "sample": {
+   "due": "2026-01-02",
+   "due_error": "text",
+   "from": "2026-01-02",
+   "in_one_c": "text",
+   "moved": true,
+   "period": "text",
+   "period_title": "text",
+   "started": true,
+   "to": "2026-01-02"
+  }
+ },
+ "TaxFormListItem": {
+  "kind": "object",
+  "sample": {
+   "annual": true,
+   "coverage": "full",
+   "form": "text",
+   "group": "tax",
+   "isna": true,
+   "kind": "month",
+   "period_kind": "text",
+   "periods": [
+    {
+     "from": "2026-01-02",
+     "in_one_c": "text",
+     "period": "text",
+     "period_title": "text",
+     "started": true,
+     "to": "2026-01-02"
+    }
+   ],
+   "required": true,
+   "title": "text",
+   "why": "text"
+  }
+ },
+ "TaxFormListItemRequired": {
+  "kind": "union",
+  "sample": true
+ },
+ "TaxFormOnlyInOneC": {
+  "kind": "object",
+  "sample": {
+   "form": "text",
+   "periods": [
+    "text"
+   ]
+  }
+ },
+ "TaxFormPeriod": {
+  "kind": "object",
+  "sample": {
+   "code": "text",
+   "from": "2026-01-02",
+   "kind": "month",
+   "title": "text",
+   "to": "2026-01-02"
+  }
+ },
+ "TaxFormReference": {
+  "kind": "object",
+  "sample": {
+   "date": "text",
+   "edition": "text",
+   "found": true,
+   "note": "text"
+  }
+ },
+ "TaxFormTotals": {
+  "kind": "object",
+  "sample": {
+   "match": 9007199254740993,
+   "mismatch": 9007199254740993,
+   "no_reference": 9007199254740993,
+   "not_computed": 9007199254740993
+  }
+ },
+ "TaxFormView": {
+  "kind": "object",
+  "sample": {
+   "cells": [
+    {
+     "causes": [
+      {}
+     ],
+     "cell": "text",
+     "line": "text",
+     "one_c": "text",
+     "one_c_value": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "ours": "text",
+     "ours_value": {
+      "amount": 1.5,
+      "amount_tiyn": 9007199254740993,
+      "formatted": "text"
+     },
+     "status": "match",
+     "title": "text",
+     "type": "money"
+    }
+   ],
+   "coverage": "full",
+   "form": "text",
+   "isna": true,
+   "missing": [
+    {
+     "what": "text",
+     "why": "text"
+    }
+   ],
+   "next": "text",
+   "not_ready_because": [
+    "text"
+   ],
+   "period": {
+    "code": "text",
+    "from": "2026-01-02",
+    "kind": "month",
+    "title": "text",
+    "to": "2026-01-02"
+   },
+   "ready_to_file": true,
+   "reference": {
+    "date": "text",
+    "edition": "text",
+    "found": true,
+    "note": "text"
+   },
+   "submission": "text",
+   "title": "text",
+   "totals": {
+    "match": 9007199254740993,
+    "mismatch": 9007199254740993,
+    "no_reference": 9007199254740993,
+    "not_computed": 9007199254740993
+   },
+   "uncovered": {
+    "cells": [
+     {
+      "name": "text",
+      "value": "text"
+     }
+    ],
+    "total": 9007199254740993
+   },
+   "warnings": [
+    "text"
+   ]
+  }
+ },
+ "TaxFormViewUncovered": {
+  "kind": "object",
+  "sample": {
+   "cells": [
+    {
+     "name": "text",
+     "value": "text"
+    }
+   ],
+   "total": 9007199254740993
+  }
+ },
+ "TaxFormViewUncoveredCellItem": {
+  "kind": "object",
+  "sample": {
+   "name": "text",
+   "value": "text"
+  }
+ },
+ "TaxFormsYear": {
+  "kind": "object",
+  "sample": {
+   "forms": [
+    {
+     "annual": true,
+     "coverage": "full",
+     "form": "text",
+     "group": "tax",
+     "isna": true,
+     "kind": "month",
+     "period_kind": "text",
+     "periods": [
+      {
+       "from": "2026-01-02",
+       "in_one_c": "text",
+       "period": "text",
+       "period_title": "text",
+       "started": true,
+       "to": "2026-01-02"
+      }
+     ],
+     "required": true,
+     "title": "text",
+     "why": "text"
+    }
+   ],
+   "in_one_c_without_calculation": [
+    {
+     "form": "text",
+     "periods": [
+      "text"
+     ]
+    }
+   ],
+   "regime": "text",
+   "year": 9007199254740993
+  }
+ },
+ "TaxPeriodRef": {
+  "kind": "object",
+  "sample": {
+   "code": "text",
+   "title": "text"
+  }
+ },
+ "UsageRate": {
+  "kind": "object",
+  "sample": {
+   "cache_read_per_mtok_tiyn": 9007199254740993,
+   "cache_write_per_mtok_tiyn": 9007199254740993,
+   "effective_from": "2026-01-02T03:04:05Z",
+   "input_per_mtok_tiyn": 9007199254740993,
+   "model": "text",
+   "output_per_mtok_tiyn": 9007199254740993
+  }
+ },
+ "WebhookAttempt": {
+  "kind": "object",
+  "sample": {
+   "created_at": "2026-01-02T03:04:05Z",
+   "endpoint_id": "text",
+   "id": "text",
+   "message_id": "text",
+   "response_duration_ms": 9007199254740993,
+   "response_status_code": 9007199254740993,
+   "status": "succeeded",
+   "trigger": "scheduled",
+   "url": "text"
+  }
+ },
+ "WebhookEndpoint": {
+  "kind": "object",
+  "sample": {
+   "channels": [
+    "text"
+   ],
+   "created_at": "2026-01-02T03:04:05Z",
+   "description": "text",
+   "enabled": true,
+   "event_types": [
+    "text"
+   ],
+   "id": "text",
+   "updated_at": "2026-01-02T03:04:05Z",
+   "url": "text"
+  }
+ },
+ "WebhookEndpointCreate": {
+  "kind": "object",
+  "sample": {
+   "channels": [
+    "text"
+   ],
+   "description": "text",
+   "enabled": true,
+   "event_types": [
+    "text"
+   ],
+   "url": "text"
+  }
+ },
+ "WebhookEndpointCreated": {
+  "kind": "object",
+  "sample": {
+   "channels": [
+    "text"
+   ],
+   "created_at": "2026-01-02T03:04:05Z",
+   "description": "text",
+   "enabled": true,
+   "event_types": [
+    "text"
+   ],
+   "id": "text",
+   "secret": "text",
+   "secret_note": "text",
+   "updated_at": "2026-01-02T03:04:05Z",
+   "url": "text"
+  }
+ },
+ "WebhookEndpointPatch": {
+  "kind": "object",
+  "sample": {
+   "channels": [
+    "text"
+   ],
+   "description": "text",
+   "enabled": true,
+   "event_types": [
+    "text"
+   ],
+   "url": "text"
+  }
+ },
+ "WebhookEnvelope": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "key": {
+     "nested": [
+      "a",
+      1
+     ]
+    }
+   },
+   "id": "text",
+   "type": "text",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEvent": {
+  "kind": "union",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "cap_tiyn": 9007199254740993,
+    "key_id": "text",
+    "month": "text",
+    "prefix": "text",
+    "reached_at": "2026-01-02T03:04:05Z",
+    "spent_tiyn": 9007199254740993
+   },
+   "id": "text",
+   "type": "api_key.cap_reached",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventApiKeyCapReached": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "cap_tiyn": 9007199254740993,
+    "key_id": "text",
+    "month": "text",
+    "prefix": "text",
+    "reached_at": "2026-01-02T03:04:05Z",
+    "spent_tiyn": 9007199254740993
+   },
+   "id": "text",
+   "type": "api_key.cap_reached",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventApiKeyCapReachedData": {
+  "kind": "object",
+  "sample": {
+   "cap_tiyn": 9007199254740993,
+   "key_id": "text",
+   "month": "text",
+   "prefix": "text",
+   "reached_at": "2026-01-02T03:04:05Z",
+   "spent_tiyn": 9007199254740993
+  }
+ },
+ "WebhookEventApiKeyExpiring": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "days_left": 9007199254740993,
+    "expires_at": "2026-01-02T03:04:05Z",
+    "key_id": "text",
+    "prefix": "text"
+   },
+   "id": "text",
+   "type": "api_key.expiring",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventApiKeyExpiringData": {
+  "kind": "object",
+  "sample": {
+   "days_left": 9007199254740993,
+   "expires_at": "2026-01-02T03:04:05Z",
+   "key_id": "text",
+   "prefix": "text"
+  }
+ },
+ "WebhookEventAutomationRunCompleted": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "action": "text",
+    "attempt": 9007199254740993,
+    "cost_tiyn": 9007199254740993,
+    "event_id": "text",
+    "external_id": "text",
+    "failed_step": 9007199254740993,
+    "finished_at": "2026-01-02T03:04:05Z",
+    "output": {
+     "key": 1.5
+    },
+    "output_error": "not_returned",
+    "proposal_ids": [
+     "text"
+    ],
+    "proposals": [
+     {
+      "amount_tiyn": 9007199254740993,
+      "auto": "approved",
+      "auto_code": "status",
+      "kind": "text",
+      "onec_document_date": "2026-01-02",
+      "onec_document_number": "text",
+      "proposal_id": "text",
+      "status": "text"
+     }
+    ],
+    "run_id": "text",
+    "scenario_id": "text",
+    "started_at": "2026-01-02T03:04:05Z",
+    "state": "text",
+    "stop_reason": "text",
+    "trial": true,
+    "trigger": "text"
+   },
+   "id": "text",
+   "type": "automation.run.completed",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventAutomationRunCompletedData": {
+  "kind": "object",
+  "sample": {
+   "action": "text",
+   "attempt": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "event_id": "text",
+   "external_id": "text",
+   "failed_step": 9007199254740993,
+   "finished_at": "2026-01-02T03:04:05Z",
+   "output": {
+    "key": 1.5
+   },
+   "output_error": "not_returned",
+   "proposal_ids": [
+    "text"
+   ],
+   "proposals": [
+    {
+     "amount_tiyn": 9007199254740993,
+     "auto": "approved",
+     "auto_code": "status",
+     "kind": "text",
+     "onec_document_date": "2026-01-02",
+     "onec_document_number": "text",
+     "proposal_id": "text",
+     "status": "text"
+    }
+   ],
+   "run_id": "text",
+   "scenario_id": "text",
+   "started_at": "2026-01-02T03:04:05Z",
+   "state": "text",
+   "stop_reason": "text",
+   "trial": true,
+   "trigger": "text"
+  }
+ },
+ "WebhookEventAutomationRunCompletedDataOutputValue": {
+  "kind": "union",
+  "sample": 1.5
+ },
+ "WebhookEventAutomationRunCompletedDataProposalItem": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "auto": "approved",
+   "auto_code": "status",
+   "kind": "text",
+   "onec_document_date": "2026-01-02",
+   "onec_document_number": "text",
+   "proposal_id": "text",
+   "status": "text"
+  }
+ },
+ "WebhookEventAutomationRunFailed": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "action": "text",
+    "attempt": 9007199254740993,
+    "cost_tiyn": 9007199254740993,
+    "event_id": "text",
+    "external_id": "text",
+    "failed_step": 9007199254740993,
+    "finished_at": "2026-01-02T03:04:05Z",
+    "output": {
+     "key": 1.5
+    },
+    "output_error": "not_returned",
+    "proposal_ids": [
+     "text"
+    ],
+    "proposals": [
+     {
+      "amount_tiyn": 9007199254740993,
+      "auto": "approved",
+      "auto_code": "status",
+      "kind": "text",
+      "onec_document_date": "2026-01-02",
+      "onec_document_number": "text",
+      "proposal_id": "text",
+      "status": "text"
+     }
+    ],
+    "run_id": "text",
+    "scenario_id": "text",
+    "started_at": "2026-01-02T03:04:05Z",
+    "state": "text",
+    "stop_reason": "text",
+    "trial": true,
+    "trigger": "text"
+   },
+   "id": "text",
+   "type": "automation.run.failed",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventAutomationRunFailedData": {
+  "kind": "object",
+  "sample": {
+   "action": "text",
+   "attempt": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "event_id": "text",
+   "external_id": "text",
+   "failed_step": 9007199254740993,
+   "finished_at": "2026-01-02T03:04:05Z",
+   "output": {
+    "key": 1.5
+   },
+   "output_error": "not_returned",
+   "proposal_ids": [
+    "text"
+   ],
+   "proposals": [
+    {
+     "amount_tiyn": 9007199254740993,
+     "auto": "approved",
+     "auto_code": "status",
+     "kind": "text",
+     "onec_document_date": "2026-01-02",
+     "onec_document_number": "text",
+     "proposal_id": "text",
+     "status": "text"
+    }
+   ],
+   "run_id": "text",
+   "scenario_id": "text",
+   "started_at": "2026-01-02T03:04:05Z",
+   "state": "text",
+   "stop_reason": "text",
+   "trial": true,
+   "trigger": "text"
+  }
+ },
+ "WebhookEventAutomationRunFailedDataOutputValue": {
+  "kind": "union",
+  "sample": 1.5
+ },
+ "WebhookEventAutomationRunFailedDataProposalItem": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "auto": "approved",
+   "auto_code": "status",
+   "kind": "text",
+   "onec_document_date": "2026-01-02",
+   "onec_document_number": "text",
+   "proposal_id": "text",
+   "status": "text"
+  }
+ },
+ "WebhookEventAutomationRunNotice": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "at": "2026-01-02T03:04:05Z",
+    "attempt": 9007199254740993,
+    "checks_findings": 9007199254740993,
+    "failed_step": 9007199254740993,
+    "proposals": 9007199254740993,
+    "reason": "always",
+    "run_id": "text",
+    "scenario_id": "text",
+    "step": 9007199254740993,
+    "trial": true
+   },
+   "id": "text",
+   "type": "automation.run.notice",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventAutomationRunNoticeData": {
+  "kind": "object",
+  "sample": {
+   "at": "2026-01-02T03:04:05Z",
+   "attempt": 9007199254740993,
+   "checks_findings": 9007199254740993,
+   "failed_step": 9007199254740993,
+   "proposals": 9007199254740993,
+   "reason": "always",
+   "run_id": "text",
+   "scenario_id": "text",
+   "step": 9007199254740993,
+   "trial": true
+  }
+ },
+ "WebhookEventAutomationWriteUnknown": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "amount_tiyn": 9007199254740993,
+    "at": "2026-01-02T03:04:05Z",
+    "proposal_id": "text",
+    "run_id": "text",
+    "scenario_id": "text"
+   },
+   "id": "text",
+   "type": "automation.write_unknown",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventAutomationWriteUnknownData": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "at": "2026-01-02T03:04:05Z",
+   "proposal_id": "text",
+   "run_id": "text",
+   "scenario_id": "text"
+  }
+ },
+ "WebhookEventBankStatementReceived": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "batch_id": "text",
+    "documents": 9007199254740993,
+    "new_documents": 9007199254740993,
+    "proposals_created": 9007199254740993,
+    "received_at": "2026-01-02T03:04:05Z",
+    "source": "upload"
+   },
+   "id": "text",
+   "type": "bank_statement.received",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventBankStatementReceivedData": {
+  "kind": "object",
+  "sample": {
+   "batch_id": "text",
+   "documents": 9007199254740993,
+   "new_documents": 9007199254740993,
+   "proposals_created": 9007199254740993,
+   "received_at": "2026-01-02T03:04:05Z",
+   "source": "upload"
+  }
+ },
+ "WebhookEventBatchCompleted": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "batch_id": "text",
+    "created": 9007199254740993,
+    "duplicates": 9007199254740993,
+    "failed": 9007199254740993,
+    "finished_at": "2026-01-02T03:04:05Z",
+    "kind": "bank_statement",
+    "manual": 9007199254740993,
+    "pending": 9007199254740993,
+    "skipped": 9007199254740993,
+    "stopped": true,
+    "total": 9007199254740993
+   },
+   "id": "text",
+   "type": "batch.completed",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventBatchCompletedData": {
+  "kind": "object",
+  "sample": {
+   "batch_id": "text",
+   "created": 9007199254740993,
+   "duplicates": 9007199254740993,
+   "failed": 9007199254740993,
+   "finished_at": "2026-01-02T03:04:05Z",
+   "kind": "bank_statement",
+   "manual": 9007199254740993,
+   "pending": 9007199254740993,
+   "skipped": 9007199254740993,
+   "stopped": true,
+   "total": 9007199254740993
+  }
+ },
+ "WebhookEventBatchFailed": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "batch_id": "text",
+    "finished_at": "2026-01-02T03:04:05Z",
+    "kind": "bank_statement"
+   },
+   "id": "text",
+   "type": "batch.failed",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventBatchFailedData": {
+  "kind": "object",
+  "sample": {
+   "batch_id": "text",
+   "finished_at": "2026-01-02T03:04:05Z",
+   "kind": "bank_statement"
+  }
+ },
+ "WebhookEventChatTurnCompleted": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "dialog_id": "text",
+    "dialog_url": "text",
+    "key_id": "text",
+    "stop_reason": "text",
+    "turn_no": 9007199254740993,
+    "usage": {
+     "cache_read_tokens": 9007199254740993,
+     "cache_write_tokens": 9007199254740993,
+     "cost_tiyn": 9007199254740993,
+     "input_tokens": 9007199254740993,
+     "output_tokens": 9007199254740993
+    }
+   },
+   "id": "text",
+   "type": "chat.turn.completed",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventChatTurnCompletedData": {
+  "kind": "object",
+  "sample": {
+   "dialog_id": "text",
+   "dialog_url": "text",
+   "key_id": "text",
+   "stop_reason": "text",
+   "turn_no": 9007199254740993,
+   "usage": {
+    "cache_read_tokens": 9007199254740993,
+    "cache_write_tokens": 9007199254740993,
+    "cost_tiyn": 9007199254740993,
+    "input_tokens": 9007199254740993,
+    "output_tokens": 9007199254740993
+   }
+  }
+ },
+ "WebhookEventChatTurnCompletedDataUsage": {
+  "kind": "object",
+  "sample": {
+   "cache_read_tokens": 9007199254740993,
+   "cache_write_tokens": 9007199254740993,
+   "cost_tiyn": 9007199254740993,
+   "input_tokens": 9007199254740993,
+   "output_tokens": 9007199254740993
+  }
+ },
+ "WebhookEventEsfIncomingReceived": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "batch_id": "text",
+    "failed": 9007199254740993,
+    "invoices": 9007199254740993,
+    "proposals_created": 9007199254740993,
+    "received_at": "2026-01-02T03:04:05Z",
+    "skipped": 9007199254740993
+   },
+   "id": "text",
+   "type": "esf.incoming.received",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventEsfIncomingReceivedData": {
+  "kind": "object",
+  "sample": {
+   "batch_id": "text",
+   "failed": 9007199254740993,
+   "invoices": 9007199254740993,
+   "proposals_created": 9007199254740993,
+   "received_at": "2026-01-02T03:04:05Z",
+   "skipped": 9007199254740993
+  }
+ },
+ "WebhookEventOnecConnectionChanged": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "changed_at": "2026-01-02T03:04:05Z",
+    "connector_version": "text",
+    "device_id": "text",
+    "reason": "device_revoked",
+    "state": "connected"
+   },
+   "id": "text",
+   "type": "onec.connection.changed",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventOnecConnectionChangedData": {
+  "kind": "object",
+  "sample": {
+   "changed_at": "2026-01-02T03:04:05Z",
+   "connector_version": "text",
+   "device_id": "text",
+   "reason": "device_revoked",
+   "state": "connected"
+  }
+ },
+ "WebhookEventPaymentFailed": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "amount_tiyn": 9007199254740993,
+    "currency": "text",
+    "invoice_number": "text",
+    "payment_id": "text",
+    "purpose": "text",
+    "vat_tiyn": 9007199254740993
+   },
+   "id": "text",
+   "type": "payment.failed",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventPaymentFailedData": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "currency": "text",
+   "invoice_number": "text",
+   "payment_id": "text",
+   "purpose": "text",
+   "vat_tiyn": 9007199254740993
+  }
+ },
+ "WebhookEventPaymentSucceeded": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "amount_tiyn": 9007199254740993,
+    "currency": "text",
+    "invoice_number": "text",
+    "payment_id": "text",
+    "purpose": "text",
+    "vat_tiyn": 9007199254740993
+   },
+   "id": "text",
+   "type": "payment.succeeded",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventPaymentSucceededData": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "currency": "text",
+   "invoice_number": "text",
+   "payment_id": "text",
+   "purpose": "text",
+   "vat_tiyn": 9007199254740993
+  }
+ },
+ "WebhookEventPing": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "x_undeclared": "kept"
+   },
+   "id": "text",
+   "type": "ping",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventPingData": {
+  "kind": "object",
+  "sample": {
+   "x_undeclared": "kept"
+  }
+ },
+ "WebhookEventPlatformBalanceExhausted": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "balance_tiyn": 9007199254740993,
+    "threshold_tiyn": 9007199254740993
+   },
+   "id": "text",
+   "type": "platform.balance_exhausted",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventPlatformBalanceExhaustedData": {
+  "kind": "object",
+  "sample": {
+   "balance_tiyn": 9007199254740993,
+   "threshold_tiyn": 9007199254740993
+  }
+ },
+ "WebhookEventPlatformBalanceLow": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "balance_tiyn": 9007199254740993,
+    "threshold_tiyn": 9007199254740993
+   },
+   "id": "text",
+   "type": "platform.balance_low",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventPlatformBalanceLowData": {
+  "kind": "object",
+  "sample": {
+   "balance_tiyn": 9007199254740993,
+   "threshold_tiyn": 9007199254740993
+  }
+ },
+ "WebhookEventPlatformCapThresholdReached": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "cap_tiyn": 9007199254740993,
+    "month": "text",
+    "spent_tiyn": 9007199254740993,
+    "threshold_pct": 9007199254740993
+   },
+   "id": "text",
+   "type": "platform.cap_threshold_reached",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventPlatformCapThresholdReachedData": {
+  "kind": "object",
+  "sample": {
+   "cap_tiyn": 9007199254740993,
+   "month": "text",
+   "spent_tiyn": 9007199254740993,
+   "threshold_pct": 9007199254740993
+  }
+ },
+ "WebhookEventProposalAwaitingApproval": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "amount_tiyn": 9007199254740993,
+    "blocked": true,
+    "created_at": "2026-01-02T03:04:05Z",
+    "kind": "text",
+    "proposal_id": "text",
+    "status": "text"
+   },
+   "id": "text",
+   "type": "proposal.awaiting_approval",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventProposalAwaitingApprovalData": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "blocked": true,
+   "created_at": "2026-01-02T03:04:05Z",
+   "kind": "text",
+   "proposal_id": "text",
+   "status": "text"
+  }
+ },
+ "WebhookEventProposalFailed": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "amount_tiyn": 9007199254740993,
+    "kind": "text",
+    "proposal_id": "text",
+    "status": "text"
+   },
+   "id": "text",
+   "type": "proposal.failed",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventProposalFailedData": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "kind": "text",
+   "proposal_id": "text",
+   "status": "text"
+  }
+ },
+ "WebhookEventProposalRejected": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "amount_tiyn": 9007199254740993,
+    "kind": "text",
+    "proposal_id": "text",
+    "status": "text"
+   },
+   "id": "text",
+   "type": "proposal.rejected",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventProposalRejectedData": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "kind": "text",
+   "proposal_id": "text",
+   "status": "text"
+  }
+ },
+ "WebhookEventProposalWritten": {
+  "kind": "object",
+  "sample": {
+   "company_id": "text",
+   "created_at": "2026-01-02T03:04:05Z",
+   "data": {
+    "amount_tiyn": 9007199254740993,
+    "kind": "text",
+    "onec_document_number": "text",
+    "proposal_id": "text",
+    "status": "text"
+   },
+   "id": "text",
+   "type": "proposal.written",
+   "workspace_id": "text"
+  }
+ },
+ "WebhookEventProposalWrittenData": {
+  "kind": "object",
+  "sample": {
+   "amount_tiyn": 9007199254740993,
+   "kind": "text",
+   "onec_document_number": "text",
+   "proposal_id": "text",
+   "status": "text"
+  }
+ },
+ "WebhookEventType": {
+  "kind": "object",
+  "sample": {
+   "description": "text",
+   "example": {
+    "company_id": "text",
+    "created_at": "2026-01-02T03:04:05Z",
+    "data": {
+     "key": {
+      "nested": [
+       "a",
+       1
+      ]
+     }
+    },
+    "id": "text",
+    "type": "text",
+    "workspace_id": "text"
+   },
+   "name": "text",
+   "schema": {
+    "key": {
+     "nested": [
+      "a",
+      1
+     ]
+    }
+   }
+  }
+ },
+ "WebhookMessage": {
+  "kind": "object",
+  "sample": {
+   "created_at": "2026-01-02T03:04:05Z",
+   "event_type": "text",
+   "id": "text",
+   "svix_message_id": "text"
+  }
+ },
+ "WebhookResend": {
+  "kind": "object",
+  "sample": {
+   "endpoint_id": "text"
+  }
+ },
+ "WebhookSecret": {
+  "kind": "object",
+  "sample": {
+   "endpoint_id": "text",
+   "secret": "text"
+  }
+ },
+ "WebhookSecretRotated": {
+  "kind": "object",
+  "sample": {
+   "endpoint_id": "text",
+   "secret": "text",
+   "secret_note": "text"
+  }
+ },
+ "WebhookUsage": {
+  "kind": "object",
+  "sample": {
+   "month": "text",
+   "monthly_free_messages": 9007199254740993,
+   "over_limit": 9007199254740993,
+   "sent": 9007199254740993
+  }
+ },
+ "WorkspacePlan": {
+  "kind": "object",
+  "sample": {
+   "code": "text",
+   "is_free": true,
+   "name": "text"
+  }
+ }
+}
