@@ -17,7 +17,9 @@ final class RequestOptions
      * @param float|null            $timeout        seconds for the whole request including the body (not used by streams)
      * @param int|null              $maxRetries     overrides the client's maximum number of retries
      * @param array<string, string> $headers        extra request headers; they override the client's default headers
-     * @param string|null           $idempotencyKey value of the Idempotency-Key header; makes a POST or PATCH safe to retry
+     * @param string|null           $idempotencyKey value of the Idempotency-Key header of an operation that declares it
+     *                                              (generated when null); other operations send no key, not even this one,
+     *                                              and a POST or PATCH among them is never retried
      * @param Cancellation|null     $cancellation   cancels the request, the retry delay or the stream
      * @param float|null            $idleTimeout    streams only: seconds without any byte before TimeoutError
      */

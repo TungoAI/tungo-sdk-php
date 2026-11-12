@@ -97,19 +97,21 @@ final class RetryTest extends TestCase
         }
     }
 
-    public function testAPostWithACallerKeyIsRetriedWithTheSameKeyAndBody(): void
+    public function testACallerKeyDoesNotMakeAnUndeclaredPostRetryable(): void
     {
+        // count-tokens declares no Idempotency-Key: the API ignores a key there, so it is not sent
+        // and a lost answer is not followed by a second, billed request.
         $this->enqueue(['status' => 500, 'body' => self::errorBody('api_error')], ['status' => 200, 'json' => self::sample('chat.count_tokens')]);
-        $this->client()->chat->countTokens(
-            ChatTokenCountRequest::fromArray(self::sampleRequest('chat.count_tokens')),
-            options: new RequestOptions(idempotencyKey: 'key-123'),
-        );
-        $requests = $this->requests();
-        self::assertCount(2, $requests);
-        self::assertSame('key-123', $requests[0]['headers']['idempotency-key'] ?? null);
-        self::assertSame('key-123', $requests[1]['headers']['idempotency-key'] ?? null);
-        self::assertSame($requests[0]['body'], $requests[1]['body']);
-        self::assertNotSame('', $requests[1]['body']);
+        try {
+            $this->client()->chat->countTokens(
+                ChatTokenCountRequest::fromArray(self::sampleRequest('chat.count_tokens')),
+                options: new RequestOptions(headers: ['Idempotency-Key' => 'key-456'], idempotencyKey: 'key-123'),
+            );
+            self::fail('must raise');
+        } catch (ServerError) {
+            $request = $this->onlyRequest();
+            self::assertArrayNotHasKey('idempotency-key', $request['headers']);
+        }
     }
 
     public function testAnOperationThatDeclaresIdempotencyGetsOneKeyForAllAttempts(): void

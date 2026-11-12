@@ -257,8 +257,7 @@ final class Engine
         $cancellation = $options->cancellation;
         $maxRetries = max(0, $options->maxRetries ?? $this->maxRetries);
         $request = $this->build($operation, $options, $stream);
-        $idempotencyHeader = $operation->idempotencyHeader ?? 'Idempotency-Key';
-        $hasKey = $request->hasHeader($idempotencyHeader);
+        $hasKey = $operation->idempotencyHeader !== null && $request->hasHeader($operation->idempotencyHeader);
         $timeout = $options->timeout ?? $this->timeout
             ?? ($operation->longRunning ? self::LONG_RUNNING_TIMEOUT : self::DEFAULT_TIMEOUT);
         if ($timeout <= 0) {
@@ -348,11 +347,18 @@ final class Engine
                 $operation->idempotencyHeader,
                 $options->idempotencyKey ?? ($default !== null && $default !== '' ? $default : Uuid::v4()),
             );
-        } elseif ($options->idempotencyKey !== null) {
-            $headers = self::set($headers, 'Idempotency-Key', $options->idempotencyKey);
         }
         foreach ($options->headers as $name => $value) {
             $headers = self::set($headers, $name, $value);
+        }
+        if ($operation->idempotencyHeader === null) {
+            // The API ignores a key on an operation that declares none: sending one would make a
+            // retry look safe when it repeats the action.
+            foreach (array_keys($headers) as $name) {
+                if (strcasecmp($name, 'Idempotency-Key') === 0) {
+                    unset($headers[$name]);
+                }
+            }
         }
         if ($operation->auth === 'key') {
             if ($this->apiKey === null) {
