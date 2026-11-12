@@ -27,6 +27,7 @@ use Tungo\Sdk\Internal\Retry;
 use Tungo\Sdk\Internal\Unions;
 use Tungo\Sdk\Internal\Url;
 use Tungo\Sdk\Model\ChatEventUnknown;
+use Tungo\Sdk\Model\ChatMessageRequest;
 use Tungo\Sdk\Streaming\ChatStream;
 use Tungo\Sdk\Streaming\SseParser;
 use Tungo\Sdk\Tests\Support\TestCase;
@@ -41,7 +42,7 @@ final class ConformanceTest extends TestCase
 {
     private const SECTIONS = [
         'webhook_verification', 'hook_signature', 'money', 'bin_iin', 'errors', 'retry_after',
-        'backoff', 'retry_policy', 'path_segment', 'query', 'sse', 'chat_stream',
+        'backoff', 'retry_policy', 'path_segment', 'query', 'sse', 'chat_stream', 'chat_stream_replay',
     ];
 
     private const ERROR_CLASSES = [
@@ -404,8 +405,50 @@ final class ConformanceTest extends TestCase
             new Response($case['status'], $headers, self::text($case['raw'])),
             Engine::eventDecoder(Unions::chatEvent(...), 'ChatEvent'),
         );
+        self::checkChatStream($expect, $open, str_contains(self::text($case['raw']), 'event: done'));
+    }
 
-        if ($expect['error'] === null && !str_contains(self::text($case['raw']), 'event: done')) {
+    /**
+     * A stream call repeated with the same Idempotency-Key after its turn
+     * finished is answered with the stored ChatTurnResult as JSON: the
+     * stream must yield the events of that turn, not a DecodeError.
+     *
+     * @param array<string, mixed> $case
+     */
+    #[DataProvider('chatStreamReplayCases')]
+    public function testChatStreamReplay(array $case): void
+    {
+        $expect = self::arr($case['expect']);
+        self::assertIsInt($case['status']);
+        $headers = [];
+        foreach (self::arr($case['headers']) as $name => $value) {
+            $headers[(string) $name] = self::text($value);
+        }
+        $spec = ['status' => $case['status'], 'headers' => $headers, 'body' => self::json($case['body'])];
+        if (($expect['decode_error'] ?? false) === true) {
+            $this->enqueue($spec);
+            try {
+                $this->client()->chat->createStream(new ChatMessageRequest(message: 'q'));
+                self::fail('a JSON answer that is not a replay is not a stream');
+            } catch (DecodeError $e) {
+                self::assertSame($case['status'], $e->status);
+            }
+
+            return;
+        }
+        $this->enqueue($spec, $spec, $spec);
+        $client = $this->client();
+        $open = static fn (): ChatStream => $client->chat->createStream(new ChatMessageRequest(message: 'q'));
+        self::checkChatStream($expect, $open, true);
+    }
+
+    /**
+     * @param array<string, mixed>   $expect
+     * @param \Closure(): ChatStream $open
+     */
+    private static function checkChatStream(array $expect, \Closure $open, bool $finished): void
+    {
+        if ($expect['error'] === null && !$finished) {
             // The turn never finished: its events are delivered, but accumulate() refuses to
             // present the partial text as an answer.
             self::assertIsInt($expect['event_count']);
@@ -564,6 +607,12 @@ final class ConformanceTest extends TestCase
     public static function chatStreamCases(): \Generator
     {
         yield from self::cases('chat_stream', null);
+    }
+
+    /** @return \Generator<string, array{0: array<string, mixed>}> */
+    public static function chatStreamReplayCases(): \Generator
+    {
+        yield from self::cases('chat_stream_replay', null);
     }
 
     /**

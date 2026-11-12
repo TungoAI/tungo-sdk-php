@@ -148,6 +148,29 @@ final class Engine
         if ($type === 'text/event-stream') {
             return $response;
         }
+        if ($type === 'application/json' && strtolower(trim($response->getHeaderLine('Idempotent-Replayed'))) === 'true') {
+            // A chat turn repeated with the same Idempotency-Key after it finished: the server
+            // answers the stored ChatTurnResult instead of a stream. The caller gets its events.
+            $body = self::read($response);
+            $replay = $this->replayAsEventStream($response, $body);
+            if ($replay !== null) {
+                return $replay;
+            }
+            $headers = Headers::fromMessage($response);
+            $requestId = Headers::first($headers, 'x-request-id');
+
+            throw new DecodeError(
+                sprintf(
+                    'The API replayed HTTP %d to a stream request with a body that is not a chat turn result%s',
+                    $response->getStatusCode(),
+                    $requestId !== null ? ' (request id ' . $requestId . ')' : '',
+                ),
+                $response->getStatusCode(),
+                $headers,
+                $body,
+                $requestId,
+            );
+        }
         // A 2xx answer that is not an event stream must not look like a stream without events.
         $status = $response->getStatusCode();
         $headers = Headers::fromMessage($response);
@@ -170,6 +193,85 @@ final class Engine
             $body,
             $requestId,
         );
+    }
+
+    /**
+     * Turns a replayed ChatTurnResult into the event stream of the turn it
+     * stands for: text (the answer), proposal, question, citation, error and
+     * choice events, then done. The dialog id and the turn number, which a
+     * replay carries only in the body, become the X-Dialog-Id and X-Turn-No
+     * headers when they are missing. Null when the body is not a chat turn
+     * result.
+     */
+    private function replayAsEventStream(ResponseInterface $response, string $body): ?ResponseInterface
+    {
+        try {
+            $result = Json::decode($body);
+        } catch (\JsonException) {
+            return null;
+        }
+        if (!is_array($result) || !is_string($result['dialog_id'] ?? null)) {
+            return null;
+        }
+        if ($response->getHeaderLine('X-Dialog-Id') === '') {
+            $response = $response->withHeader('X-Dialog-Id', $result['dialog_id']);
+        }
+        $turnNo = $result['turn_no'] ?? null;
+        if (is_int($turnNo) && $response->getHeaderLine('X-Turn-No') === '') {
+            $response = $response->withHeader('X-Turn-No', (string) $turnNo);
+        }
+        $entries = static function (string $key) use ($result): array {
+            $items = $result[$key] ?? null;
+
+            return is_array($items) ? array_values(array_filter($items, 'is_array')) : [];
+        };
+        $out = '';
+        $emit = static function (string $type, array $event) use (&$out): void {
+            $event['type'] = $type;
+            $out .= 'event: ' . $type . "\ndata: " . Json::encode($event) . "\n\n";
+        };
+        $answer = is_string($result['answer'] ?? null) ? $result['answer'] : '';
+        if ($answer !== '') {
+            $emit('text', ['delta' => $answer]);
+        }
+        foreach ($entries('proposals') as $proposal) {
+            $id = $proposal['id'] ?? null;
+            unset($proposal['id']);
+            $proposal['proposal_id'] = $id;
+            $emit('proposal', $proposal);
+        }
+        foreach ($entries('questions') as $question) {
+            $emit('question', $question);
+        }
+        foreach ($entries('citations') as $citation) {
+            $emit('citation', $citation);
+        }
+        $requestId = $response->getHeaderLine('x-request-id');
+        foreach ($entries('errors') as $error) {
+            $emit('error', ['error' => $error, 'request_id' => $requestId === '' ? null : $requestId]);
+        }
+        $done = ['answer' => $answer];
+        if (is_string($result['stop_reason'] ?? null)) {
+            $done['stop_reason'] = $result['stop_reason'];
+        }
+        $usage = $result['usage'] ?? null;
+        if (is_array($usage)) {
+            if (array_key_exists('cost_tiyn', $usage)) {
+                $done['cost_tiyn'] = $usage['cost_tiyn'];
+                unset($usage['cost_tiyn']);
+            }
+            $done['usage'] = $usage === [] ? new \stdClass() : $usage;
+        }
+        $pending = $result['pending_question'] ?? null;
+        if (is_array($pending)) {
+            $emit('choice', $pending);
+            if (array_key_exists('choice_id', $pending)) {
+                $done['choice_id'] = $pending['choice_id'];
+            }
+        }
+        $emit('done', $done);
+
+        return $response->withBody($this->streamFactory->createStream($out));
     }
 
     /** The idle timeout of a stream call. */
