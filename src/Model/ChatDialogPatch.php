@@ -15,7 +15,7 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class ChatDialogPatch implements \JsonSerializable
 {
     /**
-     * @param string $title Новое название, до 64 символов; пустая строка — вернуть заголовок по первому вопросу
+     * @param string $title Новое название, до 64 символов; пустая строка — вернуть автоматическое название (от ИИ, а пока его нет — первый вопрос)
      */
     public function __construct(
         public string $title,

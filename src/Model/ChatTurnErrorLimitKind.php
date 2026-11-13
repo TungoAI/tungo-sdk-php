@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Model;
 
 /**
- * Только у code = budget: day — дневной лимит, dialog — лимит разговора
+ * Только у code = budget — почему ход остановлен: - `day` — дневной лимит человека исчерпан — продолжить завтра (по Алматы) или поднять лимит - `dialog` — лимит разговора исчерпан — начать новый разговор - `turn` — потолок…
  *
  * The API may add values: a property of this type holds the raw value when it
  * is not one of the cases below.
@@ -16,4 +16,8 @@ enum ChatTurnErrorLimitKind: string
 {
     case Day = 'day';
     case Dialog = 'dialog';
+    case Turn = 'turn';
+    case Plan = 'plan';
+    case Disabled = 'disabled';
+    case Meter = 'meter';
 }

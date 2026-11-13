@@ -54,6 +54,7 @@
   "responses": [
    {
     "json": {
+     "approval_requested_count": 9007199254740993,
      "counts": {
       "key": 1.5
      },
@@ -63,6 +64,15 @@
         "allowed": true,
         "blocked_by_blockers": true,
         "requires_right": "proposals.approve"
+       },
+       "approval_request": {
+        "can_request": true,
+        "href": "text",
+        "requested": {
+         "at": "2026-01-02T03:04:05Z",
+         "by": "text",
+         "by_name": "text"
+        }
        },
        "blocker_count": 9007199254740993,
        "created_at": "2026-01-02T03:04:05Z",
@@ -74,7 +84,17 @@
        "level": "L0",
        "level_title": "text",
        "line_count": 9007199254740993,
+       "origin": {
+        "batch_id": "text",
+        "dialog_id": "text",
+        "run_id": "text",
+        "source": "chat"
+       },
        "status": "previewed",
+       "status_reason": {
+        "code": "text",
+        "message": "text"
+       },
        "status_title": "text",
        "title": "text",
        "total": {
@@ -97,6 +117,7 @@
    },
    {
     "json": {
+     "approval_requested_count": 9007199254740993,
      "counts": {
       "key": 1.5
      },
@@ -106,6 +127,15 @@
         "allowed": true,
         "blocked_by_blockers": true,
         "requires_right": "proposals.approve"
+       },
+       "approval_request": {
+        "can_request": true,
+        "href": "text",
+        "requested": {
+         "at": "2026-01-02T03:04:05Z",
+         "by": "text",
+         "by_name": "text"
+        }
        },
        "blocker_count": 9007199254740993,
        "created_at": "2026-01-02T03:04:05Z",
@@ -117,7 +147,17 @@
        "level": "L0",
        "level_title": "text",
        "line_count": 9007199254740993,
+       "origin": {
+        "batch_id": "text",
+        "dialog_id": "text",
+        "run_id": "text",
+        "source": "chat"
+       },
        "status": "previewed",
+       "status_reason": {
+        "code": "text",
+        "message": "text"
+       },
        "status_title": "text",
        "title": "text",
        "total": {
@@ -153,10 +193,21 @@
      ],
      "dialog_id": "text",
      "errors": [],
+     "followups": [
+      "text"
+     ],
+     "next_action": {
+      "code": "prepare_document",
+      "params": {
+       "key": "text"
+      },
+      "prompt": "text"
+     },
      "pending_question": {
       "choice_id": "text",
       "questions": [
        {
+        "confirm": true,
         "header": "text",
         "multi_select": true,
         "options": [
@@ -194,6 +245,15 @@
          "allowed": true,
          "blocked_by_blockers": true,
          "requires_right": "proposals.approve"
+        },
+        "approval_request": {
+         "can_request": true,
+         "href": "text",
+         "requested": {
+          "at": "2026-01-02T03:04:05Z",
+          "by": "text",
+          "by_name": "text"
+         }
         },
         "blocker_count": 9007199254740993,
         "blockers": [
@@ -292,6 +352,12 @@
           "vat_rate_title": "text"
          }
         ],
+        "origin": {
+         "batch_id": "text",
+         "dialog_id": "text",
+         "run_id": "text",
+         "source": "chat"
+        },
         "postings": [
          {
           "amount": {
@@ -309,6 +375,10 @@
          "channel": "mcp"
         },
         "status": "previewed",
+        "status_reason": {
+         "code": "text",
+         "message": "text"
+        },
         "status_title": "text",
         "summary": "text",
         "title": "text",

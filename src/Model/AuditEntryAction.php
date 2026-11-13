@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Model;
 
 /**
- * Что сделано — машинное имя вида «объект.действие»; подпись по-русски — в action_title. Значения: - `company.created` — Компания заведена - `company.updated` — Карточка компании изменена - `company.archived` — Компания уб…
+ * Код действия вида «объект.действие». Текст для человека собирайте сами на его языке: по этому коду и параметрам из data (ниже — что значит каждый код). Значения: - `company.created` — Компания заведена - `company.updated…
  *
  * The API may add values: a property of this type holds the raw value when it
  * is not one of the cases below.
@@ -30,12 +30,14 @@ enum AuditEntryAction: string
     case CompanyOnecConnectorCodeCreated = 'company.onec_connector_code_created';
     case CompanyOnecConnectorPaired = 'company.onec_connector_paired';
     case CompanyOnecConnectorRotated = 'company.onec_connector_rotated';
+    case CompanyOnecConnectorRotateRefused = 'company.onec_connector_rotate_refused';
     case CompanyOnecConnectorRevoked = 'company.onec_connector_revoked';
     case CompanyOnecConnectorLinkApproved = 'company.onec_connector_link_approved';
     case ConnectorLinkCreated = 'connector.link_created';
     case ConnectorLinkDenied = 'connector.link_denied';
     case CompanyOnecLinkApproved = 'company.onec_link_approved';
     case CompanyOnecLinkRevoked = 'company.onec_link_revoked';
+    case OnecLinkWrongMatch = 'onec_link.wrong_match';
     case CompanyProfileRebuild = 'company.profile_rebuild';
     case WorkspaceMemberJoined = 'workspace.member_joined';
     case WorkspaceMemberRoleChanged = 'workspace.member_role_changed';
@@ -57,6 +59,8 @@ enum AuditEntryAction: string
     case WorkspaceOwnershipTransferred = 'workspace.ownership_transferred';
     case WorkspaceDeleted = 'workspace.deleted';
     case WorkspaceCreated = 'workspace.created';
+    case TeamCheckoutAbandoned = 'team.checkout_abandoned';
+    case EnterpriseRequestCreated = 'enterprise.request_created';
     case WorkspaceConvertedToTeam = 'workspace.converted_to_team';
     case WorkspaceDeletionScheduled = 'workspace.deletion_scheduled';
     case WorkspaceDeletionCancelled = 'workspace.deletion_cancelled';
@@ -102,6 +106,7 @@ enum AuditEntryAction: string
     case BillingProfileUpdated = 'billing.profile.updated';
     case BillingPaymentMethodDisabled = 'billing.payment_method.disabled';
     case BillingRefundSucceeded = 'billing.refund.succeeded';
+    case BillingManualCharge = 'billing.manual_charge';
     case SubscriptionCreated = 'subscription.created';
     case SubscriptionChanged = 'subscription.changed';
     case SubscriptionCancelScheduled = 'subscription.cancel_scheduled';
@@ -127,13 +132,49 @@ enum AuditEntryAction: string
     case AccountDeletionScheduled = 'account.deletion_scheduled';
     case AccountDeletionCancelled = 'account.deletion_cancelled';
     case AccountDeleted = 'account.deleted';
+    case AccountEmailCodeSent = 'account.email_code_sent';
+    case AccountEmailBound = 'account.email_bound';
+    case AccountTelegramMerged = 'account.telegram_merged';
+    case AccountGoogleLinked = 'account.google_linked';
+    case AccountTelegramMergeRefused = 'account.telegram_merge_refused';
+    case AdminAdsConversionsReleased = 'admin.ads.conversions_released';
+    case AdminAdsConversionsRejected = 'admin.ads.conversions_rejected';
+    case AdminAdsSignupsExported = 'admin.ads.signups_exported';
+    case AdminAccessSignedIn = 'admin.access.signed_in';
+    case AdminAccessRefused = 'admin.access.refused';
+    case AdminTwoFactorVerified = 'admin.two_factor.verified';
+    case AdminTwoFactorEnableRequested = 'admin.two_factor.enable_requested';
+    case AdminTwoFactorEnabled = 'admin.two_factor.enabled';
+    case AdminTwoFactorDisabled = 'admin.two_factor.disabled';
+    case AdminSessionSignedIn = 'admin.session.signed_in';
+    case AdminUserBanned = 'admin.user.banned';
+    case AdminUserUnbanned = 'admin.user.unbanned';
     case AdminWorkspaceBlocked = 'admin.workspace.blocked';
     case AdminWorkspaceUnblocked = 'admin.workspace.unblocked';
     case AdminWorkspaceTrainingConsent = 'admin.workspace.training_consent';
     case AdminUserPlatformRolesChanged = 'admin.user.platform_roles_changed';
     case AdminUserFreeEligibilityChanged = 'admin.user.free_eligibility_changed';
+    case AdminUserLimitResetsGranted = 'admin.user.limit_resets_granted';
+    case AdminUserLimitResetsRevoked = 'admin.user.limit_resets_revoked';
+    case UsageLimitResetApplied = 'usage.limit_reset_applied';
+    case ReferralClaimed = 'referral.claimed';
+    case ReferralRewarded = 'referral.rewarded';
+    case AdminEnterpriseRequestStatusChanged = 'admin.enterprise_request.status_changed';
     case AdminTrainingExported = 'admin.training.exported';
+    case AdminSettingChanged = 'admin.setting.changed';
+    case AdminLogsPurged = 'admin.logs.purged';
     case AdminDialogPdViewed = 'admin.dialog.pd_viewed';
+    case AdminDialogLabelSet = 'admin.dialog.label_set';
+    case AdminDialogLabelRemoved = 'admin.dialog.label_removed';
+    case AdminJournalPdViewed = 'admin.journal.pd_viewed';
+    case AdminCompanyPdViewed = 'admin.company.pd_viewed';
+    case AdminCompanyPdSearched = 'admin.company.pd_searched';
+    case AdminPaymentPdViewed = 'admin.payment.pd_viewed';
+    case SitePostPublished = 'site.post_published';
+    case SitePostUnpublished = 'site.post_unpublished';
+    case SitePostDeleted = 'site.post_deleted';
+    case SiteLegalPublished = 'site.legal_published';
+    case SiteTrackersSaved = 'site.trackers_saved';
     case CanaryTriggered = 'canary.triggered';
     case BillingPaymentNew = 'billing.payment.new';
     case BillingPaymentPending = 'billing.payment.pending';

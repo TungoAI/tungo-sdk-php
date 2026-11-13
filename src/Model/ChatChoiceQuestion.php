@@ -10,17 +10,19 @@ use Tungo\Sdk\Internal\Json;
 use Tungo\Sdk\Internal\Wire;
 
 /**
- * Уточняющий вопрос ИИ с вариантами. Вариант «свой ответ» есть всегда и в options не входит
+ * Вопрос с вариантами: уточняющий вопрос ИИ или подтверждение действия (confirm). Вариант «свой ответ» есть всегда и в options не входит
  */
 final readonly class ChatChoiceQuestion implements \JsonSerializable
 {
     /**
+     * @param bool $confirm true — это не уточнение, а подтверждение действия: вопрос задала программа, действие выполнится только по кнопке согласия (первый вариант). Пропуск, свой текст и закрытие — отказ: кнопку «Пропустить» не показывать. false…
      * @param string $header Короткая подпись вопроса, до ~12 символов (для вкладки или чипа)
      * @param bool $multiSelect true — можно выбрать несколько вариантов (чекбоксы); false — один (радиокнопки)
      * @param list<ChatChoiceOption> $options Варианты. «Свой ответ» есть всегда и сюда не входит — показать поле ввода отдельно
      * @param string $question Вопрос целиком
      */
     public function __construct(
+        public bool $confirm,
         public string $header,
         public bool $multiSelect,
         public array $options,
@@ -46,6 +48,7 @@ final readonly class ChatChoiceQuestion implements \JsonSerializable
         $data = Wire::asObject($value, $path);
 
         return new self(
+            confirm: Wire::req($data, 'confirm', $path, Wire::asBool(...)),
             header: Wire::req($data, 'header', $path, Wire::asString(...)),
             multiSelect: Wire::req($data, 'multi_select', $path, Wire::asBool(...)),
             options: Wire::req($data, 'options', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatChoiceOption::fromValue(...))),
@@ -69,6 +72,7 @@ final readonly class ChatChoiceQuestion implements \JsonSerializable
     public function jsonSerialize(): \stdClass
     {
         $o = [];
+        $o['confirm'] = $this->confirm;
         $o['header'] = $this->header;
         $o['multi_select'] = $this->multiSelect;
         $o['options'] = Wire::list($this->options);

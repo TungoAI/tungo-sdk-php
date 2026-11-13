@@ -19,7 +19,7 @@ final readonly class CompanyListItem implements \JsonSerializable
      * @param CompanyCounts $counts
      * @param string $createdAt Когда компанию завели. ISO 8601 в UTC (…Z); показывать по времени Казахстана — Asia/Almaty (UTC+5), а не по поясу браузера
      * @param string $id Компания — её id во всех адресах /v1/companies/{co}/… (co_…)
-     * @param CompanyLegalForm|string $legalForm
+     * @param CompanyLegalForm|string|null $legalForm
      * @param string $name Название компании, как его ввели при заведении
      * @param list<CompanyPermission|string> $permissions Ваши права в этой компании — по ним кабинет прячет или гасит кнопки (нет proposals.approve — нет «Одобрить»). По ключу API — права, суженные до прав ключа. Порядок — как в каталоге прав
      * @param string $role Ваша роль в компании (ключ роли: owner, chief_accountant, accountant, viewer…). Пустая строка — вы не участник компании, а владелец/админ организации, который её правил или архивировал
@@ -32,7 +32,7 @@ final readonly class CompanyListItem implements \JsonSerializable
         public CompanyCounts $counts,
         public string $createdAt,
         public string $id,
-        public CompanyLegalForm|string $legalForm,
+        public CompanyLegalForm|string|null $legalForm,
         public string $name,
         public array $permissions,
         public string $role,
@@ -64,7 +64,7 @@ final readonly class CompanyListItem implements \JsonSerializable
             counts: Wire::req($data, 'counts', $path, CompanyCounts::fromValue(...)),
             createdAt: Wire::req($data, 'created_at', $path, Wire::asString(...)),
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
-            legalForm: Wire::req($data, 'legal_form', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, CompanyLegalForm::class)),
+            legalForm: Wire::opt($data, 'legal_form', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, CompanyLegalForm::class)),
             name: Wire::req($data, 'name', $path, Wire::asString(...)),
             permissions: Wire::req($data, 'permissions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, CompanyPermission::class))),
             role: Wire::req($data, 'role', $path, Wire::asString(...)),

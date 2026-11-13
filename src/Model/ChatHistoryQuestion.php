@@ -10,17 +10,19 @@ use Tungo\Sdk\Internal\Json;
 use Tungo\Sdk\Internal\Wire;
 
 /**
- * Вопрос ИИ к человеку
+ * Вопрос ИИ к человеку. Уточнение, которое ещё ждёт ответа, сюда не попадает — оно приходит только полем awaiting разговора, чтобы экран не показал его дважды
  */
 final readonly class ChatHistoryQuestion implements ChatHistoryBlock
 {
     /**
      * @param string $text Вопрос
+     * @param ChatHistoryQuestionAnswer|null $answer
      * @param string $kind Вопрос ИИ
      * @param string|null $proposalId Номер предложения, к которому вопрос
      */
     public function __construct(
         public string $text,
+        public ?ChatHistoryQuestionAnswer $answer = null,
         public string $kind = 'question',
         public ?string $proposalId = null,
     ) {
@@ -44,6 +46,7 @@ final readonly class ChatHistoryQuestion implements ChatHistoryBlock
         $data = Wire::asObject($value, $path);
 
         return new self(
+            answer: Wire::opt($data, 'answer', $path, ChatHistoryQuestionAnswer::fromValue(...)),
             kind: Wire::req($data, 'kind', $path, Wire::asString(...)),
             proposalId: Wire::opt($data, 'proposal_id', $path, Wire::asString(...)),
             text: Wire::req($data, 'text', $path, Wire::asString(...)),
@@ -66,6 +69,9 @@ final readonly class ChatHistoryQuestion implements ChatHistoryBlock
     public function jsonSerialize(): \stdClass
     {
         $o = [];
+        if ($this->answer !== null) {
+            $o['answer'] = $this->answer;
+        }
         $o['kind'] = $this->kind;
         if ($this->proposalId !== null) {
             $o['proposal_id'] = $this->proposalId;

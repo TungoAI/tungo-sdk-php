@@ -18,11 +18,13 @@ final readonly class CardSession implements \JsonSerializable
      * @param string $paymentId Служебный платёж проверки карты на 0 USD (в список платежей не попадает) (pay_…)
      * @param array<string, mixed> $paymentObject Готовый объект для формы ePay: передать без изменений в halyk.pay(payment_object). Поля — формата ePay (camelCase), содержимое не разбирать. Внутри — одноразовый токен только на этот заказ
      * @param string $scriptUrl Адрес скрипта платёжной формы ePay: подключить его на странице (тег script) перед открытием формы
+     * @param bool $testMode true — тестовый терминал ePay: настоящие деньги не списываются, платят тестовыми картами. Показать на форме пометку «тестовая оплата»
      */
     public function __construct(
         public string $paymentId,
         public array $paymentObject,
         public string $scriptUrl,
+        public bool $testMode,
     ) {
     }
 
@@ -47,6 +49,7 @@ final readonly class CardSession implements \JsonSerializable
             paymentId: Wire::req($data, 'payment_id', $path, Wire::asString(...)),
             paymentObject: Wire::req($data, 'payment_object', $path, static fn (mixed $v, string $p) => Wire::asMap($v, $p, Wire::asMixed(...))),
             scriptUrl: Wire::req($data, 'script_url', $path, Wire::asString(...)),
+            testMode: Wire::req($data, 'test_mode', $path, Wire::asBool(...)),
         );
     }
 
@@ -69,6 +72,7 @@ final readonly class CardSession implements \JsonSerializable
         $o['payment_id'] = $this->paymentId;
         $o['payment_object'] = Wire::map($this->paymentObject);
         $o['script_url'] = $this->scriptUrl;
+        $o['test_mode'] = $this->testMode;
 
         return (object) $o;
     }

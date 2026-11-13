@@ -16,9 +16,10 @@ final readonly class ProposalListItem implements \JsonSerializable
 {
     /**
      * @param ProposalApproval $approval
+     * @param ProposalApprovalRequest $approvalRequest
      * @param int $blockerCount Сколько блокеров: больше 0 — одобрить нельзя, нужен ответ человека в чате
      * @param string $createdAt Когда ИИ подготовил предложение, ISO 8601 UTC
-     * @param string|null $dialogId Разговор чата, в котором ИИ подготовил предложение: «Открыть разговор» — GET …/chat/{dialog_id} (если он ваш). null — не из чата (пачка, автоматизация, MCP)
+     * @param string|null $dialogId Разговор чата, в котором ИИ подготовил предложение: «Открыть разговор» — GET …/chat/{dialog_id} (если он ваш). null — не из разговора человека (пачка из ручки, автоматизация, MCP)
      * @param string $href Адрес карточки в API: GET по нему отдаёт ProposalCard
      * @param string $id Номер предложения внутри компании (P-000123): по нему открывают карточку GET …/proposals/{id} и одобряют POST …/proposals/{id}/approve
      * @param ProposalKind|string $kind
@@ -26,7 +27,9 @@ final readonly class ProposalListItem implements \JsonSerializable
      * @param AutonomyLevel|string $level
      * @param string $levelTitle Уровень самостоятельности по-русски для показа
      * @param int $lineCount Сколько строк товаров и услуг в документе; 0 у платёжек и справочников
+     * @param ProposalOrigin $origin
      * @param ProposalStatus|string $status
+     * @param ProposalListItemStatusReason|null $statusReason Причина отказа — у статусов rejected (отклонено) и failed (записать не удалось): последняя такая запись history. null — статус другой или причину не записали
      * @param string $statusTitle Статус по-русски для показа (бейдж)
      * @param string $title Заголовок строки очереди: вид документа, дата и контрагент
      * @param Money $total
@@ -37,6 +40,7 @@ final readonly class ProposalListItem implements \JsonSerializable
      */
     public function __construct(
         public ProposalApproval $approval,
+        public ProposalApprovalRequest $approvalRequest,
         public int $blockerCount,
         public string $createdAt,
         public ?string $dialogId,
@@ -47,7 +51,9 @@ final readonly class ProposalListItem implements \JsonSerializable
         public AutonomyLevel|string $level,
         public string $levelTitle,
         public int $lineCount,
+        public ProposalOrigin $origin,
         public ProposalStatus|string $status,
+        public ?ProposalListItemStatusReason $statusReason,
         public string $statusTitle,
         public string $title,
         public Money $total,
@@ -77,6 +83,7 @@ final readonly class ProposalListItem implements \JsonSerializable
 
         return new self(
             approval: Wire::req($data, 'approval', $path, ProposalApproval::fromValue(...)),
+            approvalRequest: Wire::req($data, 'approval_request', $path, ProposalApprovalRequest::fromValue(...)),
             blockerCount: Wire::req($data, 'blocker_count', $path, Wire::asInt(...)),
             counterparty: Wire::opt($data, 'counterparty', $path, ProposalParty::fromValue(...)),
             createdAt: Wire::req($data, 'created_at', $path, Wire::asString(...)),
@@ -89,7 +96,9 @@ final readonly class ProposalListItem implements \JsonSerializable
             level: Wire::req($data, 'level', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, AutonomyLevel::class)),
             levelTitle: Wire::req($data, 'level_title', $path, Wire::asString(...)),
             lineCount: Wire::req($data, 'line_count', $path, Wire::asInt(...)),
+            origin: Wire::req($data, 'origin', $path, ProposalOrigin::fromValue(...)),
             status: Wire::req($data, 'status', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ProposalStatus::class)),
+            statusReason: Wire::opt($data, 'status_reason', $path, ProposalListItemStatusReason::fromValue(...)),
             statusTitle: Wire::req($data, 'status_title', $path, Wire::asString(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
             total: Wire::req($data, 'total', $path, Money::fromValue(...)),
@@ -115,6 +124,7 @@ final readonly class ProposalListItem implements \JsonSerializable
     {
         $o = [];
         $o['approval'] = $this->approval;
+        $o['approval_request'] = $this->approvalRequest;
         $o['blocker_count'] = $this->blockerCount;
         if ($this->counterparty !== null) {
             $o['counterparty'] = $this->counterparty;
@@ -131,7 +141,9 @@ final readonly class ProposalListItem implements \JsonSerializable
         $o['level'] = $this->level;
         $o['level_title'] = $this->levelTitle;
         $o['line_count'] = $this->lineCount;
+        $o['origin'] = $this->origin;
         $o['status'] = $this->status;
+        $o['status_reason'] = $this->statusReason;
         $o['status_title'] = $this->statusTitle;
         $o['title'] = $this->title;
         $o['total'] = $this->total;

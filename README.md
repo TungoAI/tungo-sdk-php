@@ -369,7 +369,7 @@ The wait helpers poll with a pause that grows from 1 s to 5 s and raise `Tungo\S
 
 ## API reference
 
-Generated from the Tungo Platform API contract: **13 resources, 82 methods, 22 webhook event types**.
+Generated from the Tungo Platform API contract: **13 resources, 85 methods, 22 webhook event types**.
 
 | Resource | Description | Methods |
 | --- | --- | --- |
@@ -378,8 +378,8 @@ Generated from the Tungo Platform API contract: **13 resources, 82 methods, 22 w
 | `$client->platform` | Platform balance, ledger, usage reports, limits, audit log and model rates | `listUsageRates` · `getAccount` · `getAudit / getAuditAll` · `getLedger / getLedgerAll` · `listLimits` · `listRequests / listRequestsAll` · `getUsage` |
 | `$client->apiKeys` | The current API key and its usage statistics | `getCurrent` · `getCurrentUsage` · `getUsage` |
 | `$client->webhooks` | Outgoing webhooks of an organisation (Svix): endpoints, event catalogue, deliveries and signature check | `listEndpoints / listEndpointsAll` · `createEndpoint` · `getEndpoint` · `updateEndpoint` · `deleteEndpoint` · `listEndpointAttempts / listEndpointAttemptsAll` · `rotateEndpointSecret` · `testEndpoint` · `listEventTypes` · `listMessages / listMessagesAll` · `listMessageAttempts / listMessageAttemptsAll` · `resendMessage` · `getUsage` |
-| `$client->chat` | Conversations with the AI accountant: questions, streaming chat (SSE), token counting and history | `list / listAll` · `create / createStream` · `countTokens` · `get` · `update` · `delete` · `answer / answerStream` · `listEvents` · `stop` |
-| `$client->proposals` | Documents proposed by the AI accountant: review, approval for posting to 1C, and rejection | `list / listAll` · `approveBatch` · `get` · `approve` · `reject` |
+| `$client->chat` | Conversations with the AI accountant: questions, streaming chat (SSE), token counting and history | `list / listAll` · `create / createStream` · `countTokens` · `listMentions` · `listSuggestions` · `get` · `update` · `delete` · `answer / answerStream` · `listEvents` · `stop` |
+| `$client->proposals` | Documents proposed by the AI accountant: review, approval for posting to 1C, and rejection | `list / listAll` · `approveBatch` · `get` · `approve` · `reject` · `requestApproval` |
 | `$client->feed` | The company's feed of events and proposals (pages and a live SSE stream) | `get / getAll` · `listEvents` |
 | `$client->batches` | Processing batches for bank statements, incoming e-invoices and DirectBank | `list / listAll` · `createBankStatement` · `createEsfPurchases` · `get` · `listEvents` · `stop` · `getSummary` · `listStatements / listStatementsAll` · `pollDirectbank` |
 | `$client->esf` | Incoming and outgoing electronic invoices (the ESF system) | `getIncoming / getIncomingAll` · `getOutgoing / getOutgoingAll` |
@@ -406,7 +406,7 @@ The same API is available in ten languages. All SDKs are generated from one cont
 
 ## Versioning and support
 
-This library follows [Semantic Versioning](https://semver.org/). While the major version is 0, a minor release may contain breaking changes; they are always listed in the [changelog](https://github.com/TungoAI/tungo-sdk-php/blob/main/CHANGELOG.md). This README describes version 0.2.0.
+This library follows [Semantic Versioning](https://semver.org/). While the major version is 0, a minor release may contain breaking changes; they are always listed in the [changelog](https://github.com/TungoAI/tungo-sdk-php/blob/main/CHANGELOG.md). This README describes version 0.3.0.
 
 The code is generated: please report problems and ideas in the [issue tracker](https://github.com/TungoAI/tungo-sdk-php/issues) rather than opening pull requests against generated files. To report a vulnerability, follow the [security policy](https://github.com/TungoAI/tungo-sdk-php/blob/main/SECURITY.md).
 

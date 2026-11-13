@@ -22,7 +22,9 @@ namespace Tungo\Sdk\Model;
  *  - ChatEventError for 'error'
  *  - ChatEventBatch for 'batch'
  *  - ChatEventBatchReport for 'batch_report'
+ *  - ChatEventNext for 'next'
  *  - ChatEventDone for 'done'
+ *  - ChatEventTitle for 'title'
  *  - ChatEventUnknown for a value this SDK version does not know yet
  */
 interface ChatEvent extends \JsonSerializable

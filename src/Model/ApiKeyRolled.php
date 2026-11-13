@@ -17,17 +17,18 @@ final readonly class ApiKeyRolled implements \JsonSerializable
     /**
      * @param bool $allCompanies Ключ на все компании организации, в том числе будущие: те, где создатель ключа состоит сейчас, и в каждой — не шире его текущей роли
      * @param list<string>|null $allowedIps С каких IP и подсетей CIDR ключ работает; с другого адреса — 403 ip_not_allowed. null — с любых
-     * @param list<string> $companyIds Компании, к которым ключ даёт доступ (co_…); пусто у ключа на все компании (all_companies)
+     * @param list<string> $companyIds Компании, к которым ключ даёт доступ (co_…); пусто у ключа на все компании (all_companies) и у ключа без компаний (no_companies)
      * @param string $createdAt Когда выпущен, ISO 8601 UTC
      * @param string $createdBy Кто выпустил (usr_…). Ключ действует от его имени и не шире его прав: создатель перестал быть владельцем или админом — ключ не работает
      * @param string|null $disabledAt Когда выключен, ISO 8601 UTC; null — не выключен
      * @param string $expiresAt Когда ключ перестаёт действовать, ISO 8601 UTC (срок есть у каждого ключа)
      * @param string $id id ключа (key_…) — для адресов …/api-keys/{id}
-     * @param string $key Новый ключ целиком (tg_…) — один раз: показать с кнопкой «Скопировать»
+     * @param string|null $key Новый ключ целиком (tg_…) — один раз: показать с кнопкой «Скопировать». В повторе по Idempotency-Key — null
      * @param string|null $lastUsedAt Когда ключом пользовались последний раз, ISO 8601 UTC (точность — около минуты); null — ещё ни разу
      * @param string|null $lastUsedIp С какого IP-адреса был последний запрос; null — ещё ни разу
      * @param int|null $monthlyCapTiyn Месячный потолок расхода ИИ по ключу в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸), календарный месяц по Алматы; null — без потолка ключа
      * @param string $name Название ключа для людей
+     * @param bool $noCompanies Ключ без доступа к компаниям и их 1С: company_ids пуст, all_companies = false; компаний не видит никогда. Пустой company_ids сам по себе вида не называет — смотреть на all_companies и no_companies
      * @param list<ApiKeyRolledPermissionItem|string> $permissions Права ключа: `company.read` — читать данные компаний (есть всегда); `chat.use` — работать с ИИ-бухгалтером; `proposals.create` — готовить документы для 1С; `proposals.approve` — одобрять запись в 1С; `automations.read` —…
      * @param string $prefix Открытая часть ключа для показа — узнать ключ среди других; сам ключ (tg_…_секрет) целиком не хранится
      * @param string|null $previousSecretValidUntil После смены секрета (roll): до какого времени ещё действует прежний, ISO 8601 UTC; null — прежнего нет
@@ -38,6 +39,7 @@ final readonly class ApiKeyRolled implements \JsonSerializable
      * @param list<string>|null $writeKinds Предел записи в 1С по ключу: какие виды документов ключ может одобрять (как kinds правила автоодобрения: sale, purchase, bank_receipt, bank_payment, counterparty, contract, inventory_writeoff, cash_order_in, cash_order_o…
      * @param int|null $writeMaxAmountPerDayTiyn Предел записи в 1С по ключу: сумма всех документов, одобренных ключом за день по Алматы, в тиынах. Документ с неизвестным исходом записи (1С не ответила) тоже считается. null — без предела
      * @param int|null $writeMaxAmountPerDocumentTiyn Предел записи в 1С по ключу: потолок суммы одного документа, который ключ одобряет (approve, approve-batch), в тиынах (1 ₸ = 100 тиын). Документ дороже или без известной суммы ключ не запишет (403, error.code key_write_l…
+     * @param string|null $keyNote Только в повторе по Idempotency-Key: почему key = null и что делать, если новый секрет потерян (сменить ещё раз)
      */
     public function __construct(
         public bool $allCompanies,
@@ -48,11 +50,12 @@ final readonly class ApiKeyRolled implements \JsonSerializable
         public ?string $disabledAt,
         public string $expiresAt,
         public string $id,
-        public string $key,
+        public ?string $key,
         public ?string $lastUsedAt,
         public ?string $lastUsedIp,
         public ?int $monthlyCapTiyn,
         public string $name,
+        public bool $noCompanies,
         public array $permissions,
         public string $prefix,
         public ?string $previousSecretValidUntil,
@@ -63,6 +66,7 @@ final readonly class ApiKeyRolled implements \JsonSerializable
         public ?array $writeKinds,
         public ?int $writeMaxAmountPerDayTiyn,
         public ?int $writeMaxAmountPerDocumentTiyn,
+        public ?string $keyNote = null,
     ) {
     }
 
@@ -92,11 +96,13 @@ final readonly class ApiKeyRolled implements \JsonSerializable
             disabledAt: Wire::opt($data, 'disabled_at', $path, Wire::asString(...)),
             expiresAt: Wire::req($data, 'expires_at', $path, Wire::asString(...)),
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
-            key: Wire::req($data, 'key', $path, Wire::asString(...)),
+            key: Wire::opt($data, 'key', $path, Wire::asString(...)),
+            keyNote: Wire::opt($data, 'key_note', $path, Wire::asString(...)),
             lastUsedAt: Wire::opt($data, 'last_used_at', $path, Wire::asString(...)),
             lastUsedIp: Wire::opt($data, 'last_used_ip', $path, Wire::asString(...)),
             monthlyCapTiyn: Wire::opt($data, 'monthly_cap_tiyn', $path, Wire::asInt(...)),
             name: Wire::req($data, 'name', $path, Wire::asString(...)),
+            noCompanies: Wire::req($data, 'no_companies', $path, Wire::asBool(...)),
             permissions: Wire::req($data, 'permissions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ApiKeyRolledPermissionItem::class))),
             prefix: Wire::req($data, 'prefix', $path, Wire::asString(...)),
             previousSecretValidUntil: Wire::opt($data, 'previous_secret_valid_until', $path, Wire::asString(...)),
@@ -135,10 +141,14 @@ final readonly class ApiKeyRolled implements \JsonSerializable
         $o['expires_at'] = $this->expiresAt;
         $o['id'] = $this->id;
         $o['key'] = $this->key;
+        if ($this->keyNote !== null) {
+            $o['key_note'] = $this->keyNote;
+        }
         $o['last_used_at'] = $this->lastUsedAt;
         $o['last_used_ip'] = $this->lastUsedIp;
         $o['monthly_cap_tiyn'] = $this->monthlyCapTiyn;
         $o['name'] = $this->name;
+        $o['no_companies'] = $this->noCompanies;
         $o['permissions'] = Wire::list($this->permissions);
         $o['prefix'] = $this->prefix;
         $o['previous_secret_valid_until'] = $this->previousSecretValidUntil;
@@ -161,7 +171,9 @@ final readonly class ApiKeyRolled implements \JsonSerializable
     public function __debugInfo(): array
     {
         $info = get_object_vars($this);
-        $info['key'] = '[REDACTED]';
+        if ($this->key !== null) {
+            $info['key'] = '[REDACTED]';
+        }
 
         return $info;
     }

@@ -14,10 +14,14 @@ final readonly class GetWorkspacePlatformAuditResponse implements \JsonSerializa
     /**
      * @param list<AuditEntry> $data Записи этой страницы, от новых к старым
      * @param string|null $nextCursor Курсор следующей страницы. Чтобы получить её — тот же запрос (с теми же фильтрами) и `?cursor=<это значение>`. null — страниц больше нет (кнопку «Ещё» спрятать). Курсор непрозрачный: не разбирать и не собирать самому, хр…
+     * @param int $total Сколько всего записей под этими фильтрами (курсор не учитывается). Считается не дальше 10 000: если записей больше — здесь 10 000 и total_more = true
+     * @param bool $totalMore true — записей больше, чем total: писать «больше 10 000», а не точное число
      */
     public function __construct(
         public array $data,
         public ?string $nextCursor,
+        public int $total,
+        public bool $totalMore,
     ) {
     }
 
@@ -41,6 +45,8 @@ final readonly class GetWorkspacePlatformAuditResponse implements \JsonSerializa
         return new self(
             data: Wire::req($data, 'data', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, AuditEntry::fromValue(...))),
             nextCursor: Wire::opt($data, 'next_cursor', $path, Wire::asString(...)),
+            total: Wire::req($data, 'total', $path, Wire::asInt(...)),
+            totalMore: Wire::req($data, 'total_more', $path, Wire::asBool(...)),
         );
     }
 
@@ -62,6 +68,8 @@ final readonly class GetWorkspacePlatformAuditResponse implements \JsonSerializa
         $o = [];
         $o['data'] = Wire::list($this->data);
         $o['next_cursor'] = $this->nextCursor;
+        $o['total'] = $this->total;
+        $o['total_more'] = $this->totalMore;
 
         return (object) $o;
     }

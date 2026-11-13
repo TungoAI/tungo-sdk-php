@@ -18,7 +18,8 @@ final readonly class ChatDialogSummary implements \JsonSerializable
      * @param string $id id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают
      * @param int|float $messageCount Сколько сообщений в разговоре (вопросы и ответы)
      * @param bool $running true — ИИ сейчас отвечает: показать индикатор
-     * @param string $title Заголовок — первый вопрос одной строкой (до 64 знаков, длиннее — с «…»); вопрос из одних файлов — их имена
+     * @param string $title Название одной строкой (до 64 знаков, длиннее — с «…»): человека, иначе от ИИ, иначе первый вопрос (вопрос из одних файлов — их имена). Откуда оно — title_source
+     * @param ChatTitleSource|string $titleSource
      * @param string $updatedAt Последнее изменение (у идущего хода — его начало), ISO 8601 UTC
      */
     public function __construct(
@@ -26,6 +27,7 @@ final readonly class ChatDialogSummary implements \JsonSerializable
         public int|float $messageCount,
         public bool $running,
         public string $title,
+        public ChatTitleSource|string $titleSource,
         public string $updatedAt,
     ) {
     }
@@ -52,6 +54,7 @@ final readonly class ChatDialogSummary implements \JsonSerializable
             messageCount: Wire::req($data, 'message_count', $path, Wire::asNumber(...)),
             running: Wire::req($data, 'running', $path, Wire::asBool(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
+            titleSource: Wire::req($data, 'title_source', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatTitleSource::class)),
             updatedAt: Wire::req($data, 'updated_at', $path, Wire::asString(...)),
         );
     }
@@ -76,6 +79,7 @@ final readonly class ChatDialogSummary implements \JsonSerializable
         $o['message_count'] = $this->messageCount;
         $o['running'] = $this->running;
         $o['title'] = $this->title;
+        $o['title_source'] = $this->titleSource;
         $o['updated_at'] = $this->updatedAt;
 
         return (object) $o;

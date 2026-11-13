@@ -10,7 +10,7 @@ use Tungo\Sdk\Internal\Json;
 use Tungo\Sdk\Internal\Wire;
 
 /**
- * Конец хода — приходит после записи хода в историю. Дальше событий не будет
+ * Конец хода — приходит после записи хода в историю. Дальше событий хода не будет; в первом ходе разговора за ним может прийти одно title
  */
 final readonly class ChatEventDone implements ChatEvent
 {

@@ -15,11 +15,11 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class ChatTurnError implements \JsonSerializable
 {
     /**
-     * @param ChatTurnErrorCode|string $code Причина: - `budget` — кончился лимит (дня или разговора) - `rate_limited` — сервис модели перегружен — повторите - `api` — сбой сервиса модели - `refusal` — модель отказалась отвечать - `context_overflow` — разговор слиш…
+     * @param ChatTurnErrorCode|string $code Причина: - `budget` — кончился лимит (дня или разговора) - `parallel_turns_limit` — у человека уже идёт предельное число ходов ИИ (тариф без доп. использования) — дождаться ответа на предыдущие вопросы - `rate_limited` —…
      * @param string $message Текст для человека — показать в ленте ответа
      * @param string $type Вид ошибки, как у REST: limit_error, unavailable_error, conflict_error, invalid_request_error, api_error
-     * @param bool|null $canRequestMore Только у code = budget: лимит можно попросить поднять у админа
-     * @param ChatTurnErrorLimitKind|string|null $limitKind Только у code = budget: day — дневной лимит, dialog — лимит разговора
+     * @param bool|null $canRequestMore Только у code = budget с limit_kind day или dialog: лимит можно попросить поднять у владельца или админа организации. Нет — просить некого (человек сам владелец или админ) или причина не в этом лимите
+     * @param ChatTurnErrorLimitKind|string|null $limitKind Только у code = budget — почему ход остановлен: - `day` — дневной лимит человека исчерпан — продолжить завтра (по Алматы) или поднять лимит - `dialog` — лимит разговора исчерпан — начать новый разговор - `turn` — потолок…
      * @param array<string, mixed> $additionalProperties properties that are not declared by the contract
      */
     public function __construct(

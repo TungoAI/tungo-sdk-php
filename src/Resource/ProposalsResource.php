@@ -18,6 +18,9 @@ use Tungo\Sdk\Model\ApproveRequest;
 use Tungo\Sdk\Model\BatchApproveJob;
 use Tungo\Sdk\Model\BatchApproveRequest;
 use Tungo\Sdk\Model\BatchApproveResponse;
+use Tungo\Sdk\Model\ListCompanyProposalsApprovalRequested;
+use Tungo\Sdk\Model\ProposalApprovalRequestBody;
+use Tungo\Sdk\Model\ProposalApprovalRequestResult;
 use Tungo\Sdk\Model\ProposalCard;
 use Tungo\Sdk\Model\ProposalDecision;
 use Tungo\Sdk\Model\ProposalListItem;
@@ -47,12 +50,15 @@ final class ProposalsResource
      *
      * Returns one page; use listAll() to iterate over every item.
      *
+     * @param ListCompanyProposalsApprovalRequested|string|null $approvalRequested true — только отправленные на одобрение и ещё не решённые; false — только остальные
+     * @param string|null $batchId Только документы одного задания пачки (bat_…) — тот же состав, что в сводке задания и у «Одобрить и отправить в 1С». Не id задания — 400; задания нет — пустой список
      * @param string|null $cursor next_cursor из ответа прошлой страницы; без него — первая (самая свежая) страница. Остальные фильтры — те же, что у первой страницы.
      * @param \DateTimeInterface|string|null $dateFrom Созданные не раньше этого дня (ГГГГ-ММ-ДД, день по Алматы)
      * @param \DateTimeInterface|string|null $dateTo Созданные не позже этого дня включительно (ГГГГ-ММ-ДД, день по Алматы)
      * @param string|null $kind Только этих видов: один или несколько через запятую (sale, purchase, bank_receipt, bank_payment, counterparty, contract, revert, inventory_writeoff, cash_order_in, cash_order_out, advance_report). Неизвестный — 400
      * @param int|null $limit Сколько на странице: 1–100, по умолчанию 20
-     * @param string|null $q Поиск без учёта регистра: номер предложения (P-…), номер документа 1С, контрагент (имя из превью), БИН/ИИН и другие реквизиты документа
+     * @param string|null $q Поиск без учёта регистра: номер предложения (P-…), номер документа 1С, контрагент (имя из превью), БИН/ИИН, сумма (как пишут: «150 000,50» или 150000.5) и другие реквизиты документа
+     * @param string|null $source Только из этих источников (origin.source): один или несколько через запятую (chat, statement, esf, automation). Неизвестный — 400
      * @param string|null $status Только в этих статусах: один или несколько через запятую (previewed, approved, rejected, committed, posted, verified, mismatch, failed); без него — все. Неизвестный — 400
      * @param string|null $companyId company id (co_...); the client's default company when null
      * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
@@ -62,12 +68,15 @@ final class ProposalsResource
      * @throws TungoError
      */
     public function list(
+        ListCompanyProposalsApprovalRequested|string|null $approvalRequested = null,
+        ?string $batchId = null,
         ?string $cursor = null,
         \DateTimeInterface|string|null $dateFrom = null,
         \DateTimeInterface|string|null $dateTo = null,
         ?string $kind = null,
         ?int $limit = null,
         ?string $q = null,
+        ?string $source = null,
         ?string $status = null,
         ?string $companyId = null,
         ?RequestOptions $options = null,
@@ -77,7 +86,7 @@ final class ProposalsResource
             new Operation(
                 'GET',
                 '/v1/companies/' . $this->engine->company($companyId) . '/proposals',
-                query: [['cursor', $cursor], ['date_from', Url::date($dateFrom)], ['date_to', Url::date($dateTo)], ['kind', $kind], ['limit', $limit], ['q', $q], ['status', $status]],
+                query: [['approval_requested', $approvalRequested], ['batch_id', $batchId], ['cursor', $cursor], ['date_from', Url::date($dateFrom)], ['date_to', Url::date($dateTo)], ['kind', $kind], ['limit', $limit], ['q', $q], ['source', $source], ['status', $status]],
             ),
             $options,
             ProposalPage::fromValue(...),
@@ -89,7 +98,7 @@ final class ProposalsResource
             $response->data->nextCursor,
             $response->data,
             $response,
-            fn (string $next): Page => $this->list($next, $dateFrom, $dateTo, $kind, $limit, $q, $status, $companyId, $options),
+            fn (string $next): Page => $this->list($approvalRequested, $batchId, $next, $dateFrom, $dateTo, $kind, $limit, $q, $source, $status, $companyId, $options),
         );
     }
 
@@ -100,12 +109,15 @@ final class ProposalsResource
      *
      * The next page is requested only when the loop needs it; leaving the loop stops fetching.
      *
+     * @param ListCompanyProposalsApprovalRequested|string|null $approvalRequested true — только отправленные на одобрение и ещё не решённые; false — только остальные
+     * @param string|null $batchId Только документы одного задания пачки (bat_…) — тот же состав, что в сводке задания и у «Одобрить и отправить в 1С». Не id задания — 400; задания нет — пустой список
      * @param string|null $cursor next_cursor из ответа прошлой страницы; без него — первая (самая свежая) страница. Остальные фильтры — те же, что у первой страницы.
      * @param \DateTimeInterface|string|null $dateFrom Созданные не раньше этого дня (ГГГГ-ММ-ДД, день по Алматы)
      * @param \DateTimeInterface|string|null $dateTo Созданные не позже этого дня включительно (ГГГГ-ММ-ДД, день по Алматы)
      * @param string|null $kind Только этих видов: один или несколько через запятую (sale, purchase, bank_receipt, bank_payment, counterparty, contract, revert, inventory_writeoff, cash_order_in, cash_order_out, advance_report). Неизвестный — 400
      * @param int|null $limit Сколько на странице: 1–100, по умолчанию 20
-     * @param string|null $q Поиск без учёта регистра: номер предложения (P-…), номер документа 1С, контрагент (имя из превью), БИН/ИИН и другие реквизиты документа
+     * @param string|null $q Поиск без учёта регистра: номер предложения (P-…), номер документа 1С, контрагент (имя из превью), БИН/ИИН, сумма (как пишут: «150 000,50» или 150000.5) и другие реквизиты документа
+     * @param string|null $source Только из этих источников (origin.source): один или несколько через запятую (chat, statement, esf, automation). Неизвестный — 400
      * @param string|null $status Только в этих статусах: один или несколько через запятую (previewed, approved, rejected, committed, posted, verified, mismatch, failed); без него — все. Неизвестный — 400
      * @param string|null $companyId company id (co_...); the client's default company when null
      * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
@@ -115,19 +127,22 @@ final class ProposalsResource
      * @throws TungoError
      */
     public function listAll(
+        ListCompanyProposalsApprovalRequested|string|null $approvalRequested = null,
+        ?string $batchId = null,
         ?string $cursor = null,
         \DateTimeInterface|string|null $dateFrom = null,
         \DateTimeInterface|string|null $dateTo = null,
         ?string $kind = null,
         ?int $limit = null,
         ?string $q = null,
+        ?string $source = null,
         ?string $status = null,
         ?string $companyId = null,
         ?RequestOptions $options = null,
     ): \Generator
     {
         return Paginator::all(
-            fn (): Page => $this->list($cursor, $dateFrom, $dateTo, $kind, $limit, $q, $status, $companyId, $options),
+            fn (): Page => $this->list($approvalRequested, $batchId, $cursor, $dateFrom, $dateTo, $kind, $limit, $q, $source, $status, $companyId, $options),
             $cursor,
         );
     }
@@ -354,6 +369,64 @@ final class ProposalsResource
             $options,
             ProposalDecision::fromValue(...),
             'ProposalDecision',
+        );
+    }
+
+    /**
+     * Отправить на одобрение
+     *
+     * POST /v1/companies/{co}/proposals/{id}/request-approval (permission: proposals.create)
+     *
+     * @param string $id Номер предложения внутри компании: P- и шесть цифр (P-000123). У двух компаний номера могут совпадать
+     * @param ProposalApprovalRequestBody|null $body the request body
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ProposalApprovalRequestResult
+     *
+     * @throws TungoError
+     */
+    public function requestApproval(
+        string $id,
+        ?ProposalApprovalRequestBody $body = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ProposalApprovalRequestResult
+    {
+        return $this->requestApprovalWithResponse($id, $body, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Отправить на одобрение
+     *
+     * POST /v1/companies/{co}/proposals/{id}/request-approval (permission: proposals.create)
+     *
+     * @param string $id Номер предложения внутри компании: P- и шесть цифр (P-000123). У двух компаний номера могут совпадать
+     * @param ProposalApprovalRequestBody|null $body the request body
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ProposalApprovalRequestResult>
+     *
+     * @throws TungoError
+     */
+    public function requestApprovalWithResponse(
+        string $id,
+        ?ProposalApprovalRequestBody $body = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'POST',
+                '/v1/companies/' . $this->engine->company($companyId) . '/proposals/' . Url::segment($id, 'id') . '/request-approval',
+                body: $body === null ? null : Json::encode($body),
+                contentType: 'application/json',
+            ),
+            $options,
+            ProposalApprovalRequestResult::fromValue(...),
+            'ProposalApprovalRequestResult',
         );
     }
 }

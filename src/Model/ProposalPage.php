@@ -15,12 +15,14 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class ProposalPage implements \JsonSerializable
 {
     /**
-     * @param array<string, int|float> $counts Сколько предложений в каждом статусе (ключ — ProposalStatus), без учёта фильтра — для бейджей вкладок; статусов без предложений нет
+     * @param int $approvalRequestedCount Сколько предложений ждёт решения по просьбе («Отправить на одобрение») — в тех же пределах, что counts
+     * @param array<string, int|float> $counts Сколько предложений в каждом статусе (ключ — ProposalStatus) — для бейджей вкладок; статусов без предложений нет. Считается в пределах source и batch_id (откуда и из какой пачки), остальные фильтры (status, kind, даты, q…
      * @param list<ProposalListItem> $data Предложения страницы, свежие сверху
      * @param string|null $nextCursor Курсор следующей страницы. Чтобы получить её — тот же запрос (с теми же фильтрами) и `?cursor=<это значение>`. null — страниц больше нет (кнопку «Ещё» спрятать). Курсор непрозрачный: не разбирать и не собирать самому, хр…
      * @param int|float $total Сколько предложений подходит под все фильтры (на всех страницах)
      */
     public function __construct(
+        public int $approvalRequestedCount,
         public array $counts,
         public array $data,
         public ?string $nextCursor,
@@ -46,6 +48,7 @@ final readonly class ProposalPage implements \JsonSerializable
         $data = Wire::asObject($value, $path);
 
         return new self(
+            approvalRequestedCount: Wire::req($data, 'approval_requested_count', $path, Wire::asInt(...)),
             counts: Wire::req($data, 'counts', $path, static fn (mixed $v, string $p) => Wire::asMap($v, $p, Wire::asNumber(...))),
             data: Wire::req($data, 'data', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ProposalListItem::fromValue(...))),
             nextCursor: Wire::opt($data, 'next_cursor', $path, Wire::asString(...)),
@@ -69,6 +72,7 @@ final readonly class ProposalPage implements \JsonSerializable
     public function jsonSerialize(): \stdClass
     {
         $o = [];
+        $o['approval_requested_count'] = $this->approvalRequestedCount;
         $o['counts'] = Wire::map($this->counts);
         $o['data'] = Wire::list($this->data);
         $o['next_cursor'] = $this->nextCursor;

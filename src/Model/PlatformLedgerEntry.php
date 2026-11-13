@@ -19,6 +19,7 @@ final readonly class PlatformLedgerEntry implements \JsonSerializable
      * @param string|null $apiKeyId Ключ вызова (key_…) у usage; null — сценарий, сохранённый по сессии, и остальные виды
      * @param string $at Когда, ISO 8601 UTC
      * @param int $balanceAfterTiyn Баланс после движения в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
+     * @param PlatformLedgerEntryDocuments|null $documents Документы пополнения (kind = purchase) из его платежа. null — у остальных видов и у ключа не на все компании. Файл PDF ядро не формирует: чек выпускает касса, ссылка появляется в receipt_url
      * @param string $id id движения (led_…); он же — курсор
      * @param PlatformLedgerEntryKind|string $kind Вид: `purchase` — пополнение с карты; `usage` — списание за вызов модели; `refund` — возврат на карту (баланс уменьшается); `adjustment` — корректировка поддержкой или возврат удержанной суммы
      * @param string|null $model Модель вызова у usage; null — у остальных видов
@@ -31,6 +32,7 @@ final readonly class PlatformLedgerEntry implements \JsonSerializable
         public ?string $apiKeyId,
         public string $at,
         public int $balanceAfterTiyn,
+        public ?PlatformLedgerEntryDocuments $documents,
         public string $id,
         public PlatformLedgerEntryKind|string $kind,
         public ?string $model,
@@ -62,6 +64,7 @@ final readonly class PlatformLedgerEntry implements \JsonSerializable
             apiKeyId: Wire::opt($data, 'api_key_id', $path, Wire::asString(...)),
             at: Wire::req($data, 'at', $path, Wire::asString(...)),
             balanceAfterTiyn: Wire::req($data, 'balance_after_tiyn', $path, Wire::asInt(...)),
+            documents: Wire::opt($data, 'documents', $path, PlatformLedgerEntryDocuments::fromValue(...)),
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
             kind: Wire::req($data, 'kind', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, PlatformLedgerEntryKind::class)),
             model: Wire::opt($data, 'model', $path, Wire::asString(...)),
@@ -91,6 +94,7 @@ final readonly class PlatformLedgerEntry implements \JsonSerializable
         $o['api_key_id'] = $this->apiKeyId;
         $o['at'] = $this->at;
         $o['balance_after_tiyn'] = $this->balanceAfterTiyn;
+        $o['documents'] = $this->documents;
         $o['id'] = $this->id;
         $o['kind'] = $this->kind;
         $o['model'] = $this->model;

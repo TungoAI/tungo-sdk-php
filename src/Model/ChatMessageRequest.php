@@ -18,6 +18,8 @@ final readonly class ChatMessageRequest implements \JsonSerializable
      * @param list<ChatAttachment>|null $attachments Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .…
      * @param list<string>|null $capabilities Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
      * @param string|null $dialogId Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
+     * @param ChatMessageRequestEffort|string|null $effort Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GE…
+     * @param list<ChatMention>|null $mentions Упоминания через «(at)» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в…
      * @param string|null $message Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
      * @param ChatMessageRequestMode|string|null $mode Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
      * @param bool|null $newDialog true — начать новый разговор именно с этим dialog_id (клиент задаёт id сам); id уже занят — 409
@@ -30,6 +32,8 @@ final readonly class ChatMessageRequest implements \JsonSerializable
         public ?array $attachments = null,
         public ?array $capabilities = null,
         public ?string $dialogId = null,
+        public ChatMessageRequestEffort|string|null $effort = null,
+        public ?array $mentions = null,
         public ?string $message = null,
         public ChatMessageRequestMode|string|null $mode = null,
         public ?bool $newDialog = null,
@@ -61,13 +65,15 @@ final readonly class ChatMessageRequest implements \JsonSerializable
             attachments: Wire::opt($data, 'attachments', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatAttachment::fromValue(...))),
             capabilities: Wire::opt($data, 'capabilities', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
             dialogId: Wire::opt($data, 'dialog_id', $path, Wire::asString(...)),
+            effort: Wire::opt($data, 'effort', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatMessageRequestEffort::class)),
+            mentions: Wire::opt($data, 'mentions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatMention::fromValue(...))),
             message: Wire::opt($data, 'message', $path, Wire::asString(...)),
             mode: Wire::opt($data, 'mode', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatMessageRequestMode::class)),
             newDialog: Wire::opt($data, 'new_dialog', $path, Wire::asBool(...)),
             proposalId: Wire::opt($data, 'proposal_id', $path, Wire::asString(...)),
             stream: Wire::opt($data, 'stream', $path, Wire::asBool(...)),
             turn: Wire::opt($data, 'turn', $path, Wire::asInt(...)),
-            explicitNulls: Wire::nulls($data, ['dialog_id', 'proposal_id', 'turn']),
+            explicitNulls: Wire::nulls($data, ['dialog_id', 'effort', 'proposal_id', 'turn']),
         );
     }
 
@@ -97,6 +103,14 @@ final readonly class ChatMessageRequest implements \JsonSerializable
             $o['dialog_id'] = $this->dialogId;
         } elseif (in_array('dialog_id', $this->explicitNulls, true)) {
             $o['dialog_id'] = null;
+        }
+        if ($this->effort !== null) {
+            $o['effort'] = $this->effort;
+        } elseif (in_array('effort', $this->explicitNulls, true)) {
+            $o['effort'] = null;
+        }
+        if ($this->mentions !== null) {
+            $o['mentions'] = Wire::list($this->mentions);
         }
         if ($this->message !== null) {
             $o['message'] = $this->message;

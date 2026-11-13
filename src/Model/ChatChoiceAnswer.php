@@ -15,12 +15,14 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class ChatChoiceAnswer implements \JsonSerializable
 {
     /**
-     * @param string|null $other Свой ответ текстом (вариант «свой ответ»). Нужен selected или other — хотя бы одно
+     * @param string|null $other Свой ответ текстом (вариант «свой ответ»). Нужен selected или other — хотя бы одно (или skipped)
      * @param list<string>|null $selected Выбранные варианты — их label из options, в любом порядке; без повторов. В вопросе без multi_select — не больше одного
+     * @param bool|null $skipped true — «Пропустить»: вопрос оставлен без ответа, selected и other не передавать. ИИ узнаёт, что вопрос пропущен, и продолжает без этого ответа. У вопроса-подтверждения действия пропуск равен отказу: действие не выполняет…
      */
     public function __construct(
         public ?string $other = null,
         public ?array $selected = null,
+        public ?bool $skipped = null,
     ) {
     }
 
@@ -44,6 +46,7 @@ final readonly class ChatChoiceAnswer implements \JsonSerializable
         return new self(
             other: Wire::opt($data, 'other', $path, Wire::asString(...)),
             selected: Wire::opt($data, 'selected', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
+            skipped: Wire::opt($data, 'skipped', $path, Wire::asBool(...)),
         );
     }
 
@@ -68,6 +71,9 @@ final readonly class ChatChoiceAnswer implements \JsonSerializable
         }
         if ($this->selected !== null) {
             $o['selected'] = Wire::list($this->selected);
+        }
+        if ($this->skipped !== null) {
+            $o['skipped'] = $this->skipped;
         }
 
         return (object) $o;

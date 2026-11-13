@@ -16,19 +16,23 @@ final readonly class UsageRate implements \JsonSerializable
 {
     /**
      * @param int $cacheReadPerMtokTiyn Цена 1 млн токенов чтения из кэша модели в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
-     * @param int $cacheWritePerMtokTiyn Цена 1 млн токенов записи в кэш модели в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
+     * @param int $cacheWrite1hPerMtokTiyn Цена 1 млн токенов записи в кэш модели на 1 час (дороже: так кэшируются правила и инструменты) в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
+     * @param int $cacheWritePerMtokTiyn Цена 1 млн токенов записи в кэш модели на 5 минут в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
      * @param string $effectiveFrom С какого момента действует цена, ISO 8601 UTC
      * @param int $inputPerMtokTiyn Цена 1 млн входных токенов (вопрос и контекст; токен — кусочек текста) в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
-     * @param string $model Модель ИИ (техническое имя)
+     * @param string $model Модель ИИ: tungo-1-flash, tungo-1, tungo-1-deep (tungo-search — поиск по нормам, tungo-legacy — прежняя)
      * @param int $outputPerMtokTiyn Цена 1 млн токенов ответа в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
+     * @param string $title Название модели для людей
      */
     public function __construct(
         public int $cacheReadPerMtokTiyn,
+        public int $cacheWrite1hPerMtokTiyn,
         public int $cacheWritePerMtokTiyn,
         public string $effectiveFrom,
         public int $inputPerMtokTiyn,
         public string $model,
         public int $outputPerMtokTiyn,
+        public string $title,
     ) {
     }
 
@@ -51,11 +55,13 @@ final readonly class UsageRate implements \JsonSerializable
 
         return new self(
             cacheReadPerMtokTiyn: Wire::req($data, 'cache_read_per_mtok_tiyn', $path, Wire::asInt(...)),
+            cacheWrite1hPerMtokTiyn: Wire::req($data, 'cache_write_1h_per_mtok_tiyn', $path, Wire::asInt(...)),
             cacheWritePerMtokTiyn: Wire::req($data, 'cache_write_per_mtok_tiyn', $path, Wire::asInt(...)),
             effectiveFrom: Wire::req($data, 'effective_from', $path, Wire::asString(...)),
             inputPerMtokTiyn: Wire::req($data, 'input_per_mtok_tiyn', $path, Wire::asInt(...)),
             model: Wire::req($data, 'model', $path, Wire::asString(...)),
             outputPerMtokTiyn: Wire::req($data, 'output_per_mtok_tiyn', $path, Wire::asInt(...)),
+            title: Wire::req($data, 'title', $path, Wire::asString(...)),
         );
     }
 
@@ -76,11 +82,13 @@ final readonly class UsageRate implements \JsonSerializable
     {
         $o = [];
         $o['cache_read_per_mtok_tiyn'] = $this->cacheReadPerMtokTiyn;
+        $o['cache_write_1h_per_mtok_tiyn'] = $this->cacheWrite1hPerMtokTiyn;
         $o['cache_write_per_mtok_tiyn'] = $this->cacheWritePerMtokTiyn;
         $o['effective_from'] = $this->effectiveFrom;
         $o['input_per_mtok_tiyn'] = $this->inputPerMtokTiyn;
         $o['model'] = $this->model;
         $o['output_per_mtok_tiyn'] = $this->outputPerMtokTiyn;
+        $o['title'] = $this->title;
 
         return (object) $o;
     }

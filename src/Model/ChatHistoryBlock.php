@@ -7,12 +7,13 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Model;
 
 /**
- * Блок ответа в истории — те же виды, что клиент собирает из живого потока: text | tool | proposal | question | error
+ * Блок ответа в истории — те же виды, что клиент собирает из живого потока: text | tool | proposal | batch | question | error
  *
  * A union selected by the `kind` property. Its variants:
  *  - ChatHistoryText for 'text'
  *  - ChatHistoryTool for 'tool'
  *  - ChatHistoryProposal for 'proposal'
+ *  - ChatHistoryBatch for 'batch'
  *  - ChatHistoryQuestion for 'question'
  *  - ChatHistoryError for 'error'
  *  - ChatHistoryBlockUnknown for a value this SDK version does not know yet

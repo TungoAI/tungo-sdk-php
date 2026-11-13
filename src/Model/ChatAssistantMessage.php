@@ -19,7 +19,9 @@ final readonly class ChatAssistantMessage implements ChatMessage
      * @param string $at Когда ответ закончен, ISO 8601 UTC
      * @param list<ChatHistoryBlock> $blocks Ответ по блокам, по порядку
      * @param list<ChatCitation> $citations Источники ответа
+     * @param list<string> $followups Вопросы-продолжения под ответом, до 3, на языке разговора: нажатие — обычный новый вопрос с этим текстом. Пусто — предложить нечего
      * @param string $id Устойчивый id сообщения: <dialog_id>:<номер хода>:a
+     * @param ChatNextAction|null $nextAction Предложенное следующее действие; null — нет
      * @param list<string> $proposalIds Номера предложений этого хода — то же, что proposal-блоки, списком
      * @param ChatAssistantMessageState|string $state done — ход закончился сам; stopped — нажали «Стоп»; error — ошибка, отказ модели или предел шагов
      * @param string $thinking Размышления модели за ход одним текстом; пусто — не было
@@ -29,7 +31,9 @@ final readonly class ChatAssistantMessage implements ChatMessage
         public string $at,
         public array $blocks,
         public array $citations,
+        public array $followups,
         public string $id,
+        public ?ChatNextAction $nextAction,
         public array $proposalIds,
         public ChatAssistantMessageState|string $state,
         public string $thinking,
@@ -58,7 +62,9 @@ final readonly class ChatAssistantMessage implements ChatMessage
             at: Wire::req($data, 'at', $path, Wire::asString(...)),
             blocks: Wire::req($data, 'blocks', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Unions::chatHistoryBlock(...))),
             citations: Wire::req($data, 'citations', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatCitation::fromValue(...))),
+            followups: Wire::req($data, 'followups', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
+            nextAction: Wire::opt($data, 'next_action', $path, ChatNextAction::fromValue(...)),
             proposalIds: Wire::req($data, 'proposal_ids', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
             role: Wire::req($data, 'role', $path, Wire::asString(...)),
             state: Wire::req($data, 'state', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatAssistantMessageState::class)),
@@ -85,7 +91,9 @@ final readonly class ChatAssistantMessage implements ChatMessage
         $o['at'] = $this->at;
         $o['blocks'] = Wire::list($this->blocks);
         $o['citations'] = Wire::list($this->citations);
+        $o['followups'] = Wire::list($this->followups);
         $o['id'] = $this->id;
+        $o['next_action'] = $this->nextAction;
         $o['proposal_ids'] = Wire::list($this->proposalIds);
         $o['role'] = $this->role;
         $o['state'] = $this->state;

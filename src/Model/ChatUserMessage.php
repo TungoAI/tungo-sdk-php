@@ -19,6 +19,7 @@ final readonly class ChatUserMessage implements ChatMessage
      * @param string $id Устойчивый id сообщения: <dialog_id>:<номер хода>:u
      * @param string $text Текст вопроса
      * @param list<ChatAttachmentMeta>|null $attachments Приложенные файлы, если были
+     * @param list<ChatHistoryMention>|null $mentions Упоминания через «(at)» в этом вопросе, если были: вид, id и название на момент отправки
      * @param bool|null $pending Вопрос идущего хода: ответа ещё нет, его дочитывают потоком (GET …/chat/{id}/events?turn=). Только у последнего сообщения
      * @param string $role Сообщение человека
      */
@@ -27,6 +28,7 @@ final readonly class ChatUserMessage implements ChatMessage
         public string $id,
         public string $text,
         public ?array $attachments = null,
+        public ?array $mentions = null,
         public ?bool $pending = null,
         public string $role = 'user',
     ) {
@@ -53,6 +55,7 @@ final readonly class ChatUserMessage implements ChatMessage
             at: Wire::req($data, 'at', $path, Wire::asString(...)),
             attachments: Wire::opt($data, 'attachments', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatAttachmentMeta::fromValue(...))),
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
+            mentions: Wire::opt($data, 'mentions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatHistoryMention::fromValue(...))),
             pending: Wire::opt($data, 'pending', $path, Wire::asBool(...)),
             role: Wire::req($data, 'role', $path, Wire::asString(...)),
             text: Wire::req($data, 'text', $path, Wire::asString(...)),
@@ -80,6 +83,9 @@ final readonly class ChatUserMessage implements ChatMessage
             $o['attachments'] = Wire::list($this->attachments);
         }
         $o['id'] = $this->id;
+        if ($this->mentions !== null) {
+            $o['mentions'] = Wire::list($this->mentions);
+        }
         if ($this->pending !== null) {
             $o['pending'] = $this->pending;
         }

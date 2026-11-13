@@ -18,24 +18,36 @@ final readonly class ErrorDetail implements \JsonSerializable
      * @param string $message Готовый текст для человека по-русски: что случилось, что делать и к кому обратиться. Показывать как есть; не разбирать — формулировки меняются.
      * @param ErrorDetailType|string $type Вид ошибки — по нему ветвится клиент (не по тексту message). Статус HTTP у вида один, кроме invalid_request_error: - `invalid_request_error` (400) — запрос неверен: поле не прошло проверку, неверный формат, действие сейч…
      * @param list<ErrorDetailAllowedMethodItem|string>|null $allowedMethods При code = login_method_not_allowed — какими способами входа организация пускает к своим данным: email_otp — код из почты, google, apple, telegram, sso — SSO организации. Предложить выйти и войти одним из них.
-     * @param string|null $code Уточнение вида: по нему выбирается действие интерфейса (кнопка «Пополнить», «Войти иначе»…). Нет поля — хватает type и message. Известные коды: - `sso_domain_taken` (409) — домен SSO уже подтверждён другой организацией -…
+     * @param int|null $amountTiyn При code = subscription_unpaid_debt — сколько оплатить, в тиынах: сумма всех неоплаченных счетов подписки.
+     * @param string|null $code Уточнение вида: по нему выбирается действие интерфейса (кнопка «Пополнить», «Войти иначе»…). Нет поля — хватает type и message. Известные коды: - `cannot_ban_self` (409) — админка: закрыть вход самому себе нельзя - `user…
      * @param list<FieldError>|null $fields При code = validation_failed — ошибки по полям, в порядке проверки; у одного поля может быть несколько.
+     * @param ErrorDetailFreeBlockedReason|string|null $freeBlockedReason При code = free_limit_unavailable. Главная причина отказа в бесплатном лимите: `admin_decision` — решение администратора; `temporary_email` — учётная запись на временной почте; `hidden_email` — скрытая почта Apple; `emai…
+     * @param string|null $nextRequestAt Тот же срок моментом времени — ISO 8601, UTC: когда запрос можно повторить.
+     * @param string|null $paymentId При code = subscription_unpaid_debt — платёж для кнопки «Оплатить» (…/billing/payments/{payment_id}/pay-form); null — вести к списку счетов.
      * @param string|null $permission При code = missing_permission — какого права не хватает: права в компании (company.read, company.manage, company.members.manage, onec.connect, proposals.create, proposals.approve, chat.use, audit.read, automations.manage…
      * @param list<string>|null $permissions При code = role_above_yours — права этой роли, которых нет у того, кто выдаёт. Показать списком: «у роли есть права, которых нет у вас: …».
      * @param string|null $resetsAt Когда ограничение снимется само — ISO 8601, UTC. Есть у plan_limit_reached (конец окна тарифа) и у месячных потолков (workspace_cap_reached, company_cap_reached, member_cap_reached, key_cap_reached, platform_cap_reached …
+     * @param int|null $retryAfterSeconds При отказе по частоте (429) на адресах экрана входа — через сколько секунд можно повторить (то же число, что в заголовке Retry-After). Показать таймер.
      * @param string|null $role При code = role_above_yours — ключ роли в компании, которую нельзя выдать или снять (например chief_accountant).
+     * @param list<string> $explicitNulls wire names of optional properties to send as an explicit null
      * @param array<string, mixed> $additionalProperties properties that are not declared by the contract
      */
     public function __construct(
         public string $message,
         public ErrorDetailType|string $type,
         public ?array $allowedMethods = null,
+        public ?int $amountTiyn = null,
         public ?string $code = null,
         public ?array $fields = null,
+        public ErrorDetailFreeBlockedReason|string|null $freeBlockedReason = null,
+        public ?string $nextRequestAt = null,
+        public ?string $paymentId = null,
         public ?string $permission = null,
         public ?array $permissions = null,
         public ?string $resetsAt = null,
+        public ?int $retryAfterSeconds = null,
         public ?string $role = null,
+        public array $explicitNulls = [],
         public array $additionalProperties = [],
     ) {
     }
@@ -59,15 +71,21 @@ final readonly class ErrorDetail implements \JsonSerializable
 
         return new self(
             allowedMethods: Wire::opt($data, 'allowed_methods', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ErrorDetailAllowedMethodItem::class))),
+            amountTiyn: Wire::opt($data, 'amount_tiyn', $path, Wire::asInt(...)),
             code: Wire::opt($data, 'code', $path, Wire::asString(...)),
             fields: Wire::opt($data, 'fields', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, FieldError::fromValue(...))),
+            freeBlockedReason: Wire::opt($data, 'free_blocked_reason', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ErrorDetailFreeBlockedReason::class)),
             message: Wire::req($data, 'message', $path, Wire::asString(...)),
+            nextRequestAt: Wire::opt($data, 'next_request_at', $path, Wire::asString(...)),
+            paymentId: Wire::opt($data, 'payment_id', $path, Wire::asString(...)),
             permission: Wire::opt($data, 'permission', $path, Wire::asString(...)),
             permissions: Wire::opt($data, 'permissions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
             resetsAt: Wire::opt($data, 'resets_at', $path, Wire::asString(...)),
+            retryAfterSeconds: Wire::opt($data, 'retry_after_seconds', $path, Wire::asInt(...)),
             role: Wire::opt($data, 'role', $path, Wire::asString(...)),
             type: Wire::req($data, 'type', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ErrorDetailType::class)),
-            additionalProperties: Wire::rest($data, ['allowed_methods', 'code', 'fields', 'message', 'permission', 'permissions', 'resets_at', 'role', 'type']),
+            explicitNulls: Wire::nulls($data, ['payment_id']),
+            additionalProperties: Wire::rest($data, ['allowed_methods', 'amount_tiyn', 'code', 'fields', 'free_blocked_reason', 'message', 'next_request_at', 'payment_id', 'permission', 'permissions', 'resets_at', 'retry_after_seconds', 'role', 'type']),
         );
     }
 
@@ -90,13 +108,27 @@ final readonly class ErrorDetail implements \JsonSerializable
         if ($this->allowedMethods !== null) {
             $o['allowed_methods'] = Wire::list($this->allowedMethods);
         }
+        if ($this->amountTiyn !== null) {
+            $o['amount_tiyn'] = $this->amountTiyn;
+        }
         if ($this->code !== null) {
             $o['code'] = $this->code;
         }
         if ($this->fields !== null) {
             $o['fields'] = Wire::list($this->fields);
         }
+        if ($this->freeBlockedReason !== null) {
+            $o['free_blocked_reason'] = $this->freeBlockedReason;
+        }
         $o['message'] = $this->message;
+        if ($this->nextRequestAt !== null) {
+            $o['next_request_at'] = $this->nextRequestAt;
+        }
+        if ($this->paymentId !== null) {
+            $o['payment_id'] = $this->paymentId;
+        } elseif (in_array('payment_id', $this->explicitNulls, true)) {
+            $o['payment_id'] = null;
+        }
         if ($this->permission !== null) {
             $o['permission'] = $this->permission;
         }
@@ -105,6 +137,9 @@ final readonly class ErrorDetail implements \JsonSerializable
         }
         if ($this->resetsAt !== null) {
             $o['resets_at'] = $this->resetsAt;
+        }
+        if ($this->retryAfterSeconds !== null) {
+            $o['retry_after_seconds'] = $this->retryAfterSeconds;
         }
         if ($this->role !== null) {
             $o['role'] = $this->role;

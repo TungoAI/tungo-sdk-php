@@ -21,6 +21,7 @@ final readonly class ApiKeyPatch implements \JsonSerializable
      * @param string|null $expiresAt Новый срок ключа, ISO 8601: продлить или сократить; в будущем и не дальше настройки платформы от сегодня (по умолчанию 365 дней). Только создатель ключа (403 not_key_creator). У отозванного — 409 key_revoked, у истёкшего…
      * @param int|null $monthlyCapTiyn Месячный потолок расхода ИИ по ключу в тиынах (1 ₸ = 100 тиын), календарный месяц по Алматы; дойдя до него, вызовы ИИ по ключу отклоняются до 1-го числа. null — без потолка ключа. Не передан — не меняется
      * @param string|null $name Название ключа для людей (1–100 знаков): где он используется
+     * @param bool|null $noCompanies Ключ без доступа к компаниям и их 1С: ни одной компании он не видит — ни сейчас, ни будущих; company_ids и all_companies не передаются, права — только company.read (он ничего не открывает). true — ключ теряет доступ ко в…
      * @param list<string>|null $permissions Права ключа (1–20): `company.read` — читать данные компаний (добавляется всегда, даже если не передано); `chat.use` — работать с ИИ-бухгалтером; `proposals.create` — готовить документы для 1С; `proposals.approve` — одобр…
      * @param list<ApiKeyPatchWriteKindItem|string>|null $writeKinds Предел записи в 1С по ключу: какие виды документов ключ может одобрять (как kinds правила автоодобрения: sale, purchase, bank_receipt, bank_payment, counterparty, contract, inventory_writeoff, cash_order_in, cash_order_o…
      * @param int|null $writeMaxAmountPerDayTiyn Предел записи в 1С по ключу: сумма всех документов, одобренных ключом за день по Алматы, в тиынах. Документ с неизвестным исходом записи (1С не ответила) тоже считается. null — без предела. При изменении: не передан — не…
@@ -34,6 +35,7 @@ final readonly class ApiKeyPatch implements \JsonSerializable
         public ?string $expiresAt = null,
         public ?int $monthlyCapTiyn = null,
         public ?string $name = null,
+        public ?bool $noCompanies = null,
         public ?array $permissions = null,
         public ?array $writeKinds = null,
         public ?int $writeMaxAmountPerDayTiyn = null,
@@ -66,6 +68,7 @@ final readonly class ApiKeyPatch implements \JsonSerializable
             expiresAt: Wire::opt($data, 'expires_at', $path, Wire::asString(...)),
             monthlyCapTiyn: Wire::opt($data, 'monthly_cap_tiyn', $path, Wire::asInt(...)),
             name: Wire::opt($data, 'name', $path, Wire::asString(...)),
+            noCompanies: Wire::opt($data, 'no_companies', $path, Wire::asBool(...)),
             permissions: Wire::opt($data, 'permissions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
             writeKinds: Wire::opt($data, 'write_kinds', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ApiKeyPatchWriteKindItem::class))),
             writeMaxAmountPerDayTiyn: Wire::opt($data, 'write_max_amount_per_day_tiyn', $path, Wire::asInt(...)),
@@ -113,6 +116,9 @@ final readonly class ApiKeyPatch implements \JsonSerializable
         }
         if ($this->name !== null) {
             $o['name'] = $this->name;
+        }
+        if ($this->noCompanies !== null) {
+            $o['no_companies'] = $this->noCompanies;
         }
         if ($this->permissions !== null) {
             $o['permissions'] = Wire::list($this->permissions);

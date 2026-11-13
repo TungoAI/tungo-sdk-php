@@ -25,7 +25,10 @@ use Tungo\Sdk\Model\CompanyAutonomyInput;
 use Tungo\Sdk\Model\DataGaps;
 use Tungo\Sdk\Model\EsfPurchasesJobRequest;
 use Tungo\Sdk\Model\FeedSection;
+use Tungo\Sdk\Model\ListCompanyChatSuggestionsLang;
+use Tungo\Sdk\Model\ListCompanyProposalsApprovalRequested;
 use Tungo\Sdk\Model\ListWorkspaceWebhooksEndpointAttemptsStatus;
+use Tungo\Sdk\Model\ProposalApprovalRequestBody;
 use Tungo\Sdk\Model\RejectRequest;
 use Tungo\Sdk\Model\WebhookEndpointCreate;
 use Tungo\Sdk\Model\WebhookEndpointPatch;
@@ -34,12 +37,12 @@ use Tungo\Sdk\Tests\Support\OperationTestCase;
 use Tungo\Sdk\TungoClient;
 
 /**
- * Calls every method of every resource (164 cases) against the mock server and
+ * Calls every method of every resource (170 cases) against the mock server and
  * checks the request that was sent and the typed result that was decoded.
  */
 final class OperationsTest extends OperationTestCase
 {
-    public const CASES = 164;
+    public const CASES = 170;
 
     /**
      * @param array<string, mixed>        $spec
@@ -297,6 +300,22 @@ final class OperationsTest extends OperationTestCase
             ['key' => 'chat.count_tokens#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/count-tokens', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->chat->countTokensWithResponse(body: ChatTokenCountRequest::fromArray(self::request('chat.count_tokens')), companyId: 'co 1'),
         ];
+        yield 'chat.list_mentions' => [
+            ['key' => 'chat.list_mentions', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/mentions', 'query' => 'limit=7&q=a%20b%2Bc%2F%D0%B4&types=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->listMentions(limit: 7, q: 'a b+c/д', types: 'a b+c/д', companyId: 'co 1'),
+        ];
+        yield 'chat.list_mentions#response' => [
+            ['key' => 'chat.list_mentions#response', 'kind' => 'json-response', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/mentions', 'query' => 'limit=7&q=a%20b%2Bc%2F%D0%B4&types=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->listMentionsWithResponse(limit: 7, q: 'a b+c/д', types: 'a b+c/д', companyId: 'co 1'),
+        ];
+        yield 'chat.list_suggestions' => [
+            ['key' => 'chat.list_suggestions', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/suggestions', 'query' => 'lang=ru', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->listSuggestions(lang: ListCompanyChatSuggestionsLang::from('ru'), companyId: 'co 1'),
+        ];
+        yield 'chat.list_suggestions#response' => [
+            ['key' => 'chat.list_suggestions#response', 'kind' => 'json-response', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/suggestions', 'query' => 'lang=ru', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->listSuggestionsWithResponse(lang: ListCompanyChatSuggestionsLang::from('ru'), companyId: 'co 1'),
+        ];
         yield 'chat.get' => [
             ['key' => 'chat.get', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/id%201%2Fx', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->chat->get('id 1/x', companyId: 'co 1'),
@@ -346,12 +365,12 @@ final class OperationsTest extends OperationTestCase
             static fn (TungoClient $c): mixed => $c->chat->stopWithResponse('id 1/x', companyId: 'co 1'),
         ];
         yield 'proposals.list' => [
-            ['key' => 'proposals.list', 'kind' => 'page', 'method' => 'GET', 'path' => '/v1/companies/co%201/proposals', 'query' => 'cursor=c%201&date_from=2026-01-02&date_to=2026-01-02&kind=a%20b%2Bc%2F%D0%B4&limit=7&q=a%20b%2Bc%2F%D0%B4&status=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
-            static fn (TungoClient $c): mixed => $c->proposals->list(cursor: 'c 1', dateFrom: new \DateTimeImmutable('2026-01-02T03:04:05+05:00'), dateTo: new \DateTimeImmutable('2026-01-02T03:04:05+05:00'), kind: 'a b+c/д', limit: 7, q: 'a b+c/д', status: 'a b+c/д', companyId: 'co 1'),
+            ['key' => 'proposals.list', 'kind' => 'page', 'method' => 'GET', 'path' => '/v1/companies/co%201/proposals', 'query' => 'approval_requested=true&batch_id=a%20b%2Bc%2F%D0%B4&cursor=c%201&date_from=2026-01-02&date_to=2026-01-02&kind=a%20b%2Bc%2F%D0%B4&limit=7&q=a%20b%2Bc%2F%D0%B4&source=a%20b%2Bc%2F%D0%B4&status=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->proposals->list(approvalRequested: ListCompanyProposalsApprovalRequested::from('true'), batchId: 'a b+c/д', cursor: 'c 1', dateFrom: new \DateTimeImmutable('2026-01-02T03:04:05+05:00'), dateTo: new \DateTimeImmutable('2026-01-02T03:04:05+05:00'), kind: 'a b+c/д', limit: 7, q: 'a b+c/д', source: 'a b+c/д', status: 'a b+c/д', companyId: 'co 1'),
         ];
         yield 'proposals.list#all' => [
-            ['key' => 'proposals.list#all', 'kind' => 'all', 'method' => 'GET', 'path' => '/v1/companies/co%201/proposals', 'query' => 'date_from=2026-01-02&date_to=2026-01-02&kind=a%20b%2Bc%2F%D0%B4&limit=7&q=a%20b%2Bc%2F%D0%B4&status=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
-            static fn (TungoClient $c): mixed => $c->proposals->listAll(dateFrom: new \DateTimeImmutable('2026-01-02T03:04:05+05:00'), dateTo: new \DateTimeImmutable('2026-01-02T03:04:05+05:00'), kind: 'a b+c/д', limit: 7, q: 'a b+c/д', status: 'a b+c/д', companyId: 'co 1'),
+            ['key' => 'proposals.list#all', 'kind' => 'all', 'method' => 'GET', 'path' => '/v1/companies/co%201/proposals', 'query' => 'approval_requested=true&batch_id=a%20b%2Bc%2F%D0%B4&date_from=2026-01-02&date_to=2026-01-02&kind=a%20b%2Bc%2F%D0%B4&limit=7&q=a%20b%2Bc%2F%D0%B4&source=a%20b%2Bc%2F%D0%B4&status=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->proposals->listAll(approvalRequested: ListCompanyProposalsApprovalRequested::from('true'), batchId: 'a b+c/д', dateFrom: new \DateTimeImmutable('2026-01-02T03:04:05+05:00'), dateTo: new \DateTimeImmutable('2026-01-02T03:04:05+05:00'), kind: 'a b+c/д', limit: 7, q: 'a b+c/д', source: 'a b+c/д', status: 'a b+c/д', companyId: 'co 1'),
         ];
         yield 'proposals.approve_batch' => [
             ['key' => 'proposals.approve_batch', 'kind' => 'json', 'method' => 'POST', 'path' => '/v1/companies/co%201/proposals/approve-batch', 'query' => '', 'auth' => 'key', 'idempotent' => true, 'status' => 200, 'accept' => '', 'headers' => []],
@@ -388,6 +407,14 @@ final class OperationsTest extends OperationTestCase
         yield 'proposals.reject#response' => [
             ['key' => 'proposals.reject#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/companies/co%201/proposals/id%201%2Fx/reject', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->proposals->rejectWithResponse('id 1/x', body: RejectRequest::fromArray(self::request('proposals.reject')), companyId: 'co 1'),
+        ];
+        yield 'proposals.request_approval' => [
+            ['key' => 'proposals.request_approval', 'kind' => 'json', 'method' => 'POST', 'path' => '/v1/companies/co%201/proposals/id%201%2Fx/request-approval', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->proposals->requestApproval('id 1/x', body: ProposalApprovalRequestBody::fromArray(self::request('proposals.request_approval')), companyId: 'co 1'),
+        ];
+        yield 'proposals.request_approval#response' => [
+            ['key' => 'proposals.request_approval#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/companies/co%201/proposals/id%201%2Fx/request-approval', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->proposals->requestApprovalWithResponse('id 1/x', body: ProposalApprovalRequestBody::fromArray(self::request('proposals.request_approval')), companyId: 'co 1'),
         ];
         yield 'feed.get' => [
             ['key' => 'feed.get', 'kind' => 'page', 'method' => 'GET', 'path' => '/v1/companies/co%201/feed', 'query' => 'cursor=c%201&limit=7&section=auto', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],

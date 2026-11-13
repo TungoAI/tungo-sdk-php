@@ -18,11 +18,13 @@ final readonly class PlatformAccountPurchaseLimits implements \JsonSerializable
      * @param int $dailyMaxTiyn Наибольшая сумма пополнений за сутки в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
      * @param int $maxTiyn Наибольшее пополнение за раз в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
      * @param int $minTiyn Наименьшее пополнение в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
+     * @param int $todayTiyn Сколько уже пополнено сегодня (сутки по Алматы; платежи без итога тоже в счёте) — тот же счёт, что у предела daily_max_tiyn в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
      */
     public function __construct(
         public int $dailyMaxTiyn,
         public int $maxTiyn,
         public int $minTiyn,
+        public int $todayTiyn,
     ) {
     }
 
@@ -47,6 +49,7 @@ final readonly class PlatformAccountPurchaseLimits implements \JsonSerializable
             dailyMaxTiyn: Wire::req($data, 'daily_max_tiyn', $path, Wire::asInt(...)),
             maxTiyn: Wire::req($data, 'max_tiyn', $path, Wire::asInt(...)),
             minTiyn: Wire::req($data, 'min_tiyn', $path, Wire::asInt(...)),
+            todayTiyn: Wire::req($data, 'today_tiyn', $path, Wire::asInt(...)),
         );
     }
 
@@ -69,6 +72,7 @@ final readonly class PlatformAccountPurchaseLimits implements \JsonSerializable
         $o['daily_max_tiyn'] = $this->dailyMaxTiyn;
         $o['max_tiyn'] = $this->maxTiyn;
         $o['min_tiyn'] = $this->minTiyn;
+        $o['today_tiyn'] = $this->todayTiyn;
 
         return (object) $o;
     }

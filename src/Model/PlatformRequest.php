@@ -19,6 +19,7 @@ final readonly class PlatformRequest implements \JsonSerializable
      * @param string $at Когда, ISO 8601 UTC
      * @param string|null $clientRequestId Номер, присланный вами в x-request-id; null — не присылали или он неверного вида
      * @param string|null $companyId Компания из адреса (co_…); null — адрес не про компанию
+     * @param int|null $costTiyn Цена запроса в тиынах — сколько списано с баланса платформы за вызовы модели этого запроса (ход ИИ; у хода потоком — когда он закончится). null — запрос модель не вызывал; у запросов до появления этого поля тоже null
      * @param int $durationMs Сколько шёл ответ, мс. У хода ИИ — до начала потока событий
      * @param string $id id строки журнала (rlg_…)
      * @param string|null $ip С какого адреса пришёл запрос; null — не определён
@@ -33,6 +34,7 @@ final readonly class PlatformRequest implements \JsonSerializable
         public string $at,
         public ?string $clientRequestId,
         public ?string $companyId,
+        public ?int $costTiyn,
         public int $durationMs,
         public string $id,
         public ?string $ip,
@@ -66,6 +68,7 @@ final readonly class PlatformRequest implements \JsonSerializable
             at: Wire::req($data, 'at', $path, Wire::asString(...)),
             clientRequestId: Wire::opt($data, 'client_request_id', $path, Wire::asString(...)),
             companyId: Wire::opt($data, 'company_id', $path, Wire::asString(...)),
+            costTiyn: Wire::opt($data, 'cost_tiyn', $path, Wire::asInt(...)),
             durationMs: Wire::req($data, 'duration_ms', $path, Wire::asInt(...)),
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
             ip: Wire::opt($data, 'ip', $path, Wire::asString(...)),
@@ -97,6 +100,7 @@ final readonly class PlatformRequest implements \JsonSerializable
         $o['at'] = $this->at;
         $o['client_request_id'] = $this->clientRequestId;
         $o['company_id'] = $this->companyId;
+        $o['cost_tiyn'] = $this->costTiyn;
         $o['duration_ms'] = $this->durationMs;
         $o['id'] = $this->id;
         $o['ip'] = $this->ip;

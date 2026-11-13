@@ -21,11 +21,14 @@ use Tungo\Sdk\Model\ChatDialogList;
 use Tungo\Sdk\Model\ChatDialogPatch;
 use Tungo\Sdk\Model\ChatDialogRenamed;
 use Tungo\Sdk\Model\ChatDialogSummary;
+use Tungo\Sdk\Model\ChatMentionSearch;
 use Tungo\Sdk\Model\ChatMessageRequest;
 use Tungo\Sdk\Model\ChatStopResult;
+use Tungo\Sdk\Model\ChatSuggestions;
 use Tungo\Sdk\Model\ChatTokenCount;
 use Tungo\Sdk\Model\ChatTokenCountRequest;
 use Tungo\Sdk\Model\ChatTurnResult;
+use Tungo\Sdk\Model\ListCompanyChatSuggestionsLang;
 use Tungo\Sdk\Page;
 use Tungo\Sdk\RequestOptions;
 use Tungo\Sdk\Streaming\ChatStream;
@@ -264,6 +267,120 @@ final class ChatResource
             $options,
             ChatTokenCount::fromValue(...),
             'ChatTokenCount',
+        );
+    }
+
+    /**
+     * Что можно упомянуть через «(at)»
+     *
+     * GET /v1/companies/{co}/chat/mentions (permission: chat.use)
+     *
+     * @param int|null $limit Сколько на каждый вид: 1–20, по умолчанию 8
+     * @param string|null $q Что ищем: часть номера, названия, имени; у контрагента — от 2 знаков (или БИН цифрами). Пусто — свежие предложения и задания
+     * @param string|null $types Виды через запятую; по умолчанию все. `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, в…
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatMentionSearch
+     *
+     * @throws TungoError
+     */
+    public function listMentions(
+        ?int $limit = null,
+        ?string $q = null,
+        ?string $types = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatMentionSearch
+    {
+        return $this->listMentionsWithResponse($limit, $q, $types, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Что можно упомянуть через «(at)»
+     *
+     * GET /v1/companies/{co}/chat/mentions (permission: chat.use)
+     *
+     * @param int|null $limit Сколько на каждый вид: 1–20, по умолчанию 8
+     * @param string|null $q Что ищем: часть номера, названия, имени; у контрагента — от 2 знаков (или БИН цифрами). Пусто — свежие предложения и задания
+     * @param string|null $types Виды через запятую; по умолчанию все. `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, в…
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatMentionSearch>
+     *
+     * @throws TungoError
+     */
+    public function listMentionsWithResponse(
+        ?int $limit = null,
+        ?string $q = null,
+        ?string $types = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'GET',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/mentions',
+                query: [['limit', $limit], ['q', $q], ['types', $types]],
+            ),
+            $options,
+            ChatMentionSearch::fromValue(...),
+            'ChatMentionSearch',
+        );
+    }
+
+    /**
+     * Подсказки пустого чата
+     *
+     * GET /v1/companies/{co}/chat/suggestions (permission: chat.use)
+     *
+     * @param ListCompanyChatSuggestionsLang|string|null $lang Язык текстов — язык интерфейса кабинета. Не передан — язык ответов ИИ из профиля (`kk` — по-казахски, иначе по-русски)
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatSuggestions
+     *
+     * @throws TungoError
+     */
+    public function listSuggestions(
+        ListCompanyChatSuggestionsLang|string|null $lang = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatSuggestions
+    {
+        return $this->listSuggestionsWithResponse($lang, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Подсказки пустого чата
+     *
+     * GET /v1/companies/{co}/chat/suggestions (permission: chat.use)
+     *
+     * @param ListCompanyChatSuggestionsLang|string|null $lang Язык текстов — язык интерфейса кабинета. Не передан — язык ответов ИИ из профиля (`kk` — по-казахски, иначе по-русски)
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatSuggestions>
+     *
+     * @throws TungoError
+     */
+    public function listSuggestionsWithResponse(
+        ListCompanyChatSuggestionsLang|string|null $lang = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'GET',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/suggestions',
+                query: [['lang', $lang]],
+            ),
+            $options,
+            ChatSuggestions::fromValue(...),
+            'ChatSuggestions',
         );
     }
 

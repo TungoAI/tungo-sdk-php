@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Model;
 
 /**
- * Причина: - `budget` — кончился лимит (дня или разговора) - `rate_limited` — сервис модели перегружен — повторите - `api` — сбой сервиса модели - `refusal` — модель отказалась отвечать - `context_overflow` — разговор слиш…
+ * Причина: - `budget` — кончился лимит (дня или разговора) - `parallel_turns_limit` — у человека уже идёт предельное число ходов ИИ (тариф без доп. использования) — дождаться ответа на предыдущие вопросы - `rate_limited` —…
  *
  * The API may add values: a property of this type holds the raw value when it
  * is not one of the cases below.
@@ -15,6 +15,7 @@ namespace Tungo\Sdk\Model;
 enum ChatTurnErrorCode: string
 {
     case Budget = 'budget';
+    case ParallelTurnsLimit = 'parallel_turns_limit';
     case RateLimited = 'rate_limited';
     case Api = 'api';
     case Refusal = 'refusal';

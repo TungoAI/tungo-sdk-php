@@ -16,12 +16,13 @@ final readonly class ApiKeyCreate implements \JsonSerializable
 {
     /**
      * @param string $name Название ключа для людей (1–100 знаков): где он используется
-     * @param list<string> $permissions Права ключа (1–20): `company.read` — читать данные компаний (добавляется всегда, даже если не передано); `chat.use` — работать с ИИ-бухгалтером; `proposals.create` — готовить документы для 1С; `proposals.approve` — одобр…
      * @param bool|null $allCompanies Ключ на все компании организации, в том числе будущие: список company_ids не передаётся. Ключ видит те компании, где его создатель состоит сейчас, и в каждой — не шире его текущей роли. По умолчанию false
      * @param list<string>|null $allowedIps С каких адресов ключ работает: IP или подсети CIDR (до 100), IPv4 и IPv6. С другого адреса — 403, error.code ip_not_allowed. null — с любых
      * @param list<string>|null $companyIds Компании, к которым ключ даёт доступ (co_…), от 1 до 200; все — из этой организации, и в каждой у создателя должны быть выдаваемые права. Для webhooks.manage — обязательно все компании организации. Обязательно, если не a…
      * @param string|null $expiresAt Когда ключ перестанет действовать, ISO 8601; только в будущем и не дальше настройки платформы (по умолчанию 365 дней). null или нет — через срок по умолчанию (90 дней)
      * @param int|null $monthlyCapTiyn Месячный потолок расхода ИИ по ключу в тиынах (1 ₸ = 100 тиын), календарный месяц по Алматы; дойдя до него, вызовы ИИ по ключу отклоняются до 1-го числа. null — без потолка ключа
+     * @param bool|null $noCompanies Ключ без доступа к компаниям и их 1С: ни одной компании он не видит — ни сейчас, ни будущих; company_ids и all_companies не передаются, права — только company.read (он ничего не открывает). По умолчанию false
+     * @param list<string>|null $permissions Права ключа (1–20): `company.read` — читать данные компаний (добавляется всегда, даже если не передано); `chat.use` — работать с ИИ-бухгалтером; `proposals.create` — готовить документы для 1С; `proposals.approve` — одобр…
      * @param list<ApiKeyCreateWriteKindItem|string>|null $writeKinds Предел записи в 1С по ключу: какие виды документов ключ может одобрять (как kinds правила автоодобрения: sale, purchase, bank_receipt, bank_payment, counterparty, contract, inventory_writeoff, cash_order_in, cash_order_o…
      * @param int|null $writeMaxAmountPerDayTiyn Предел записи в 1С по ключу: сумма всех документов, одобренных ключом за день по Алматы, в тиынах. Документ с неизвестным исходом записи (1С не ответила) тоже считается. null — без предела. При изменении: не передан — не…
      * @param int|null $writeMaxAmountPerDocumentTiyn Предел записи в 1С по ключу: потолок суммы одного документа, который ключ одобряет (approve, approve-batch), в тиынах (1 ₸ = 100 тиын). Документ дороже или без известной суммы ключ не запишет (403, error.code key_write_l…
@@ -29,12 +30,13 @@ final readonly class ApiKeyCreate implements \JsonSerializable
      */
     public function __construct(
         public string $name,
-        public array $permissions,
         public ?bool $allCompanies = null,
         public ?array $allowedIps = null,
         public ?array $companyIds = null,
         public ?string $expiresAt = null,
         public ?int $monthlyCapTiyn = null,
+        public ?bool $noCompanies = null,
+        public ?array $permissions = null,
         public ?array $writeKinds = null,
         public ?int $writeMaxAmountPerDayTiyn = null,
         public ?int $writeMaxAmountPerDocumentTiyn = null,
@@ -66,7 +68,8 @@ final readonly class ApiKeyCreate implements \JsonSerializable
             expiresAt: Wire::opt($data, 'expires_at', $path, Wire::asString(...)),
             monthlyCapTiyn: Wire::opt($data, 'monthly_cap_tiyn', $path, Wire::asInt(...)),
             name: Wire::req($data, 'name', $path, Wire::asString(...)),
-            permissions: Wire::req($data, 'permissions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
+            noCompanies: Wire::opt($data, 'no_companies', $path, Wire::asBool(...)),
+            permissions: Wire::opt($data, 'permissions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
             writeKinds: Wire::opt($data, 'write_kinds', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ApiKeyCreateWriteKindItem::class))),
             writeMaxAmountPerDayTiyn: Wire::opt($data, 'write_max_amount_per_day_tiyn', $path, Wire::asInt(...)),
             writeMaxAmountPerDocumentTiyn: Wire::opt($data, 'write_max_amount_per_document_tiyn', $path, Wire::asInt(...)),
@@ -112,7 +115,12 @@ final readonly class ApiKeyCreate implements \JsonSerializable
             $o['monthly_cap_tiyn'] = null;
         }
         $o['name'] = $this->name;
-        $o['permissions'] = Wire::list($this->permissions);
+        if ($this->noCompanies !== null) {
+            $o['no_companies'] = $this->noCompanies;
+        }
+        if ($this->permissions !== null) {
+            $o['permissions'] = Wire::list($this->permissions);
+        }
         if ($this->writeKinds !== null) {
             $o['write_kinds'] = Wire::list($this->writeKinds);
         } elseif (in_array('write_kinds', $this->explicitNulls, true)) {

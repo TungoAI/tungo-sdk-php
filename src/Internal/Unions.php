@@ -42,14 +42,17 @@ use Tungo\Sdk\Model\ChatEventChoice;
 use Tungo\Sdk\Model\ChatEventCitation;
 use Tungo\Sdk\Model\ChatEventDone;
 use Tungo\Sdk\Model\ChatEventError;
+use Tungo\Sdk\Model\ChatEventNext;
 use Tungo\Sdk\Model\ChatEventProgress;
 use Tungo\Sdk\Model\ChatEventProposal;
 use Tungo\Sdk\Model\ChatEventQuestion;
 use Tungo\Sdk\Model\ChatEventStatus;
 use Tungo\Sdk\Model\ChatEventText;
 use Tungo\Sdk\Model\ChatEventThinking;
+use Tungo\Sdk\Model\ChatEventTitle;
 use Tungo\Sdk\Model\ChatEventTool;
 use Tungo\Sdk\Model\ChatEventUnknown;
+use Tungo\Sdk\Model\ChatHistoryBatch;
 use Tungo\Sdk\Model\ChatHistoryBlock;
 use Tungo\Sdk\Model\ChatHistoryBlockUnknown;
 use Tungo\Sdk\Model\ChatHistoryError;
@@ -316,7 +319,9 @@ final class Unions
                 'error' => ChatEventError::fromValue($object, $path),
                 'batch' => ChatEventBatch::fromValue($object, $path),
                 'batch_report' => ChatEventBatchReport::fromValue($object, $path),
+                'next' => ChatEventNext::fromValue($object, $path),
                 'done' => ChatEventDone::fromValue($object, $path),
+                'title' => ChatEventTitle::fromValue($object, $path),
                 default => new ChatEventUnknown($tag ?? '', $object),
             };
         } catch (DecodeError) {
@@ -333,6 +338,7 @@ final class Unions
                 'text' => ChatHistoryText::fromValue($object, $path),
                 'tool' => ChatHistoryTool::fromValue($object, $path),
                 'proposal' => ChatHistoryProposal::fromValue($object, $path),
+                'batch' => ChatHistoryBatch::fromValue($object, $path),
                 'question' => ChatHistoryQuestion::fromValue($object, $path),
                 'error' => ChatHistoryError::fromValue($object, $path),
                 default => new ChatHistoryBlockUnknown($tag ?? '', $object),
@@ -355,6 +361,24 @@ final class Unions
         } catch (DecodeError) {
             return new ChatMessageUnknown($tag ?? '', $object);
         }
+    }
+
+    /**
+     * @return string|int|float|bool
+     */
+    public static function chatNextActionParamsValue(mixed $value, string $path): string|int|float|bool
+    {
+        if (is_string($value)) {
+            return $value;
+        }
+        if (is_int($value) || is_float($value)) {
+            return $value;
+        }
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        throw Wire::mismatch($path, 'a string or a number or a boolean', $value);
     }
 
     /**

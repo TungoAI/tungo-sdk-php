@@ -17,10 +17,11 @@ final readonly class ProposalCard implements \JsonSerializable
     /**
      * @param list<ProposalAction> $actions Кнопки карточки в нужном порядке: approve, approve_draft, reject
      * @param ProposalApproval $approval
+     * @param ProposalApprovalRequest $approvalRequest
      * @param int $blockerCount Сколько блокеров: больше 0 — одобрить нельзя, нужен ответ человека в чате
      * @param list<string> $blockers Блокеры — показать красным: пока они есть, одобрить нельзя. Снимает их ответ человека в чате (ИИ пересоберёт предложение)
      * @param string $createdAt Когда ИИ подготовил предложение, ISO 8601 UTC
-     * @param string|null $dialogId Разговор чата, в котором ИИ подготовил предложение: «Открыть разговор» — GET …/chat/{dialog_id} (если он ваш). null — не из чата (пачка, автоматизация, MCP)
+     * @param string|null $dialogId Разговор чата, в котором ИИ подготовил предложение: «Открыть разговор» — GET …/chat/{dialog_id} (если он ваш). null — не из разговора человека (пачка из ручки, автоматизация, MCP)
      * @param ProposalHeader $header
      * @param list<ProposalHistoryEvent> $history История статусов, от старых к новым
      * @param string $href Адрес карточки в API: GET по нему отдаёт ProposalCard
@@ -32,9 +33,11 @@ final readonly class ProposalCard implements \JsonSerializable
      * @param string $levelTitle Уровень самостоятельности по-русски для показа
      * @param int $lineCount Сколько строк товаров и услуг в документе; 0 у платёжек и справочников
      * @param list<ProposalLine> $lines Строки товаров и услуг; пусто у платёжек, кассовых ордеров и справочников
+     * @param ProposalOrigin $origin
      * @param list<ProposalPosting> $postings Ожидаемые проводки — что получится в учёте после проведения
      * @param ProposalSource $source
      * @param ProposalStatus|string $status
+     * @param ProposalCardStatusReason|null $statusReason Причина отказа — у статусов rejected (отклонено) и failed (записать не удалось): последняя такая запись history. null — статус другой или причину не записали
      * @param string $statusTitle Статус по-русски для показа (бейдж)
      * @param string $summary Текстовое превью документа (для чата и логов). Интерфейс рисует карточку по полям выше
      * @param string $title Заголовок строки очереди: вид документа, дата и контрагент
@@ -50,6 +53,7 @@ final readonly class ProposalCard implements \JsonSerializable
     public function __construct(
         public array $actions,
         public ProposalApproval $approval,
+        public ProposalApprovalRequest $approvalRequest,
         public int $blockerCount,
         public array $blockers,
         public string $createdAt,
@@ -65,9 +69,11 @@ final readonly class ProposalCard implements \JsonSerializable
         public string $levelTitle,
         public int $lineCount,
         public array $lines,
+        public ProposalOrigin $origin,
         public array $postings,
         public ProposalSource $source,
         public ProposalStatus|string $status,
+        public ?ProposalCardStatusReason $statusReason,
         public string $statusTitle,
         public string $summary,
         public string $title,
@@ -103,6 +109,7 @@ final readonly class ProposalCard implements \JsonSerializable
             actions: Wire::req($data, 'actions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ProposalAction::fromValue(...))),
             advanceOffset: Wire::opt($data, 'advance_offset', $path, ProposalAdvanceOffset::fromValue(...)),
             approval: Wire::req($data, 'approval', $path, ProposalApproval::fromValue(...)),
+            approvalRequest: Wire::req($data, 'approval_request', $path, ProposalApprovalRequest::fromValue(...)),
             blockerCount: Wire::req($data, 'blocker_count', $path, Wire::asInt(...)),
             blockers: Wire::req($data, 'blockers', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
             counterparty: Wire::opt($data, 'counterparty', $path, ProposalParty::fromValue(...)),
@@ -120,10 +127,12 @@ final readonly class ProposalCard implements \JsonSerializable
             levelTitle: Wire::req($data, 'level_title', $path, Wire::asString(...)),
             lineCount: Wire::req($data, 'line_count', $path, Wire::asInt(...)),
             lines: Wire::req($data, 'lines', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ProposalLine::fromValue(...))),
+            origin: Wire::req($data, 'origin', $path, ProposalOrigin::fromValue(...)),
             postings: Wire::req($data, 'postings', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ProposalPosting::fromValue(...))),
             result: Wire::opt($data, 'result', $path, ProposalResult::fromValue(...)),
             source: Wire::req($data, 'source', $path, ProposalSource::fromValue(...)),
             status: Wire::req($data, 'status', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ProposalStatus::class)),
+            statusReason: Wire::opt($data, 'status_reason', $path, ProposalCardStatusReason::fromValue(...)),
             statusTitle: Wire::req($data, 'status_title', $path, Wire::asString(...)),
             summary: Wire::req($data, 'summary', $path, Wire::asString(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
@@ -155,6 +164,7 @@ final readonly class ProposalCard implements \JsonSerializable
             $o['advance_offset'] = $this->advanceOffset;
         }
         $o['approval'] = $this->approval;
+        $o['approval_request'] = $this->approvalRequest;
         $o['blocker_count'] = $this->blockerCount;
         $o['blockers'] = Wire::list($this->blockers);
         if ($this->counterparty !== null) {
@@ -176,12 +186,14 @@ final readonly class ProposalCard implements \JsonSerializable
         $o['level_title'] = $this->levelTitle;
         $o['line_count'] = $this->lineCount;
         $o['lines'] = Wire::list($this->lines);
+        $o['origin'] = $this->origin;
         $o['postings'] = Wire::list($this->postings);
         if ($this->result !== null) {
             $o['result'] = $this->result;
         }
         $o['source'] = $this->source;
         $o['status'] = $this->status;
+        $o['status_reason'] = $this->statusReason;
         $o['status_title'] = $this->statusTitle;
         $o['summary'] = $this->summary;
         $o['title'] = $this->title;

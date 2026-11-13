@@ -16,7 +16,7 @@ final readonly class ChatHistoryError implements ChatHistoryBlock
 {
     /**
      * @param string $message Текст для человека
-     * @param ChatHistoryErrorCode|string|null $code Причина: - `budget` — кончился лимит (дня или разговора) - `rate_limited` — сервис модели перегружен — повторите - `api` — сбой сервиса модели - `refusal` — модель отказалась отвечать - `context_overflow` — разговор слиш…
+     * @param ChatHistoryErrorCode|string|null $code Причина: - `budget` — кончился лимит (дня или разговора) - `parallel_turns_limit` — у человека уже идёт предельное число ходов ИИ (тариф без доп. использования) — дождаться ответа на предыдущие вопросы - `rate_limited` —…
      * @param string $kind Ошибка хода
      */
     public function __construct(

@@ -13,7 +13,7 @@ final readonly class ApiKeyUsageByModelItem implements \JsonSerializable
 {
     /**
      * @param int $costTiyn Стоимость в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
-     * @param string $model Модель ИИ (техническое имя)
+     * @param string $model Модель ИИ: tungo-1-flash, tungo-1, tungo-1-deep (tungo-search, tungo-legacy)
      * @param int $requests Сколько вызовов ИИ
      */
     public function __construct(

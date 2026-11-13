@@ -19,6 +19,7 @@ final readonly class ProposalHistoryEvent implements \JsonSerializable
      * @param string $at Когда, ISO 8601 UTC
      * @param ProposalStatus|string $status
      * @param string $statusTitle Статус по-русски
+     * @param string|null $code Машинная пометка шага, если есть: `approval_requested` — просили одобрить (статус при этом не менялся); `write_unknown`, `rejected_write_unknown`, `revert_unknown` — исход записи в 1С неизвестен
      * @param string|null $note Пояснение: причина отклонения, комментарий к одобрению, текст ошибки записи
      */
     public function __construct(
@@ -26,6 +27,7 @@ final readonly class ProposalHistoryEvent implements \JsonSerializable
         public string $at,
         public ProposalStatus|string $status,
         public string $statusTitle,
+        public ?string $code = null,
         public ?string $note = null,
     ) {
     }
@@ -50,6 +52,7 @@ final readonly class ProposalHistoryEvent implements \JsonSerializable
         return new self(
             actor: Wire::req($data, 'actor', $path, Wire::asString(...)),
             at: Wire::req($data, 'at', $path, Wire::asString(...)),
+            code: Wire::opt($data, 'code', $path, Wire::asString(...)),
             note: Wire::opt($data, 'note', $path, Wire::asString(...)),
             status: Wire::req($data, 'status', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ProposalStatus::class)),
             statusTitle: Wire::req($data, 'status_title', $path, Wire::asString(...)),
@@ -74,6 +77,9 @@ final readonly class ProposalHistoryEvent implements \JsonSerializable
         $o = [];
         $o['actor'] = $this->actor;
         $o['at'] = $this->at;
+        if ($this->code !== null) {
+            $o['code'] = $this->code;
+        }
         if ($this->note !== null) {
             $o['note'] = $this->note;
         }

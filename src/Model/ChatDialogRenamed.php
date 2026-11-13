@@ -17,10 +17,12 @@ final readonly class ChatDialogRenamed implements \JsonSerializable
     /**
      * @param string $id id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают
      * @param string $title Название разговора теперь
+     * @param ChatTitleSource|string $titleSource
      */
     public function __construct(
         public string $id,
         public string $title,
+        public ChatTitleSource|string $titleSource,
     ) {
     }
 
@@ -44,6 +46,7 @@ final readonly class ChatDialogRenamed implements \JsonSerializable
         return new self(
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
+            titleSource: Wire::req($data, 'title_source', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatTitleSource::class)),
         );
     }
 
@@ -65,6 +68,7 @@ final readonly class ChatDialogRenamed implements \JsonSerializable
         $o = [];
         $o['id'] = $this->id;
         $o['title'] = $this->title;
+        $o['title_source'] = $this->titleSource;
 
         return (object) $o;
     }

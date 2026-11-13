@@ -15,16 +15,17 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class AuditEntry implements \JsonSerializable
 {
     /**
-     * @param AuditEntryAction|string $action Что сделано — машинное имя вида «объект.действие»; подпись по-русски — в action_title. Значения: - `company.created` — Компания заведена - `company.updated` — Карточка компании изменена - `company.archived` — Компания уб…
-     * @param string $actionTitle Что сделано, по-русски — для показа
+     * @param AuditEntryAction|string $action Код действия вида «объект.действие». Текст для человека собирайте сами на его языке: по этому коду и параметрам из data (ниже — что значит каждый код). Значения: - `company.created` — Компания заведена - `company.updated…
+     * @param string $actionTitle Что сделано, готовой фразой по-русски. Оставлено для совместимости: фраза всегда русская, поэтому для показа берите код action и параметры data и подставляйте текст на языке человека (deprecated)
      * @param AuditEntryActor $actor Кто сделал
      * @param string|null $at Когда случилось. ISO 8601 в UTC (…Z); показывать по времени Казахстана — Asia/Almaty (UTC+5), а не по поясу браузера
      * @param string|null $companyId Компания, к которой относится запись (co_…); null — запись об организации в целом
      * @param string $id id записи (aud_…)
      * @param string|null $ip IP, с которого пришёл запрос; null — фоновое действие
+     * @param AuditEntryObject|null $object Над чем сделано — с названием, чтобы не показывать безликое «Организация»: в отличие от target, у действий с вебхуком это сам адрес вебхука, у платежа есть сумма и назначение. null — без отдельного объекта. По ключу API …
      * @param string|null $requestId Номер запроса (req_…) — по нему поддержка найдёт запрос; null — фоновое действие
      * @param AuditEntryTarget|null $target Над чем сделано; null — без отдельного объекта
-     * @param mixed $data Подробности действия (JSON, ключи snake_case): например { before, after } у изменений. Вид зависит от action — показывать как дополнительные сведения
+     * @param mixed $data Параметры действия (JSON, ключи snake_case) — для подстановки в текст и для подробностей: например { role } у смены роли, { from, amount_tiyn, kind } у платежа, { before, after } у изменений. Набор зависит от action
      * @param list<string> $explicitNulls wire names of optional properties to send as an explicit null
      */
     public function __construct(
@@ -35,6 +36,7 @@ final readonly class AuditEntry implements \JsonSerializable
         public ?string $companyId,
         public string $id,
         public ?string $ip,
+        public ?AuditEntryObject $object,
         public ?string $requestId,
         public ?AuditEntryTarget $target,
         public mixed $data = null,
@@ -68,6 +70,7 @@ final readonly class AuditEntry implements \JsonSerializable
             data: Wire::opt($data, 'data', $path, Wire::asMixed(...)),
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
             ip: Wire::opt($data, 'ip', $path, Wire::asString(...)),
+            object: Wire::opt($data, 'object', $path, AuditEntryObject::fromValue(...)),
             requestId: Wire::opt($data, 'request_id', $path, Wire::asString(...)),
             target: Wire::opt($data, 'target', $path, AuditEntryTarget::fromValue(...)),
             explicitNulls: Wire::nulls($data, ['data']),
@@ -102,6 +105,7 @@ final readonly class AuditEntry implements \JsonSerializable
         }
         $o['id'] = $this->id;
         $o['ip'] = $this->ip;
+        $o['object'] = $this->object;
         $o['request_id'] = $this->requestId;
         $o['target'] = $this->target;
 

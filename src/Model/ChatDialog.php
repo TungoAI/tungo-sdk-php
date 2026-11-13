@@ -23,7 +23,8 @@ final readonly class ChatDialog implements \JsonSerializable
      * @param list<ChatMessage> $messages Сообщения от старых к новым
      * @param bool $pdRestored false — персональные данные не раскрыты (сменился ключ шифрования): вместо БИН, имён и счетов в тексте метки вида «[ПД-БИН-1]». Показать предупреждение
      * @param bool $running true — идёт ход: дочитать его потоком GET …/chat/{id}/events?turn=<turn>
-     * @param string $title Заголовок — первый вопрос одной строкой
+     * @param string $title Название одной строкой: человека, иначе от ИИ, иначе первый вопрос. Откуда оно — title_source
+     * @param ChatTitleSource|string $titleSource
      * @param int|float $turn Номер текущего хода (если идёт) или число законченных ходов
      * @param string $updatedAt Последнее изменение, ISO 8601 UTC
      * @param ChatPendingQuestion|null $awaiting
@@ -38,6 +39,7 @@ final readonly class ChatDialog implements \JsonSerializable
         public bool $pdRestored,
         public bool $running,
         public string $title,
+        public ChatTitleSource|string $titleSource,
         public int|float $turn,
         public string $updatedAt,
         public ?ChatPendingQuestion $awaiting = null,
@@ -73,6 +75,7 @@ final readonly class ChatDialog implements \JsonSerializable
             pdRestored: Wire::req($data, 'pd_restored', $path, Wire::asBool(...)),
             running: Wire::req($data, 'running', $path, Wire::asBool(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
+            titleSource: Wire::req($data, 'title_source', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatTitleSource::class)),
             turn: Wire::req($data, 'turn', $path, Wire::asNumber(...)),
             updatedAt: Wire::req($data, 'updated_at', $path, Wire::asString(...)),
         );
@@ -108,6 +111,7 @@ final readonly class ChatDialog implements \JsonSerializable
         $o['pd_restored'] = $this->pdRestored;
         $o['running'] = $this->running;
         $o['title'] = $this->title;
+        $o['title_source'] = $this->titleSource;
         $o['turn'] = $this->turn;
         $o['updated_at'] = $this->updatedAt;
 

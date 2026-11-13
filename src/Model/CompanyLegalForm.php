@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Model;
 
 /**
- * Форма: ip — ИП, too — ТОО, ao — АО, other — другое
+ * Форма: ip — ИП, too — ТОО, ao — АО, other — другое; null — ещё не указана (задаётся в карточке компании: PATCH /v1/companies/{co})
  *
  * The API may add values: a property of this type holds the raw value when it
  * is not one of the cases below.

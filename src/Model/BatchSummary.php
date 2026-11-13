@@ -22,6 +22,7 @@ final readonly class BatchSummary implements \JsonSerializable
      * @param list<BatchManualRow> $manualRows Строки без предложения, которые решает человек
      * @param list<BatchSummaryProposal> $proposals Предложения задания
      * @param bool $running true — задание ещё идёт: кнопка «Одобрить» выключена
+     * @param BatchStatement|null $statement Данные файла выписки (счёт, банк, период, остатки); null — задание не по файлу выписки (ЭСФ, DirectBank, одобрение) или заведено до появления поля
      * @param string $title Название задания
      * @param BatchSummaryTotals $totals
      * @param string|null $finishedAt Когда закончилось, ISO 8601 UTC; нет — ещё идёт
@@ -35,6 +36,7 @@ final readonly class BatchSummary implements \JsonSerializable
         public array $manualRows,
         public array $proposals,
         public bool $running,
+        public ?BatchStatement $statement,
         public string $title,
         public BatchSummaryTotals $totals,
         public ?string $finishedAt = null,
@@ -69,6 +71,7 @@ final readonly class BatchSummary implements \JsonSerializable
             proposals: Wire::req($data, 'proposals', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, BatchSummaryProposal::fromValue(...))),
             reason: Wire::opt($data, 'reason', $path, Wire::asString(...)),
             running: Wire::req($data, 'running', $path, Wire::asBool(...)),
+            statement: Wire::opt($data, 'statement', $path, BatchStatement::fromValue(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
             totals: Wire::req($data, 'totals', $path, BatchSummaryTotals::fromValue(...)),
         );
@@ -103,6 +106,7 @@ final readonly class BatchSummary implements \JsonSerializable
             $o['reason'] = $this->reason;
         }
         $o['running'] = $this->running;
+        $o['statement'] = $this->statement;
         $o['title'] = $this->title;
         $o['totals'] = $this->totals;
 

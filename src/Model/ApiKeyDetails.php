@@ -18,7 +18,7 @@ final readonly class ApiKeyDetails implements \JsonSerializable
      * @param bool $allCompanies Ключ на все компании организации, в том числе будущие: те, где создатель ключа состоит сейчас, и в каждой — не шире его текущей роли
      * @param list<string>|null $allowedIps С каких IP и подсетей CIDR ключ работает; с другого адреса — 403 ip_not_allowed. null — с любых
      * @param ApiKeyDetailsBlockedReason|string|null $blockedReason Почему ключ сейчас не сработает — тот же код, что вернул бы отказ; null — всё хорошо. Вызов ИИ оценивается средней ценой, настоящая цена может быть выше. Ограничение по адресу (allowed_ips) здесь не проверяется: оно своё…
-     * @param list<string> $companyIds Компании, к которым ключ даёт доступ (co_…); пусто у ключа на все компании (all_companies)
+     * @param list<string> $companyIds Компании, к которым ключ даёт доступ (co_…); пусто у ключа на все компании (all_companies) и у ключа без компаний (no_companies)
      * @param string $createdAt Когда выпущен, ISO 8601 UTC
      * @param string $createdBy Кто выпустил (usr_…). Ключ действует от его имени и не шире его прав: создатель перестал быть владельцем или админом — ключ не работает
      * @param string|null $disabledAt Когда выключен, ISO 8601 UTC; null — не выключен
@@ -28,6 +28,7 @@ final readonly class ApiKeyDetails implements \JsonSerializable
      * @param string|null $lastUsedIp С какого IP-адреса был последний запрос; null — ещё ни разу
      * @param int|null $monthlyCapTiyn Месячный потолок расхода ИИ по ключу в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸), календарный месяц по Алматы; null — без потолка ключа
      * @param string $name Название ключа для людей
+     * @param bool $noCompanies Ключ без доступа к компаниям и их 1С: company_ids пуст, all_companies = false; компаний не видит никогда. Пустой company_ids сам по себе вида не называет — смотреть на all_companies и no_companies
      * @param list<ApiKeyDetailsPermissionItem|string> $permissions Права ключа: `company.read` — читать данные компаний (есть всегда); `chat.use` — работать с ИИ-бухгалтером; `proposals.create` — готовить документы для 1С; `proposals.approve` — одобрять запись в 1С; `automations.read` —…
      * @param string $prefix Открытая часть ключа для показа — узнать ключ среди других; сам ключ (tg_…_секрет) целиком не хранится
      * @param string|null $previousSecretValidUntil После смены секрета (roll): до какого времени ещё действует прежний, ISO 8601 UTC; null — прежнего нет
@@ -52,6 +53,7 @@ final readonly class ApiKeyDetails implements \JsonSerializable
         public ?string $lastUsedIp,
         public ?int $monthlyCapTiyn,
         public string $name,
+        public bool $noCompanies,
         public array $permissions,
         public string $prefix,
         public ?string $previousSecretValidUntil,
@@ -95,6 +97,7 @@ final readonly class ApiKeyDetails implements \JsonSerializable
             lastUsedIp: Wire::opt($data, 'last_used_ip', $path, Wire::asString(...)),
             monthlyCapTiyn: Wire::opt($data, 'monthly_cap_tiyn', $path, Wire::asInt(...)),
             name: Wire::req($data, 'name', $path, Wire::asString(...)),
+            noCompanies: Wire::req($data, 'no_companies', $path, Wire::asBool(...)),
             permissions: Wire::req($data, 'permissions', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ApiKeyDetailsPermissionItem::class))),
             prefix: Wire::req($data, 'prefix', $path, Wire::asString(...)),
             previousSecretValidUntil: Wire::opt($data, 'previous_secret_valid_until', $path, Wire::asString(...)),
@@ -136,6 +139,7 @@ final readonly class ApiKeyDetails implements \JsonSerializable
         $o['last_used_ip'] = $this->lastUsedIp;
         $o['monthly_cap_tiyn'] = $this->monthlyCapTiyn;
         $o['name'] = $this->name;
+        $o['no_companies'] = $this->noCompanies;
         $o['permissions'] = Wire::list($this->permissions);
         $o['prefix'] = $this->prefix;
         $o['previous_secret_valid_until'] = $this->previousSecretValidUntil;
