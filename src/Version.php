@@ -9,7 +9,7 @@ namespace Tungo\Sdk;
 /** The version of this SDK. It is sent in the User-Agent header. */
 final class Version
 {
-    public const SDK = '0.3.0'; // x-release-version
+    public const SDK = '0.3.1'; // x-release-version
 
     public const USER_AGENT = 'tungo-sdk-php/' . self::SDK;
 

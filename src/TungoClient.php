@@ -268,7 +268,7 @@ final class TungoClient
         if ($signature !== null && $signatureHeader !== null && strcasecmp($signatureHeader, 'X-Signature') !== 0) {
             // A hook created with its own signature_header reads the signature only there.
             $headers = [];
-            foreach ($options?->headers ?? [] as $name => $value) {
+            foreach ($options->headers ?? [] as $name => $value) {
                 if (strcasecmp((string) $name, $signatureHeader) === 0) {
                     throw new ValidationError("Pass either secret or the {$signatureHeader} header, not both.");
                 }

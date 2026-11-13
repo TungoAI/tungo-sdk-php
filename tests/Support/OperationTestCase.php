@@ -146,10 +146,17 @@ abstract class OperationTestCase extends TestCase
         if (isset($expectedHeaders['idempotency-key'])) {
             // The operation takes its key from an argument (the event id of a hook); compared below.
         } elseif (($spec['idempotent'] ?? null) === true) {
-            self::assertMatchesRegularExpression(
-                '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/D',
-                $headers['idempotency-key'] ?? '',
-            );
+            $sample = $case['request'] ?? (self::fixture('operations')[explode('#', $key)[0]]['request'] ?? null);
+            $bodyKey = is_array($sample) && is_string($sample['idempotency_key'] ?? null) ? trim($sample['idempotency_key']) : '';
+            if ($bodyKey !== '') {
+                // The idempotency_key field of the body is the key (approving a proposal).
+                self::assertSame($bodyKey, $headers['idempotency-key'] ?? null);
+            } else {
+                self::assertMatchesRegularExpression(
+                    '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/D',
+                    $headers['idempotency-key'] ?? '',
+                );
+            }
         } else {
             self::assertArrayNotHasKey('idempotency-key', $headers);
         }

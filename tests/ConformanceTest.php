@@ -494,10 +494,13 @@ final class ConformanceTest extends TestCase
             foreach ($result->events as $event) {
                 $wire = $event instanceof ChatEventUnknown ? ['type' => $event->type] : self::arr(json_decode(self::json($event), true));
                 if ($wire['type'] === 'next') {
-                    $nexts[] = ['followups' => $wire['followups'] ?? null, 'action' => $wire['action'] ?? null];
+                    $raw = $event instanceof ChatEventUnknown ? null : json_decode(self::json($event), false);
+                    $nexts[] = ['followups' => $raw->followups ?? null, 'action' => $raw->action ?? null];
                 }
             }
-            self::assertEquals([$expect['next']], $nexts);
+            // Compared as JSON: an empty params object must stay {} on the wire, which an
+            // associative decode would turn into [].
+            self::assertSame(self::canonical(self::json([$expect['next']])), self::canonical(self::json($nexts)));
         }
         if ($expect['error'] === null) {
             self::assertNull($result->error);
