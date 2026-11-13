@@ -187,6 +187,8 @@
      "answer": "text",
      "citations": [
       {
+       "document": "text",
+       "label": "text",
        "source": "text",
        "title": "text"
       }

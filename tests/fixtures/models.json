@@ -2473,6 +2473,8 @@
    ],
    "citations": [
     {
+     "document": "text",
+     "label": "text",
      "source": "text",
      "title": "text"
     }
@@ -2491,9 +2493,16 @@
    "proposal_ids": [
     "text"
    ],
+   "rating": {
+    "at": "2026-01-02T03:04:05Z",
+    "comment": "text",
+    "reason": "text",
+    "vote": "up"
+   },
    "role": "assistant",
    "state": "done",
-   "thinking": "text"
+   "thinking": "text",
+   "turn_no": 9007199254740993
   }
  },
  "ChatAttachment": {
@@ -2548,8 +2557,20 @@
  "ChatCitation": {
   "kind": "object",
   "sample": {
+   "article": "text",
+   "chapter": "text",
+   "document": "text",
    "edition": "text",
+   "edition_date": "text",
+   "heading": "text",
+   "label": "text",
+   "mentions": [
+    "text"
+   ],
+   "note": "text",
+   "point": "text",
    "source": "text",
+   "subpoint": "text",
    "title": "text",
    "url": "text"
   }
@@ -2591,6 +2612,12 @@
     }
    ],
    "pd_restored": true,
+   "rating": {
+    "at": "2026-01-02T03:04:05Z",
+    "comment": "text",
+    "score": 7
+   },
+   "rating_prompt": true,
    "running": true,
    "title": "text",
    "title_source": "first_message",
@@ -2632,6 +2659,33 @@
   "kind": "object",
   "sample": {
    "title": "text"
+  }
+ },
+ "ChatDialogRated": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "rating": {
+    "at": "2026-01-02T03:04:05Z",
+    "comment": "text",
+    "score": 7
+   },
+   "rating_prompt": false
+  }
+ },
+ "ChatDialogRating": {
+  "kind": "object",
+  "sample": {
+   "at": "2026-01-02T03:04:05Z",
+   "comment": "text",
+   "score": 7
+  }
+ },
+ "ChatDialogRatingBody": {
+  "kind": "object",
+  "sample": {
+   "comment": "text",
+   "score": 7
   }
  },
  "ChatDialogRenamed": {
@@ -2748,8 +2802,17 @@
  "ChatEventCitation": {
   "kind": "object",
   "sample": {
+   "article": "text",
+   "chapter": "text",
+   "document": "text",
    "edition": "text",
+   "edition_date": "text",
+   "heading": "text",
+   "label": "text",
+   "note": "text",
+   "point": "text",
    "source": "text",
+   "subpoint": "text",
    "title": "text",
    "type": "citation",
    "url": "text"
@@ -2761,6 +2824,7 @@
    "answer": "text",
    "choice_id": "text",
    "cost_tiyn": 9007199254740993,
+   "rating_prompt": true,
    "stop_reason": "text",
    "type": "done",
    "usage": {
@@ -3227,6 +3291,37 @@
    "text": "text"
   }
  },
+ "ChatMessageRated": {
+  "kind": "object",
+  "sample": {
+   "dialog_id": "text",
+   "message_id": "text",
+   "rating": {
+    "at": "2026-01-02T03:04:05Z",
+    "comment": "text",
+    "reason": "text",
+    "vote": "up"
+   },
+   "turn_no": 9007199254740993
+  }
+ },
+ "ChatMessageRating": {
+  "kind": "object",
+  "sample": {
+   "at": "2026-01-02T03:04:05Z",
+   "comment": "text",
+   "reason": "text",
+   "vote": "up"
+  }
+ },
+ "ChatMessageRatingBody": {
+  "kind": "object",
+  "sample": {
+   "comment": "text",
+   "reason": "text",
+   "vote": "up"
+  }
+ },
  "ChatMessageRequest": {
   "kind": "object",
   "sample": {
@@ -3294,6 +3389,43 @@
   "sample": {
    "proposal_id": "text",
    "text": "text"
+  }
+ },
+ "ChatRatingDismissed": {
+  "kind": "object",
+  "sample": {
+   "id": "text",
+   "rating_prompt": false
+  }
+ },
+ "ChatRatingOptions": {
+  "kind": "object",
+  "sample": {
+   "comment_chars": 9007199254740993,
+   "dialog_scores": {
+    "max": 9007199254740993,
+    "min": 9007199254740993
+   },
+   "reasons": [
+    {
+     "key": "text",
+     "title": "text"
+    }
+   ]
+  }
+ },
+ "ChatRatingOptionsDialogScores": {
+  "kind": "object",
+  "sample": {
+   "max": 9007199254740993,
+   "min": 9007199254740993
+  }
+ },
+ "ChatRatingOptionsReasonItem": {
+  "kind": "object",
+  "sample": {
+   "key": "text",
+   "title": "text"
   }
  },
  "ChatStopResult": {
@@ -3617,6 +3749,8 @@
    "answer": "text",
    "citations": [
     {
+     "document": "text",
+     "label": "text",
      "source": "text",
      "title": "text"
     }

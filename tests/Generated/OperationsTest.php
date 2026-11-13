@@ -19,12 +19,15 @@ use Tungo\Sdk\Model\BankStatementJobRequest;
 use Tungo\Sdk\Model\BatchApproveRequest;
 use Tungo\Sdk\Model\ChatAnswerRequest;
 use Tungo\Sdk\Model\ChatDialogPatch;
+use Tungo\Sdk\Model\ChatDialogRatingBody;
+use Tungo\Sdk\Model\ChatMessageRatingBody;
 use Tungo\Sdk\Model\ChatMessageRequest;
 use Tungo\Sdk\Model\ChatTokenCountRequest;
 use Tungo\Sdk\Model\CompanyAutonomyInput;
 use Tungo\Sdk\Model\DataGaps;
 use Tungo\Sdk\Model\EsfPurchasesJobRequest;
 use Tungo\Sdk\Model\FeedSection;
+use Tungo\Sdk\Model\ListCompanyChatRatingOptionsLang;
 use Tungo\Sdk\Model\ListCompanyChatSuggestionsLang;
 use Tungo\Sdk\Model\ListCompanyProposalsApprovalRequested;
 use Tungo\Sdk\Model\ListWorkspaceWebhooksEndpointAttemptsStatus;
@@ -37,12 +40,12 @@ use Tungo\Sdk\Tests\Support\OperationTestCase;
 use Tungo\Sdk\TungoClient;
 
 /**
- * Calls every method of every resource (170 cases) against the mock server and
+ * Calls every method of every resource (180 cases) against the mock server and
  * checks the request that was sent and the typed result that was decoded.
  */
 final class OperationsTest extends OperationTestCase
 {
-    public const CASES = 170;
+    public const CASES = 180;
 
     /**
      * @param array<string, mixed>        $spec
@@ -308,6 +311,14 @@ final class OperationsTest extends OperationTestCase
             ['key' => 'chat.list_mentions#response', 'kind' => 'json-response', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/mentions', 'query' => 'limit=7&q=a%20b%2Bc%2F%D0%B4&types=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->chat->listMentionsWithResponse(limit: 7, q: 'a b+c/д', types: 'a b+c/д', companyId: 'co 1'),
         ];
+        yield 'chat.get_rating_options' => [
+            ['key' => 'chat.get_rating_options', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/rating-options', 'query' => 'lang=ru', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->getRatingOptions(lang: ListCompanyChatRatingOptionsLang::from('ru'), companyId: 'co 1'),
+        ];
+        yield 'chat.get_rating_options#response' => [
+            ['key' => 'chat.get_rating_options#response', 'kind' => 'json-response', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/rating-options', 'query' => 'lang=ru', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->getRatingOptionsWithResponse(lang: ListCompanyChatRatingOptionsLang::from('ru'), companyId: 'co 1'),
+        ];
         yield 'chat.list_suggestions' => [
             ['key' => 'chat.list_suggestions', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/suggestions', 'query' => 'lang=ru', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->chat->listSuggestions(lang: ListCompanyChatSuggestionsLang::from('ru'), companyId: 'co 1'),
@@ -355,6 +366,38 @@ final class OperationsTest extends OperationTestCase
         yield 'chat.list_events' => [
             ['key' => 'chat.list_events', 'kind' => 'sse', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/events', 'query' => 'turn=7', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => 'text/event-stream', 'headers' => ['last-event-id' => 'h-lastEventId']],
             static fn (TungoClient $c): mixed => $c->chat->listEvents('id 1/x', turn: 7, lastEventId: 'h-lastEventId', companyId: 'co 1'),
+        ];
+        yield 'chat.rate_message' => [
+            ['key' => 'chat.rate_message', 'kind' => 'json', 'method' => 'PUT', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/messages/id%201%2Fx/rating', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->rateMessage('id 1/x', 'id 1/x', body: ChatMessageRatingBody::fromArray(self::request('chat.rate_message')), companyId: 'co 1'),
+        ];
+        yield 'chat.rate_message#response' => [
+            ['key' => 'chat.rate_message#response', 'kind' => 'json-response', 'method' => 'PUT', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/messages/id%201%2Fx/rating', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->rateMessageWithResponse('id 1/x', 'id 1/x', body: ChatMessageRatingBody::fromArray(self::request('chat.rate_message')), companyId: 'co 1'),
+        ];
+        yield 'chat.delete_message_rating' => [
+            ['key' => 'chat.delete_message_rating', 'kind' => 'json', 'method' => 'DELETE', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/messages/id%201%2Fx/rating', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->deleteMessageRating('id 1/x', 'id 1/x', companyId: 'co 1'),
+        ];
+        yield 'chat.delete_message_rating#response' => [
+            ['key' => 'chat.delete_message_rating#response', 'kind' => 'json-response', 'method' => 'DELETE', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/messages/id%201%2Fx/rating', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->deleteMessageRatingWithResponse('id 1/x', 'id 1/x', companyId: 'co 1'),
+        ];
+        yield 'chat.rate' => [
+            ['key' => 'chat.rate', 'kind' => 'json', 'method' => 'PUT', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/rating', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->rate('id 1/x', body: ChatDialogRatingBody::fromArray(self::request('chat.rate')), companyId: 'co 1'),
+        ];
+        yield 'chat.rate#response' => [
+            ['key' => 'chat.rate#response', 'kind' => 'json-response', 'method' => 'PUT', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/rating', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->rateWithResponse('id 1/x', body: ChatDialogRatingBody::fromArray(self::request('chat.rate')), companyId: 'co 1'),
+        ];
+        yield 'chat.dismiss_rating' => [
+            ['key' => 'chat.dismiss_rating', 'kind' => 'json', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/rating/dismiss', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->dismissRating('id 1/x', companyId: 'co 1'),
+        ];
+        yield 'chat.dismiss_rating#response' => [
+            ['key' => 'chat.dismiss_rating#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/rating/dismiss', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->dismissRatingWithResponse('id 1/x', companyId: 'co 1'),
         ];
         yield 'chat.stop' => [
             ['key' => 'chat.stop', 'kind' => 'json', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/stop', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],

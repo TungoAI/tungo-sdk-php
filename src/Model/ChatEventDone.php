@@ -18,6 +18,7 @@ final readonly class ChatEventDone implements ChatEvent
      * @param string|null $answer Итоговый ответ хода целиком (Markdown): заменить им собранный из text
      * @param string|null $choiceId При awaiting_user — id открытого вопроса
      * @param int|null $costTiyn Сколько ход стоил, в тиынах (1 ₸ = 100 тиын). Только в потоке для ключа API (платформа разработчиков); кабинету стоимость ответа не отдаётся
+     * @param bool|null $ratingPrompt Пора предложить человеку оценить разговор — те же правила, что у rating_prompt в GET …/chat/{id}. Поля нет — не предлагать. Ключу API не приходит
      * @param string|null $stopReason Чем кончился ход: end_turn — ответ готов; awaiting_user — ждёт ответа на вопрос choice; budget — кончился лимит; aborted — остановили; refusal — модель отказалась; context_overflow — разговор слишком длинный; max_iterati…
      * @param string $type Вид события: done
      * @param ChatUsage|null $usage
@@ -26,6 +27,7 @@ final readonly class ChatEventDone implements ChatEvent
         public ?string $answer = null,
         public ?string $choiceId = null,
         public ?int $costTiyn = null,
+        public ?bool $ratingPrompt = null,
         public ?string $stopReason = null,
         public string $type = 'done',
         public ?ChatUsage $usage = null,
@@ -53,6 +55,7 @@ final readonly class ChatEventDone implements ChatEvent
             answer: Wire::opt($data, 'answer', $path, Wire::asString(...)),
             choiceId: Wire::opt($data, 'choice_id', $path, Wire::asString(...)),
             costTiyn: Wire::opt($data, 'cost_tiyn', $path, Wire::asInt(...)),
+            ratingPrompt: Wire::opt($data, 'rating_prompt', $path, Wire::asBool(...)),
             stopReason: Wire::opt($data, 'stop_reason', $path, Wire::asString(...)),
             type: Wire::req($data, 'type', $path, Wire::asString(...)),
             usage: Wire::opt($data, 'usage', $path, ChatUsage::fromValue(...)),
@@ -83,6 +86,9 @@ final readonly class ChatEventDone implements ChatEvent
         }
         if ($this->costTiyn !== null) {
             $o['cost_tiyn'] = $this->costTiyn;
+        }
+        if ($this->ratingPrompt !== null) {
+            $o['rating_prompt'] = $this->ratingPrompt;
         }
         if ($this->stopReason !== null) {
             $o['stop_reason'] = $this->stopReason;

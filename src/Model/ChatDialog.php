@@ -22,6 +22,8 @@ final readonly class ChatDialog implements \JsonSerializable
      * @param int|float $messageCount Сколько сообщений в messages
      * @param list<ChatMessage> $messages Сообщения от старых к новым
      * @param bool $pdRestored false — персональные данные не раскрыты (сменился ключ шифрования): вместо БИН, имён и счетов в тексте метки вида «[ПД-БИН-1]». Показать предупреждение
+     * @param ChatDialogRating|null $rating Оценка разговора человеком; null — не оценён
+     * @param bool $ratingPrompt true — пора предложить человеку оценить разговор (форма 1–5 с комментарием). Решает ядро по настройке: достаточно ответов ИИ в разговоре, разговор не оценён, человек не нажимал «не сейчас», и ему не предлагали в последни…
      * @param bool $running true — идёт ход: дочитать его потоком GET …/chat/{id}/events?turn=<turn>
      * @param string $title Название одной строкой: человека, иначе от ИИ, иначе первый вопрос. Откуда оно — title_source
      * @param ChatTitleSource|string $titleSource
@@ -37,6 +39,8 @@ final readonly class ChatDialog implements \JsonSerializable
         public int|float $messageCount,
         public array $messages,
         public bool $pdRestored,
+        public ?ChatDialogRating $rating,
+        public bool $ratingPrompt,
         public bool $running,
         public string $title,
         public ChatTitleSource|string $titleSource,
@@ -73,6 +77,8 @@ final readonly class ChatDialog implements \JsonSerializable
             messageCount: Wire::req($data, 'message_count', $path, Wire::asNumber(...)),
             messages: Wire::req($data, 'messages', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Unions::chatMessage(...))),
             pdRestored: Wire::req($data, 'pd_restored', $path, Wire::asBool(...)),
+            rating: Wire::opt($data, 'rating', $path, ChatDialogRating::fromValue(...)),
+            ratingPrompt: Wire::req($data, 'rating_prompt', $path, Wire::asBool(...)),
             running: Wire::req($data, 'running', $path, Wire::asBool(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
             titleSource: Wire::req($data, 'title_source', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatTitleSource::class)),
@@ -109,6 +115,8 @@ final readonly class ChatDialog implements \JsonSerializable
         $o['message_count'] = $this->messageCount;
         $o['messages'] = Wire::list($this->messages);
         $o['pd_restored'] = $this->pdRestored;
+        $o['rating'] = $this->rating;
+        $o['rating_prompt'] = $this->ratingPrompt;
         $o['running'] = $this->running;
         $o['title'] = $this->title;
         $o['title_source'] = $this->titleSource;

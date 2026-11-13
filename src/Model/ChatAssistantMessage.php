@@ -23,8 +23,10 @@ final readonly class ChatAssistantMessage implements ChatMessage
      * @param string $id Устойчивый id сообщения: <dialog_id>:<номер хода>:a
      * @param ChatNextAction|null $nextAction Предложенное следующее действие; null — нет
      * @param list<string> $proposalIds Номера предложений этого хода — то же, что proposal-блоки, списком
+     * @param ChatMessageRating|null $rating Оценка этого ответа человеком; null — не оценён
      * @param ChatAssistantMessageState|string $state done — ход закончился сам; stopped — нажали «Стоп»; error — ошибка, отказ модели или предел шагов
      * @param string $thinking Размышления модели за ход одним текстом; пусто — не было
+     * @param int $turnNo Номер ответа в разговоре (он же X-Turn-No и средняя часть id): по нему ответ оценивают — PUT …/chat/{id}/messages/{turn}/rating
      * @param string $role Ответ ИИ
      */
     public function __construct(
@@ -35,8 +37,10 @@ final readonly class ChatAssistantMessage implements ChatMessage
         public string $id,
         public ?ChatNextAction $nextAction,
         public array $proposalIds,
+        public ?ChatMessageRating $rating,
         public ChatAssistantMessageState|string $state,
         public string $thinking,
+        public int $turnNo,
         public string $role = 'assistant',
     ) {
     }
@@ -66,9 +70,11 @@ final readonly class ChatAssistantMessage implements ChatMessage
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
             nextAction: Wire::opt($data, 'next_action', $path, ChatNextAction::fromValue(...)),
             proposalIds: Wire::req($data, 'proposal_ids', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
+            rating: Wire::opt($data, 'rating', $path, ChatMessageRating::fromValue(...)),
             role: Wire::req($data, 'role', $path, Wire::asString(...)),
             state: Wire::req($data, 'state', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatAssistantMessageState::class)),
             thinking: Wire::req($data, 'thinking', $path, Wire::asString(...)),
+            turnNo: Wire::req($data, 'turn_no', $path, Wire::asInt(...)),
         );
     }
 
@@ -95,9 +101,11 @@ final readonly class ChatAssistantMessage implements ChatMessage
         $o['id'] = $this->id;
         $o['next_action'] = $this->nextAction;
         $o['proposal_ids'] = Wire::list($this->proposalIds);
+        $o['rating'] = $this->rating;
         $o['role'] = $this->role;
         $o['state'] = $this->state;
         $o['thinking'] = $this->thinking;
+        $o['turn_no'] = $this->turnNo;
 
         return (object) $o;
     }

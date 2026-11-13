@@ -10,21 +10,39 @@ use Tungo\Sdk\Internal\Json;
 use Tungo\Sdk\Internal\Wire;
 
 /**
- * Источник ответа: норма закона, статья базы знаний
+ * Источник ответа: норма закона, статья базы знаний. Приходят по порядку первой ссылки в тексте, каждый источник один раз за ход. Вопросы-продолжения — отдельное событие next
  */
 final readonly class ChatEventCitation implements ChatEvent
 {
     /**
-     * @param string $source Откуда: код нормы или статьи базы знаний
-     * @param string $title Название источника
-     * @param string|null $edition Редакция нормы
+     * @param string $document Документ коротко: принятое сокращение, если оно есть в базе («НК РК»), иначе название обычным регистром («Социальный кодекс Республики Казахстан»)
+     * @param string $label Короткая подпись для чипа: документ и место в нём, без редакции и пометок
+     * @param string $source Подпись целиком, как раньше: документ, место, редакция и пометки одной строкой. Для показа удобнее label, edition и note по отдельности
+     * @param string $title Заголовок статьи целиком, с «Статья N.» (как раньше). Без номера — heading
+     * @param string|null $article Номер статьи
+     * @param string|null $chapter Номер главы — у источников без статей
+     * @param string|null $edition Редакция нормы словами
+     * @param string|null $editionDate Дата начала редакции, ГГГГ-ММ-ДД
+     * @param string|null $heading Заголовок статьи без «Статья N.» — вторая строка чипа или подсказка
+     * @param string|null $note Пометка о статусе или природе источника — показывать обязательно: «УТРАТИЛА СИЛУ с 01.01.2026», «по разъяснению КГД», «позиция органа (не норма права)»
+     * @param string|null $point Номер пункта
+     * @param string|null $subpoint Номер подпункта
      * @param string $type Вид события: citation
-     * @param string|null $url Ссылка на текст источника
+     * @param string|null $url Ссылка на текст источника: по ней источник открывают. Она же — ключ источника внутри ответа
      */
     public function __construct(
+        public string $document,
+        public string $label,
         public string $source,
         public string $title,
+        public ?string $article = null,
+        public ?string $chapter = null,
         public ?string $edition = null,
+        public ?string $editionDate = null,
+        public ?string $heading = null,
+        public ?string $note = null,
+        public ?string $point = null,
+        public ?string $subpoint = null,
         public string $type = 'citation',
         public ?string $url = null,
     ) {
@@ -48,8 +66,17 @@ final readonly class ChatEventCitation implements ChatEvent
         $data = Wire::asObject($value, $path);
 
         return new self(
+            article: Wire::opt($data, 'article', $path, Wire::asString(...)),
+            chapter: Wire::opt($data, 'chapter', $path, Wire::asString(...)),
+            document: Wire::req($data, 'document', $path, Wire::asString(...)),
             edition: Wire::opt($data, 'edition', $path, Wire::asString(...)),
+            editionDate: Wire::opt($data, 'edition_date', $path, Wire::asString(...)),
+            heading: Wire::opt($data, 'heading', $path, Wire::asString(...)),
+            label: Wire::req($data, 'label', $path, Wire::asString(...)),
+            note: Wire::opt($data, 'note', $path, Wire::asString(...)),
+            point: Wire::opt($data, 'point', $path, Wire::asString(...)),
             source: Wire::req($data, 'source', $path, Wire::asString(...)),
+            subpoint: Wire::opt($data, 'subpoint', $path, Wire::asString(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
             type: Wire::req($data, 'type', $path, Wire::asString(...)),
             url: Wire::opt($data, 'url', $path, Wire::asString(...)),
@@ -72,10 +99,33 @@ final readonly class ChatEventCitation implements ChatEvent
     public function jsonSerialize(): \stdClass
     {
         $o = [];
+        if ($this->article !== null) {
+            $o['article'] = $this->article;
+        }
+        if ($this->chapter !== null) {
+            $o['chapter'] = $this->chapter;
+        }
+        $o['document'] = $this->document;
         if ($this->edition !== null) {
             $o['edition'] = $this->edition;
         }
+        if ($this->editionDate !== null) {
+            $o['edition_date'] = $this->editionDate;
+        }
+        if ($this->heading !== null) {
+            $o['heading'] = $this->heading;
+        }
+        $o['label'] = $this->label;
+        if ($this->note !== null) {
+            $o['note'] = $this->note;
+        }
+        if ($this->point !== null) {
+            $o['point'] = $this->point;
+        }
         $o['source'] = $this->source;
+        if ($this->subpoint !== null) {
+            $o['subpoint'] = $this->subpoint;
+        }
         $o['title'] = $this->title;
         $o['type'] = $this->type;
         if ($this->url !== null) {

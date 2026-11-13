@@ -19,15 +19,22 @@ use Tungo\Sdk\Model\ChatDialog;
 use Tungo\Sdk\Model\ChatDialogDeleted;
 use Tungo\Sdk\Model\ChatDialogList;
 use Tungo\Sdk\Model\ChatDialogPatch;
+use Tungo\Sdk\Model\ChatDialogRated;
+use Tungo\Sdk\Model\ChatDialogRatingBody;
 use Tungo\Sdk\Model\ChatDialogRenamed;
 use Tungo\Sdk\Model\ChatDialogSummary;
 use Tungo\Sdk\Model\ChatMentionSearch;
+use Tungo\Sdk\Model\ChatMessageRated;
+use Tungo\Sdk\Model\ChatMessageRatingBody;
 use Tungo\Sdk\Model\ChatMessageRequest;
+use Tungo\Sdk\Model\ChatRatingDismissed;
+use Tungo\Sdk\Model\ChatRatingOptions;
 use Tungo\Sdk\Model\ChatStopResult;
 use Tungo\Sdk\Model\ChatSuggestions;
 use Tungo\Sdk\Model\ChatTokenCount;
 use Tungo\Sdk\Model\ChatTokenCountRequest;
 use Tungo\Sdk\Model\ChatTurnResult;
+use Tungo\Sdk\Model\ListCompanyChatRatingOptionsLang;
 use Tungo\Sdk\Model\ListCompanyChatSuggestionsLang;
 use Tungo\Sdk\Page;
 use Tungo\Sdk\RequestOptions;
@@ -328,6 +335,59 @@ final class ChatResource
             $options,
             ChatMentionSearch::fromValue(...),
             'ChatMentionSearch',
+        );
+    }
+
+    /**
+     * Что нужно форме оценки: причины «вниз» и предел комментария
+     *
+     * GET /v1/companies/{co}/chat/rating-options (permission: chat.use)
+     *
+     * @param ListCompanyChatRatingOptionsLang|string|null $lang Язык названий причин; по умолчанию ru
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatRatingOptions
+     *
+     * @throws TungoError
+     */
+    public function getRatingOptions(
+        ListCompanyChatRatingOptionsLang|string|null $lang = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatRatingOptions
+    {
+        return $this->getRatingOptionsWithResponse($lang, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Что нужно форме оценки: причины «вниз» и предел комментария
+     *
+     * GET /v1/companies/{co}/chat/rating-options (permission: chat.use)
+     *
+     * @param ListCompanyChatRatingOptionsLang|string|null $lang Язык названий причин; по умолчанию ru
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatRatingOptions>
+     *
+     * @throws TungoError
+     */
+    public function getRatingOptionsWithResponse(
+        ListCompanyChatRatingOptionsLang|string|null $lang = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'GET',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/rating-options',
+                query: [['lang', $lang]],
+            ),
+            $options,
+            ChatRatingOptions::fromValue(...),
+            'ChatRatingOptions',
         );
     }
 
@@ -684,6 +744,234 @@ final class ChatResource
             ),
             Engine::eventDecoder(Unions::chatEvent(...), 'ChatEvent'),
             $this->engine->idleTimeout($options),
+        );
+    }
+
+    /**
+     * Оценить ответ ИИ: палец вверх или вниз
+     *
+     * PUT /v1/companies/{co}/chat/{id}/messages/{turn}/rating (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param string $turn Номер ответа: turn_no сообщения ИИ в истории (он же X-Turn-No)
+     * @param ChatMessageRatingBody $body the request body
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatMessageRated
+     *
+     * @throws TungoError
+     */
+    public function rateMessage(
+        string $id,
+        string $turn,
+        ChatMessageRatingBody $body,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatMessageRated
+    {
+        return $this->rateMessageWithResponse($id, $turn, $body, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Оценить ответ ИИ: палец вверх или вниз
+     *
+     * PUT /v1/companies/{co}/chat/{id}/messages/{turn}/rating (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param string $turn Номер ответа: turn_no сообщения ИИ в истории (он же X-Turn-No)
+     * @param ChatMessageRatingBody $body the request body
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatMessageRated>
+     *
+     * @throws TungoError
+     */
+    public function rateMessageWithResponse(
+        string $id,
+        string $turn,
+        ChatMessageRatingBody $body,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'PUT',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/' . Url::segment($id, 'id') . '/messages/' . Url::segment($turn, 'turn') . '/rating',
+                body: Json::encode($body),
+                contentType: 'application/json',
+            ),
+            $options,
+            ChatMessageRated::fromValue(...),
+            'ChatMessageRated',
+        );
+    }
+
+    /**
+     * Снять свою оценку ответа
+     *
+     * DELETE /v1/companies/{co}/chat/{id}/messages/{turn}/rating (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param string $turn Номер ответа: turn_no сообщения ИИ в истории (он же X-Turn-No)
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatMessageRated
+     *
+     * @throws TungoError
+     */
+    public function deleteMessageRating(
+        string $id,
+        string $turn,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatMessageRated
+    {
+        return $this->deleteMessageRatingWithResponse($id, $turn, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Снять свою оценку ответа
+     *
+     * DELETE /v1/companies/{co}/chat/{id}/messages/{turn}/rating (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param string $turn Номер ответа: turn_no сообщения ИИ в истории (он же X-Turn-No)
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatMessageRated>
+     *
+     * @throws TungoError
+     */
+    public function deleteMessageRatingWithResponse(
+        string $id,
+        string $turn,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'DELETE',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/' . Url::segment($id, 'id') . '/messages/' . Url::segment($turn, 'turn') . '/rating',
+            ),
+            $options,
+            ChatMessageRated::fromValue(...),
+            'ChatMessageRated',
+        );
+    }
+
+    /**
+     * Оценить разговор целиком: от 1 до 5
+     *
+     * PUT /v1/companies/{co}/chat/{id}/rating (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param ChatDialogRatingBody $body the request body
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatDialogRated
+     *
+     * @throws TungoError
+     */
+    public function rate(
+        string $id,
+        ChatDialogRatingBody $body,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatDialogRated
+    {
+        return $this->rateWithResponse($id, $body, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Оценить разговор целиком: от 1 до 5
+     *
+     * PUT /v1/companies/{co}/chat/{id}/rating (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param ChatDialogRatingBody $body the request body
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatDialogRated>
+     *
+     * @throws TungoError
+     */
+    public function rateWithResponse(
+        string $id,
+        ChatDialogRatingBody $body,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'PUT',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/' . Url::segment($id, 'id') . '/rating',
+                body: Json::encode($body),
+                contentType: 'application/json',
+            ),
+            $options,
+            ChatDialogRated::fromValue(...),
+            'ChatDialogRated',
+        );
+    }
+
+    /**
+     * Не сейчас: закрыть предложение оценить разговор
+     *
+     * POST /v1/companies/{co}/chat/{id}/rating/dismiss (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatRatingDismissed
+     *
+     * @throws TungoError
+     */
+    public function dismissRating(
+        string $id,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatRatingDismissed
+    {
+        return $this->dismissRatingWithResponse($id, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Не сейчас: закрыть предложение оценить разговор
+     *
+     * POST /v1/companies/{co}/chat/{id}/rating/dismiss (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatRatingDismissed>
+     *
+     * @throws TungoError
+     */
+    public function dismissRatingWithResponse(
+        string $id,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'POST',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/' . Url::segment($id, 'id') . '/rating/dismiss',
+            ),
+            $options,
+            ChatRatingDismissed::fromValue(...),
+            'ChatRatingDismissed',
         );
     }
 
