@@ -489,6 +489,16 @@ final class ConformanceTest extends TestCase
             );
             self::assertSame($expect['event_types'], $types);
         }
+        if (array_key_exists('next', $expect)) {
+            $nexts = [];
+            foreach ($result->events as $event) {
+                $wire = $event instanceof ChatEventUnknown ? ['type' => $event->type] : self::arr(json_decode(self::json($event), true));
+                if ($wire['type'] === 'next') {
+                    $nexts[] = ['followups' => $wire['followups'] ?? null, 'action' => $wire['action'] ?? null];
+                }
+            }
+            self::assertEquals([$expect['next']], $nexts);
+        }
         if ($expect['error'] === null) {
             self::assertNull($result->error);
             self::assertSame($expect['text'], $open()->accumulate()->text);

@@ -268,7 +268,7 @@ echo $result->text, PHP_EOL;
 
 `chat->listEvents()`, `feed->listEvents()` and `batches->listEvents()` return the same kind of stream; pass `lastEventId:` to resume one after a disconnect. `rawEvents()` yields the events as received (name, data, id, retry). The idle timeout is 120 s and can be set per client (`streamIdleTimeout`) or per request (`RequestOptions::$idleTimeout`).
 
-A turn is complete only when its `done` event has arrived. If the stream ends without one, the loop over the events simply ends, but `accumulate()` raises `DecodeError` ("stream ended before completion", with the text received so far in `$e->body`) instead of returning half an answer. A `2xx` answer to a stream call that is not `text/event-stream` raises `DecodeError` as well. The exception is a finished chat turn that the API replays for a repeated `Idempotency-Key` (`application/json` with `Idempotent-Replayed: true`): its stored result arrives as the events of that turn, ending with `done`.
+A turn is complete only when its `done` event has arrived. If the stream ends without one, the loop over the events simply ends, but `accumulate()` raises `DecodeError` ("stream ended before completion", with the text received so far in `$e->body`) instead of returning half an answer. A `2xx` answer to a stream call that is not `text/event-stream` raises `DecodeError` as well. The exception is a finished chat turn that the API replays for a repeated `Idempotency-Key` (`application/json` with `Idempotent-Replayed: true`): its stored result arrives as the events of that turn, ending with `next` (follow-ups and the next action, when it has them) and `done`.
 
 ## Webhooks
 

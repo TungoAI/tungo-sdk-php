@@ -197,11 +197,11 @@ final class Engine
 
     /**
      * Turns a replayed ChatTurnResult into the event stream of the turn it
-     * stands for: text (the answer), proposal, question, citation, error and
-     * choice events, then done. The dialog id and the turn number, which a
-     * replay carries only in the body, become the X-Dialog-Id and X-Turn-No
-     * headers when they are missing. Null when the body is not a chat turn
-     * result.
+     * stands for: text (the answer), proposal, question, citation, error,
+     * choice and next events, then done. The dialog id and the turn number,
+     * which a replay carries only in the body, become the X-Dialog-Id and
+     * X-Turn-No headers when they are missing. Null when the body is not a
+     * chat turn result.
      */
     private function replayAsEventStream(ResponseInterface $response, string $body): ?ResponseInterface
     {
@@ -268,6 +268,15 @@ final class Engine
             if (array_key_exists('choice_id', $pending)) {
                 $done['choice_id'] = $pending['choice_id'];
             }
+        }
+        // A live turn ends its finished answer with next right before done;
+        // the stored result keeps it as followups and next_action.
+        $followups = $result['followups'] ?? null;
+        $followups = is_array($followups) && array_is_list($followups) ? $followups : [];
+        $action = $result['next_action'] ?? null;
+        $action = (is_array($action) && !array_is_list($action)) || $action instanceof \stdClass ? $action : null;
+        if ($followups !== [] || $action !== null) {
+            $emit('next', ['followups' => $followups, 'action' => $action]);
         }
         $emit('done', $done);
 
