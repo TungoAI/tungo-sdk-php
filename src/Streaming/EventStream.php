@@ -7,10 +7,12 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Streaming;
 
 use Psr\Http\Message\ResponseInterface;
+use Tungo\Sdk\Error\ApiError;
 use Tungo\Sdk\Error\ConnectionError;
 use Tungo\Sdk\Error\TimeoutError;
 use Tungo\Sdk\Error\TungoError;
 use Tungo\Sdk\Internal\Headers;
+use Tungo\Sdk\Internal\Json;
 use Tungo\Sdk\RateLimit;
 
 /**
@@ -61,12 +63,22 @@ class EventStream implements \IteratorAggregate
     /**
      * Typed events, delivered as they arrive. Heart-beats are skipped.
      *
+     * An `error` event of a stream whose events have no `error` variant (the
+     * feed) is the server giving up: it is thrown as the typed ApiError with its
+     * code and message, and the stream ends. The stream did not finish:
+     * reconnect to resume it.
+     *
      * @return \Generator<int, T>
+     *
+     * @throws ApiError
      */
     public function getIterator(): \Generator
     {
         $index = 0;
         foreach ($this->rawEvents() as $event) {
+            if ($event->event === 'error' && $event->data !== '' && !$this->errorIsEvent()) {
+                throw $this->streamError($event->data);
+            }
             $value = ($this->decode)($event);
             if ($value !== null) {
                 yield $index++ => $value;
@@ -121,6 +133,44 @@ class EventStream implements \IteratorAggregate
         } finally {
             $this->close();
         }
+    }
+
+    /** Whether an `error` event is one of the typed events (chat) rather than a failure of the stream. */
+    protected function errorIsEvent(): bool
+    {
+        return false;
+    }
+
+    /**
+     * The typed error for the data of an `error` event: `{"error": "code", "message": ...}`
+     * as the contract sends it, or the API error envelope `{"error": {...}, "request_id": ...}`.
+     */
+    private function streamError(string $data): ApiError
+    {
+        try {
+            $root = Json::toArray(Json::decode($data));
+        } catch (\JsonException) {
+            $root = null;
+        }
+        $root = is_array($root) ? $root : [];
+        $requestId = is_string($root['request_id'] ?? null) && $root['request_id'] !== '' ? $root['request_id'] : null;
+        if (is_array($root['error'] ?? null)) {
+            /** @var array<string, mixed> $error */
+            $error = $root['error'];
+        } else {
+            $error = [];
+            foreach ($root as $key => $value) {
+                if (!in_array((string) $key, ['error', 'type', 'request_id', 'fields'], true)) {
+                    $error[(string) $key] = $value;
+                }
+            }
+            $error['type'] = 'api_error';
+            if (!is_string($error['code'] ?? null) && is_string($root['error'] ?? null)) {
+                $error['code'] = $root['error'];
+            }
+        }
+
+        return ApiError::fromStreamEvent($error, $requestId, $this->status, $this->headers);
     }
 
     /** Closes the connection. Safe to call more than once. */

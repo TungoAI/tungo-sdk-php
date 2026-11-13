@@ -12,6 +12,7 @@ use GuzzleHttp\Handler\CurlMultiHandler;
 use GuzzleHttp\HandlerStack;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tungo\Sdk\CancellationToken;
+use Tungo\Sdk\Error\ApiError;
 use Tungo\Sdk\Error\CancelledError;
 use Tungo\Sdk\Error\ConnectionError;
 use Tungo\Sdk\Error\DecodeError;
@@ -193,6 +194,27 @@ final class StreamingTest extends TestCase
             self::assertSame('req_evt', $e->requestId);
             self::assertSame('Дневной лимит исчерпан.', $e->apiMessage);
         }
+    }
+
+    public function testAFeedErrorEventEndsTheStreamWithTheTypedError(): void
+    {
+        // The contract: a feed failure is `event: error` with {error: "feed_failed", message}, then the end of
+        // the stream; the client reconnects. It must not arrive as an item, nor look like a normal end.
+        $item = ['id' => 'f1', 'cursor' => 'c1', 'section' => 'auto', 'section_title' => 's', 'at' => '2026-11-09T10:00:00Z', 'title' => 't', 'actions' => []];
+        $body = self::sse([['feed', $item], ['error', ['error' => 'feed_failed', 'message' => 'Лента недоступна']], ['feed', $item]]);
+        $this->enqueue(['status' => 200, 'headers' => ['Content-Type' => 'text/event-stream', 'x-request-id' => 'req_feed'], 'chunks' => [['data' => $body]]]);
+        $ids = [];
+        try {
+            foreach ($this->client()->feed->listEvents(once: '1') as $feedItem) {
+                $ids[] = $feedItem->id;
+            }
+            self::fail('must raise');
+        } catch (ApiError $e) {
+            self::assertSame('feed_failed', $e->errorCode);
+            self::assertSame('Лента недоступна', $e->apiMessage);
+            self::assertSame('req_feed', $e->requestId);
+        }
+        self::assertSame(['f1'], $ids);
     }
 
     public function testAnErrorStatusIsRaisedWhenTheStreamIsOpened(): void

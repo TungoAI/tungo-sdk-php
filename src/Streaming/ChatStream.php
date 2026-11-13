@@ -22,6 +22,12 @@ use Tungo\Sdk\Model\ChatEventText;
  */
 final class ChatStream extends EventStream
 {
+    /** An `error` event is a ChatEventError: the turn reports its failure, then sends `done`. */
+    protected function errorIsEvent(): bool
+    {
+        return true;
+    }
+
     /** The dialog the turn belongs to (X-Dialog-Id response header). */
     public function dialogId(): ?string
     {
