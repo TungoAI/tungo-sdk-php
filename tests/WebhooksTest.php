@@ -164,6 +164,18 @@ final class WebhooksTest extends TestCase
         self::assertStringNotContainsString($secret, self::json($request));
     }
 
+    public function testSendHookSignsInTheHooksOwnSignatureHeader(): void
+    {
+        // A hook created with signature_header "x-shop-signature" reads the signature only there.
+        $this->enqueue(['status' => 202, 'json' => self::sample('automations.post_hook')]);
+        $this->client()->sendHook('hk_token', '{}', secret: 'hksec_1', signatureHeader: 'x-shop-signature');
+        $request = $this->onlyRequest();
+        self::assertSame('sha256=' . hash_hmac('sha256', '{}', 'hksec_1'), $request['headers']['x-shop-signature'] ?? null);
+        self::assertArrayNotHasKey('x-signature', $request['headers']);
+        $this->expectException(\Tungo\Sdk\Error\ValidationError::class);
+        $this->client()->sendHook('hk_token', '{}', secret: 'hksec_1', signatureHeader: 'bad header');
+    }
+
     public function testSendHookSendsRawBytesUntouchedAndNoSignatureWithoutASecret(): void
     {
         $this->enqueue(['status' => 202, 'json' => self::sample('automations.post_hook')]);

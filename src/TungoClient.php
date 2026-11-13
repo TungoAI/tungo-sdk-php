@@ -16,6 +16,7 @@ use Tungo\Sdk\Error\ApiError;
 use Tungo\Sdk\Error\ConfigError;
 use Tungo\Sdk\Error\PollTimeoutError;
 use Tungo\Sdk\Error\TungoError;
+use Tungo\Sdk\Error\ValidationError;
 use Tungo\Sdk\Error\WebhookVerificationError;
 use Tungo\Sdk\Internal\Engine;
 use Tungo\Sdk\Internal\Json;
@@ -237,14 +238,16 @@ final class TungoClient
 
     /**
      * Posts an event to an incoming hook (POST /hooks/{token}). When a secret
-     * is given, the exact bytes sent are signed in the X-Signature header. The
-     * API key is never sent to hooks. The Idempotency-Key of the call is the
-     * key of $options, else $eventId, else a random UUID.
+     * is given, the exact bytes sent are signed in the X-Signature header, or
+     * in $signatureHeader for a hook created with its own signature_header.
+     * The API key is never sent to hooks. The Idempotency-Key of the call is
+     * the key of $options, else $eventId, else a random UUID.
      *
-     * @param array<array-key, mixed>|\JsonSerializable|string $payload     a JSON-serialisable value, or the exact body bytes as a string
-     * @param string|null                                      $secret      the hook secret; no signature is sent when null
-     * @param string|null                                      $eventId     value of the X-Event-Id header (deduplication)
-     * @param string|null                                      $contentType Content-Type of a string payload ("application/json" when null)
+     * @param array<array-key, mixed>|\JsonSerializable|string $payload         a JSON-serialisable value, or the exact body bytes as a string
+     * @param string|null                                      $secret          the hook secret; no signature is sent when null
+     * @param string|null                                      $eventId         value of the X-Event-Id header (deduplication)
+     * @param string|null                                      $contentType     Content-Type of a string payload ("application/json" when null)
+     * @param string|null                                      $signatureHeader the header the hook reads its signature from (its signature_header); X-Signature when null
      *
      * @throws TungoError
      */
@@ -255,14 +258,39 @@ final class TungoClient
         ?string $eventId = null,
         ?string $contentType = null,
         ?RequestOptions $options = null,
+        ?string $signatureHeader = null,
     ): AutomationHookAccepted {
+        if ($signatureHeader !== null && preg_match('/\A[A-Za-z0-9-]{1,64}\z/', $signatureHeader) !== 1) {
+            throw new ValidationError("signatureHeader must be 1 to 64 Latin letters, digits or hyphens, like the hook's signature_header.");
+        }
         $body = is_string($payload) ? $payload : Json::encode($payload);
+        $signature = $secret === null ? null : TungoWebhooks::signHookPayload($body, $secret);
+        if ($signature !== null && $signatureHeader !== null && strcasecmp($signatureHeader, 'X-Signature') !== 0) {
+            // A hook created with its own signature_header reads the signature only there.
+            $headers = [];
+            foreach ($options?->headers ?? [] as $name => $value) {
+                if (strcasecmp((string) $name, $signatureHeader) === 0) {
+                    throw new ValidationError("Pass either secret or the {$signatureHeader} header, not both.");
+                }
+                $headers[$name] = $value;
+            }
+            $headers[$signatureHeader] = $signature;
+            $options = new RequestOptions(
+                timeout: $options?->timeout,
+                maxRetries: $options?->maxRetries,
+                headers: $headers,
+                idempotencyKey: $options?->idempotencyKey,
+                cancellation: $options?->cancellation,
+                idleTimeout: $options?->idleTimeout,
+            );
+            $signature = null;
+        }
 
         return $this->automations->postHook(
             $token,
             $body,
             eventId: $eventId,
-            signature: $secret === null ? null : TungoWebhooks::signHookPayload($body, $secret),
+            signature: $signature,
             contentType: $contentType ?? 'application/json',
             options: $options,
         );

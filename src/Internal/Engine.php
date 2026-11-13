@@ -423,6 +423,32 @@ final class Engine
         }
     }
 
+    /**
+     * The idempotency_key field of a JSON object body (approving a proposal documents it as the
+     * same as the header), trimmed like the API trims it. The API prefers the header over the
+     * field, so a generated header would make the caller's own key useless. A key that cannot
+     * travel in a header (outside printable ASCII) is ignored here.
+     */
+    private static function bodyIdempotencyKey(Operation $operation): ?string
+    {
+        $body = $operation->body;
+        if ($body === null || !str_contains($body, 'idempotency_key')
+            || $operation->contentType === null || !str_starts_with($operation->contentType, 'application/json')) {
+            return null;
+        }
+        try {
+            $decoded = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return null;
+        }
+        if (!is_array($decoded) || !isset($decoded['idempotency_key']) || !is_string($decoded['idempotency_key'])) {
+            return null;
+        }
+        $key = trim($decoded['idempotency_key']);
+
+        return preg_match('/\A[\x20-\x7e]+\z/', $key) === 1 ? $key : null;
+    }
+
     private function build(#[\SensitiveParameter] Operation $operation, RequestOptions $options, bool $stream): RequestInterface
     {
         $url = $this->baseUrl . $operation->path;
@@ -447,7 +473,8 @@ final class Engine
             $headers = self::set(
                 $headers,
                 $operation->idempotencyHeader,
-                $options->idempotencyKey ?? ($default !== null && $default !== '' ? $default : Uuid::v4()),
+                $options->idempotencyKey
+                    ?? ($default !== null && $default !== '' ? $default : (self::bodyIdempotencyKey($operation) ?? Uuid::v4())),
             );
         }
         foreach ($options->headers as $name => $value) {

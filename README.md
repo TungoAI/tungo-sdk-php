@@ -313,7 +313,7 @@ $valid = TungoWebhooks::verifyHookSignature('{"order_id":1532}', 'sha256=...', '
 echo $valid ? 'valid' : 'invalid', PHP_EOL;
 ```
 
-`TungoWebhooks::verifyWebhook()` is the same check as a static method. An event of a type this SDK version does not know is returned as `WebhookEventUnknown`. A webhook whose signature is valid but whose body lacks a field the contract requires is rejected with the reason `invalid_payload` (the previous error names the field): answer it with a `2xx` if you do not want it redelivered.
+`TungoWebhooks::verifyWebhook()` is the same check as a static method. An event of a type this SDK version does not know is returned as `WebhookEventUnknown`. A body that is not a JSON object with a non-empty `type` is rejected with the reason `invalid_payload`: answer it with a `2xx` if you do not want it redelivered. An event whose signature is valid but whose data does not match this SDK version's contract (a missing required field, a value of the wrong type) is returned as `WebhookEventUnknown` with its original type and all of its data, like a type the SDK does not know.
 
 The `Idempotency-Key` of `sendHook()` is the key of the request options, else `eventId`, else a random UUID, so a repeated event id is deduplicated by the API.
 
