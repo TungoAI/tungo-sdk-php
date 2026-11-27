@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Model;
 
 /**
- * Что происходит: - `compacting` — сервер сжимает историю длинного разговора - `escalating` — ответ перепроверяется более сильной моделью — ход займёт дольше - `elsewhere` — ответ готовится на другом сервере Tungo — он поя…
+ * Что происходит: - `compacting` — сервер сжимает историю длинного разговора - `escalating` — ответ перепроверяется более сильной моделью — ход займёт дольше - `checking_norm` — ответ сослался на норму, не открыв её: та же…
  *
  * The API may add values: a property of this type holds the raw value when it
  * is not one of the cases below.
@@ -16,5 +16,7 @@ enum ChatEventStatusCode: string
 {
     case Compacting = 'compacting';
     case Escalating = 'escalating';
+    case CheckingNorm = 'checking_norm';
+    case Writing = 'writing';
     case Elsewhere = 'elsewhere';
 }

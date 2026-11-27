@@ -35,6 +35,8 @@ use Tungo\Sdk\Model\AutomationTriggerUnknown;
 use Tungo\Sdk\Model\BatchApproveJob;
 use Tungo\Sdk\Model\BatchApproveResponse;
 use Tungo\Sdk\Model\ChatAssistantMessage;
+use Tungo\Sdk\Model\ChatAttachmentData;
+use Tungo\Sdk\Model\ChatAttachmentUpload;
 use Tungo\Sdk\Model\ChatEvent;
 use Tungo\Sdk\Model\ChatEventBatch;
 use Tungo\Sdk\Model\ChatEventBatchReport;
@@ -42,6 +44,8 @@ use Tungo\Sdk\Model\ChatEventChoice;
 use Tungo\Sdk\Model\ChatEventCitation;
 use Tungo\Sdk\Model\ChatEventDone;
 use Tungo\Sdk\Model\ChatEventError;
+use Tungo\Sdk\Model\ChatEventFile;
+use Tungo\Sdk\Model\ChatEventMemory;
 use Tungo\Sdk\Model\ChatEventNext;
 use Tungo\Sdk\Model\ChatEventProgress;
 use Tungo\Sdk\Model\ChatEventProposal;
@@ -56,6 +60,8 @@ use Tungo\Sdk\Model\ChatHistoryBatch;
 use Tungo\Sdk\Model\ChatHistoryBlock;
 use Tungo\Sdk\Model\ChatHistoryBlockUnknown;
 use Tungo\Sdk\Model\ChatHistoryError;
+use Tungo\Sdk\Model\ChatHistoryFile;
+use Tungo\Sdk\Model\ChatHistoryMemory;
 use Tungo\Sdk\Model\ChatHistoryProposal;
 use Tungo\Sdk\Model\ChatHistoryQuestion;
 use Tungo\Sdk\Model\ChatHistoryText;
@@ -301,6 +307,23 @@ final class Unions
         }
     }
 
+    /**
+     * @return ChatAttachmentData|ChatAttachmentUpload
+     */
+    public static function chatAttachment(mixed $value, string $path): ChatAttachmentData|ChatAttachmentUpload
+    {
+        if (is_array($value)) {
+            $object = Wire::asObject($value, $path);
+            if (Wire::has($object, ['data', 'name'])) {
+                return ChatAttachmentData::fromValue($object, $path);
+            }
+
+            return ChatAttachmentUpload::fromValue($object, $path);
+        }
+
+        throw Wire::mismatch($path, 'an object', $value);
+    }
+
     public static function chatEvent(mixed $value, string $path): ChatEvent
     {
         $object = Wire::asObject($value, $path);
@@ -319,6 +342,8 @@ final class Unions
                 'error' => ChatEventError::fromValue($object, $path),
                 'batch' => ChatEventBatch::fromValue($object, $path),
                 'batch_report' => ChatEventBatchReport::fromValue($object, $path),
+                'file' => ChatEventFile::fromValue($object, $path),
+                'memory' => ChatEventMemory::fromValue($object, $path),
                 'next' => ChatEventNext::fromValue($object, $path),
                 'done' => ChatEventDone::fromValue($object, $path),
                 'title' => ChatEventTitle::fromValue($object, $path),
@@ -338,7 +363,9 @@ final class Unions
                 'text' => ChatHistoryText::fromValue($object, $path),
                 'tool' => ChatHistoryTool::fromValue($object, $path),
                 'proposal' => ChatHistoryProposal::fromValue($object, $path),
+                'file' => ChatHistoryFile::fromValue($object, $path),
                 'batch' => ChatHistoryBatch::fromValue($object, $path),
+                'memory' => ChatHistoryMemory::fromValue($object, $path),
                 'question' => ChatHistoryQuestion::fromValue($object, $path),
                 'error' => ChatHistoryError::fromValue($object, $path),
                 default => new ChatHistoryBlockUnknown($tag ?? '', $object),

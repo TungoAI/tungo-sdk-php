@@ -23,16 +23,20 @@ use Tungo\Sdk\Model\ChatDialogRatingBody;
 use Tungo\Sdk\Model\ChatMessageRatingBody;
 use Tungo\Sdk\Model\ChatMessageRequest;
 use Tungo\Sdk\Model\ChatTokenCountRequest;
+use Tungo\Sdk\Model\ChatUploadCreate;
 use Tungo\Sdk\Model\CompanyAutonomyInput;
 use Tungo\Sdk\Model\DataGaps;
 use Tungo\Sdk\Model\EsfPurchasesJobRequest;
 use Tungo\Sdk\Model\FeedSection;
+use Tungo\Sdk\Model\ListCompanyChatFilesFormat;
 use Tungo\Sdk\Model\ListCompanyChatRatingOptionsLang;
 use Tungo\Sdk\Model\ListCompanyChatSuggestionsLang;
 use Tungo\Sdk\Model\ListCompanyProposalsApprovalRequested;
 use Tungo\Sdk\Model\ListWorkspaceWebhooksEndpointAttemptsStatus;
 use Tungo\Sdk\Model\ProposalApprovalRequestBody;
 use Tungo\Sdk\Model\RejectRequest;
+use Tungo\Sdk\Model\VerifyCheckInput;
+use Tungo\Sdk\Model\VerifyQrInput;
 use Tungo\Sdk\Model\WebhookEndpointCreate;
 use Tungo\Sdk\Model\WebhookEndpointPatch;
 use Tungo\Sdk\Model\WebhookResend;
@@ -40,12 +44,12 @@ use Tungo\Sdk\Tests\Support\OperationTestCase;
 use Tungo\Sdk\TungoClient;
 
 /**
- * Calls every method of every resource (180 cases) against the mock server and
+ * Calls every method of every resource (200 cases) against the mock server and
  * checks the request that was sent and the typed result that was decoded.
  */
 final class OperationsTest extends OperationTestCase
 {
-    public const CASES = 180;
+    public const CASES = 200;
 
     /**
      * @param array<string, mixed>        $spec
@@ -303,6 +307,14 @@ final class OperationsTest extends OperationTestCase
             ['key' => 'chat.count_tokens#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/count-tokens', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->chat->countTokensWithResponse(body: ChatTokenCountRequest::fromArray(self::request('chat.count_tokens')), companyId: 'co 1'),
         ];
+        yield 'chat.list_files' => [
+            ['key' => 'chat.list_files', 'kind' => 'page', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/files', 'query' => 'cursor=c%201&dialog_id=a%20b%2Bc%2F%D0%B4&format=xlsx&limit=7&q=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->listFiles(cursor: 'c 1', dialogId: 'a b+c/д', format: ListCompanyChatFilesFormat::from('xlsx'), limit: 7, q: 'a b+c/д', companyId: 'co 1'),
+        ];
+        yield 'chat.list_files#all' => [
+            ['key' => 'chat.list_files#all', 'kind' => 'all', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/files', 'query' => 'dialog_id=a%20b%2Bc%2F%D0%B4&format=xlsx&limit=7&q=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->listFilesAll(dialogId: 'a b+c/д', format: ListCompanyChatFilesFormat::from('xlsx'), limit: 7, q: 'a b+c/д', companyId: 'co 1'),
+        ];
         yield 'chat.list_mentions' => [
             ['key' => 'chat.list_mentions', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/mentions', 'query' => 'limit=7&q=a%20b%2Bc%2F%D0%B4&types=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->chat->listMentions(limit: 7, q: 'a b+c/д', types: 'a b+c/д', companyId: 'co 1'),
@@ -326,6 +338,30 @@ final class OperationsTest extends OperationTestCase
         yield 'chat.list_suggestions#response' => [
             ['key' => 'chat.list_suggestions#response', 'kind' => 'json-response', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/suggestions', 'query' => 'lang=ru', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->chat->listSuggestionsWithResponse(lang: ListCompanyChatSuggestionsLang::from('ru'), companyId: 'co 1'),
+        ];
+        yield 'chat.create_upload' => [
+            ['key' => 'chat.create_upload', 'kind' => 'json', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/uploads', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 201, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->createUpload(body: ChatUploadCreate::fromArray(self::request('chat.create_upload')), companyId: 'co 1'),
+        ];
+        yield 'chat.create_upload#response' => [
+            ['key' => 'chat.create_upload#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/uploads', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 201, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->createUploadWithResponse(body: ChatUploadCreate::fromArray(self::request('chat.create_upload')), companyId: 'co 1'),
+        ];
+        yield 'chat.delete_upload' => [
+            ['key' => 'chat.delete_upload', 'kind' => 'void', 'method' => 'DELETE', 'path' => '/v1/companies/co%201/chat/uploads/id%201%2Fx', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 204, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->deleteUpload('id 1/x', companyId: 'co 1'),
+        ];
+        yield 'chat.delete_upload#response' => [
+            ['key' => 'chat.delete_upload#response', 'kind' => 'void-response', 'method' => 'DELETE', 'path' => '/v1/companies/co%201/chat/uploads/id%201%2Fx', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 204, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->deleteUploadWithResponse('id 1/x', companyId: 'co 1'),
+        ];
+        yield 'chat.put_upload_part' => [
+            ['key' => 'chat.put_upload_part', 'kind' => 'json', 'method' => 'PUT', 'path' => '/v1/companies/co%201/chat/uploads/id%201%2Fx/parts/id%201%2Fx', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->putUploadPart('id 1/x', 'id 1/x', companyId: 'co 1'),
+        ];
+        yield 'chat.put_upload_part#response' => [
+            ['key' => 'chat.put_upload_part#response', 'kind' => 'json-response', 'method' => 'PUT', 'path' => '/v1/companies/co%201/chat/uploads/id%201%2Fx/parts/id%201%2Fx', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->putUploadPartWithResponse('id 1/x', 'id 1/x', companyId: 'co 1'),
         ];
         yield 'chat.get' => [
             ['key' => 'chat.get', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/companies/co%201/chat/id%201%2Fx', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
@@ -406,6 +442,14 @@ final class OperationsTest extends OperationTestCase
         yield 'chat.stop#response' => [
             ['key' => 'chat.stop#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/stop', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->chat->stopWithResponse('id 1/x', companyId: 'co 1'),
+        ];
+        yield 'chat.translate_thinking' => [
+            ['key' => 'chat.translate_thinking', 'kind' => 'json', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/thinking/id%201%2Fx/translate', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->translateThinking('id 1/x', 'id 1/x', companyId: 'co 1'),
+        ];
+        yield 'chat.translate_thinking#response' => [
+            ['key' => 'chat.translate_thinking#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/companies/co%201/chat/id%201%2Fx/thinking/id%201%2Fx/translate', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->chat->translateThinkingWithResponse('id 1/x', 'id 1/x', companyId: 'co 1'),
         ];
         yield 'proposals.list' => [
             ['key' => 'proposals.list', 'kind' => 'page', 'method' => 'GET', 'path' => '/v1/companies/co%201/proposals', 'query' => 'approval_requested=true&batch_id=a%20b%2Bc%2F%D0%B4&cursor=c%201&date_from=2026-01-02&date_to=2026-01-02&kind=a%20b%2Bc%2F%D0%B4&limit=7&q=a%20b%2Bc%2F%D0%B4&source=a%20b%2Bc%2F%D0%B4&status=a%20b%2Bc%2F%D0%B4', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
@@ -786,6 +830,46 @@ final class OperationsTest extends OperationTestCase
         yield 'automations.put_autonomy#response' => [
             ['key' => 'automations.put_autonomy#response', 'kind' => 'json-response', 'method' => 'PUT', 'path' => '/v1/companies/co%201/autonomy', 'query' => '', 'auth' => 'key', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
             static fn (TungoClient $c): mixed => $c->automations->putAutonomyWithResponse(body: CompanyAutonomyInput::fromArray(self::request('automations.put_autonomy')), companyId: 'co 1'),
+        ];
+        yield 'verification.list_keys' => [
+            ['key' => 'verification.list_keys', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/public/verify-keys', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->verification->listKeys(),
+        ];
+        yield 'verification.list_keys#response' => [
+            ['key' => 'verification.list_keys#response', 'kind' => 'json-response', 'method' => 'GET', 'path' => '/v1/public/verify-keys', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->verification->listKeysWithResponse(),
+        ];
+        yield 'verification.verify_qr' => [
+            ['key' => 'verification.verify_qr', 'kind' => 'json', 'method' => 'POST', 'path' => '/v1/public/verify/qr', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->verification->verifyQr(body: VerifyQrInput::fromArray(self::request('verification.verify_qr'))),
+        ];
+        yield 'verification.verify_qr#response' => [
+            ['key' => 'verification.verify_qr#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/public/verify/qr', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->verification->verifyQrWithResponse(body: VerifyQrInput::fromArray(self::request('verification.verify_qr'))),
+        ];
+        yield 'verification.get' => [
+            ['key' => 'verification.get', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/public/verify/id%201%2Fx', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->verification->get('id 1/x'),
+        ];
+        yield 'verification.get#response' => [
+            ['key' => 'verification.get#response', 'kind' => 'json-response', 'method' => 'GET', 'path' => '/v1/public/verify/id%201%2Fx', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->verification->getWithResponse('id 1/x'),
+        ];
+        yield 'verification.check' => [
+            ['key' => 'verification.check', 'kind' => 'json', 'method' => 'POST', 'path' => '/v1/public/verify/id%201%2Fx/check', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->verification->check('id 1/x', body: VerifyCheckInput::fromArray(self::request('verification.check'))),
+        ];
+        yield 'verification.check#response' => [
+            ['key' => 'verification.check#response', 'kind' => 'json-response', 'method' => 'POST', 'path' => '/v1/public/verify/id%201%2Fx/check', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->verification->checkWithResponse('id 1/x', body: VerifyCheckInput::fromArray(self::request('verification.check'))),
+        ];
+        yield 'releases.list' => [
+            ['key' => 'releases.list', 'kind' => 'json', 'method' => 'GET', 'path' => '/v1/public/downloads', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->releases->list(),
+        ];
+        yield 'releases.list#response' => [
+            ['key' => 'releases.list#response', 'kind' => 'json-response', 'method' => 'GET', 'path' => '/v1/public/downloads', 'query' => '', 'auth' => 'public', 'idempotent' => false, 'status' => 200, 'accept' => '', 'headers' => []],
+            static fn (TungoClient $c): mixed => $c->releases->listWithResponse(),
         ];
     }
 }

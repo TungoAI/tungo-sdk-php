@@ -195,6 +195,14 @@
      ],
      "dialog_id": "text",
      "errors": [],
+     "files": [
+      {
+       "file_id": "text",
+       "format": "xlsx",
+       "name": "text",
+       "size": 9007199254740993
+      }
+     ],
      "followups": [
       "text"
      ],

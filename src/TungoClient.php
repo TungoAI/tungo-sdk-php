@@ -76,6 +76,10 @@ final class TungoClient
     public readonly Resource\OnecResource $onec;
     /** Автоматизации компании: входящие хуки, сценарии, цепочки шагов, запуски и уровень автономности ИИ */
     public readonly Resource\AutomationsResource $automations;
+    /** Публичная проверка электронной подписи документов Tungo: по коду, по файлу, по блоку QR и ключи подписи (без ключа API) */
+    public readonly Resource\VerificationResource $verification;
+    /** Публичный список загрузок: расширение 1С и Tungo Connector (без ключа API) */
+    public readonly Resource\ReleasesResource $releases;
     private readonly Engine $engine;
     private readonly ?Secret $webhookSecret;
     private readonly string $baseUrl;
@@ -196,6 +200,8 @@ final class TungoClient
         $this->forms = new Resource\FormsResource($this->engine);
         $this->onec = new Resource\OnecResource($this->engine);
         $this->automations = new Resource\AutomationsResource($this->engine);
+        $this->verification = new Resource\VerificationResource($this->engine);
+        $this->releases = new Resource\ReleasesResource($this->engine);
     }
 
     /**

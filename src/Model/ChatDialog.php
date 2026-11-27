@@ -19,6 +19,7 @@ final readonly class ChatDialog implements \JsonSerializable
      * @param string $createdAt Когда начат разговор, ISO 8601 UTC
      * @param string $id id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают
      * @param int|float $masked Сколько персональных данных (БИН, ИИН, имён, счетов) замаскировано в разговоре перед отправкой модели — для значка «данные скрыты»
+     * @param bool $memory false — разговор «без памяти» (выбран при создании): без памяти ИИ и поиска по прошлым разговорам — показать пометку в шапке
      * @param int|float $messageCount Сколько сообщений в messages
      * @param list<ChatMessage> $messages Сообщения от старых к новым
      * @param bool $pdRestored false — персональные данные не раскрыты (сменился ключ шифрования): вместо БИН, имён и счетов в тексте метки вида «[ПД-БИН-1]». Показать предупреждение
@@ -36,6 +37,7 @@ final readonly class ChatDialog implements \JsonSerializable
         public string $createdAt,
         public string $id,
         public int|float $masked,
+        public bool $memory,
         public int|float $messageCount,
         public array $messages,
         public bool $pdRestored,
@@ -74,6 +76,7 @@ final readonly class ChatDialog implements \JsonSerializable
             createdAt: Wire::req($data, 'created_at', $path, Wire::asString(...)),
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
             masked: Wire::req($data, 'masked', $path, Wire::asNumber(...)),
+            memory: Wire::req($data, 'memory', $path, Wire::asBool(...)),
             messageCount: Wire::req($data, 'message_count', $path, Wire::asNumber(...)),
             messages: Wire::req($data, 'messages', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Unions::chatMessage(...))),
             pdRestored: Wire::req($data, 'pd_restored', $path, Wire::asBool(...)),
@@ -112,6 +115,7 @@ final readonly class ChatDialog implements \JsonSerializable
         $o['created_at'] = $this->createdAt;
         $o['id'] = $this->id;
         $o['masked'] = $this->masked;
+        $o['memory'] = $this->memory;
         $o['message_count'] = $this->messageCount;
         $o['messages'] = Wire::list($this->messages);
         $o['pd_restored'] = $this->pdRestored;

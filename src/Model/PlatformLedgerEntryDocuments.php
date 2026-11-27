@@ -15,7 +15,7 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class PlatformLedgerEntryDocuments implements \JsonSerializable
 {
     /**
-     * @param string|null $actNumber Номер акта выполненных работ (ACT-…), когда платёж прошёл; null — нет
+     * @param string|null $actNumber Устарело: номер акта (ACT-…) только у старых платежей; у новых — null, акт ежемесячный (GET /v1/workspaces/{ws}/documents)
      * @param string|null $invoiceNumber Номер счёта на оплату по этому пополнению (TG-…); null — нет
      * @param PlatformLedgerEntryDocumentsReceiptStatus|string|null $receiptStatus Чек ККМ: not_required — не нужен; pending — выпускается; issued — выпущен (ссылка в receipt_url); failed — не выпустился, мы разбираемся; null — платёж ещё не прошёл
      * @param string|null $receiptUrl Ссылка на чек ККМ этого пополнения — «Чек» в истории; null — чек ещё не выпущен или не нужен (см. receipt_status)

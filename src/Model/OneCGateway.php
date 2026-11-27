@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Model;
 
 /**
- * Как Tungo достаёт данные 1С: odata — живая 1С через интернет; connector — коробочная 1С в офисе через программу Tungo Connector; snapshot — загруженная копия базы, только чтение; fake — только в тестах
+ * Как Tungo достаёт данные 1С: odata — живая 1С через интернет; connector — коробочная 1С в офисе через программу Tungo Connector; module — через расширение «Tungo в 1С», пока у человека открыта 1С; snapshot — загруженная …
  *
  * The API may add values: a property of this type holds the raw value when it
  * is not one of the cases below.
@@ -18,4 +18,5 @@ enum OneCGateway: string
     case Snapshot = 'snapshot';
     case Fake = 'fake';
     case Connector = 'connector';
+    case Module = 'module';
 }

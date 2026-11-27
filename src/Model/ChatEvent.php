@@ -22,6 +22,8 @@ namespace Tungo\Sdk\Model;
  *  - ChatEventError for 'error'
  *  - ChatEventBatch for 'batch'
  *  - ChatEventBatchReport for 'batch_report'
+ *  - ChatEventFile for 'file'
+ *  - ChatEventMemory for 'memory'
  *  - ChatEventNext for 'next'
  *  - ChatEventDone for 'done'
  *  - ChatEventTitle for 'title'

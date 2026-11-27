@@ -16,7 +16,7 @@ final readonly class OneCStatus implements \JsonSerializable
 {
     /**
      * @param bool $connected Подключена ли 1С
-     * @param OneCGateway|string|null $gateway Как Tungo достаёт данные 1С: odata — живая 1С через интернет; connector — коробочная 1С в офисе через программу Tungo Connector; snapshot — загруженная копия базы, только чтение; fake — только в тестах; null — не подключ…
+     * @param OneCGateway|string|null $gateway Как Tungo достаёт данные 1С: odata — живая 1С через интернет; connector — коробочная 1С в офисе через программу Tungo Connector; module — через расширение «Tungo в 1С», пока у человека открыта 1С; snapshot — загруженная …
      * @param OneCStatusLastCheck|null $lastCheck Итог последней проверки; null — не проверялось или не подключена
      * @param string|null $updatedAt Когда подключение меняли, ISO 8601 UTC; null — не подключена
      */

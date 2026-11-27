@@ -10,16 +10,20 @@ use Tungo\Sdk\Internal\Json;
 use Tungo\Sdk\Internal\Wire;
 
 /**
- * Размышление модели (по-русски), кусками — можно показать свёрнутым блоком
+ * Размышление модели кусками — можно показать свёрнутым блоком. Блок не по-русски приходит целиком в конце блока: original и translate_id
  */
 final readonly class ChatEventThinking implements ChatEvent
 {
     /**
-     * @param string $delta Новый кусок размышления
+     * @param string $delta Новый кусок размышления по-русски; у блока не по-русски — пометка «Обдумываю…» (пусто, если она уже стоит)
+     * @param string|null $original Блок не по-русски целиком, как его написала модель
+     * @param string|null $translateId id блока для перевода: POST …/chat/{id}/thinking/{translate_id}/translate — после ответа, когда человек раскрыл шаги
      * @param string $type Вид события: thinking
      */
     public function __construct(
         public string $delta,
+        public ?string $original = null,
+        public ?string $translateId = null,
         public string $type = 'thinking',
     ) {
     }
@@ -43,6 +47,8 @@ final readonly class ChatEventThinking implements ChatEvent
 
         return new self(
             delta: Wire::req($data, 'delta', $path, Wire::asString(...)),
+            original: Wire::opt($data, 'original', $path, Wire::asString(...)),
+            translateId: Wire::opt($data, 'translate_id', $path, Wire::asString(...)),
             type: Wire::req($data, 'type', $path, Wire::asString(...)),
         );
     }
@@ -64,6 +70,12 @@ final readonly class ChatEventThinking implements ChatEvent
     {
         $o = [];
         $o['delta'] = $this->delta;
+        if ($this->original !== null) {
+            $o['original'] = $this->original;
+        }
+        if ($this->translateId !== null) {
+            $o['translate_id'] = $this->translateId;
+        }
         $o['type'] = $this->type;
 
         return (object) $o;

@@ -25,7 +25,8 @@ final readonly class ChatAssistantMessage implements ChatMessage
      * @param list<string> $proposalIds Номера предложений этого хода — то же, что proposal-блоки, списком
      * @param ChatMessageRating|null $rating Оценка этого ответа человеком; null — не оценён
      * @param ChatAssistantMessageState|string $state done — ход закончился сам; stopped — нажали «Стоп»; error — ошибка, отказ модели или предел шагов
-     * @param string $thinking Размышления модели за ход одним текстом; пусто — не было
+     * @param string $thinking Размышления модели за ход одним текстом; блок не по-русски без перевода — пометкой «Обдумываю…»; пусто — не было
+     * @param list<ChatThinkingPart> $thinkingParts Те же размышления по блокам: блок не по-русски без перевода — оригиналом с translate_id
      * @param int $turnNo Номер ответа в разговоре (он же X-Turn-No и средняя часть id): по нему ответ оценивают — PUT …/chat/{id}/messages/{turn}/rating
      * @param string $role Ответ ИИ
      */
@@ -40,6 +41,7 @@ final readonly class ChatAssistantMessage implements ChatMessage
         public ?ChatMessageRating $rating,
         public ChatAssistantMessageState|string $state,
         public string $thinking,
+        public array $thinkingParts,
         public int $turnNo,
         public string $role = 'assistant',
     ) {
@@ -74,6 +76,7 @@ final readonly class ChatAssistantMessage implements ChatMessage
             role: Wire::req($data, 'role', $path, Wire::asString(...)),
             state: Wire::req($data, 'state', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatAssistantMessageState::class)),
             thinking: Wire::req($data, 'thinking', $path, Wire::asString(...)),
+            thinkingParts: Wire::req($data, 'thinking_parts', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatThinkingPart::fromValue(...))),
             turnNo: Wire::req($data, 'turn_no', $path, Wire::asInt(...)),
         );
     }
@@ -105,6 +108,7 @@ final readonly class ChatAssistantMessage implements ChatMessage
         $o['role'] = $this->role;
         $o['state'] = $this->state;
         $o['thinking'] = $this->thinking;
+        $o['thinking_parts'] = Wire::list($this->thinkingParts);
         $o['turn_no'] = $this->turnNo;
 
         return (object) $o;

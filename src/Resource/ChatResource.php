@@ -23,6 +23,8 @@ use Tungo\Sdk\Model\ChatDialogRated;
 use Tungo\Sdk\Model\ChatDialogRatingBody;
 use Tungo\Sdk\Model\ChatDialogRenamed;
 use Tungo\Sdk\Model\ChatDialogSummary;
+use Tungo\Sdk\Model\ChatFileItem;
+use Tungo\Sdk\Model\ChatFileList;
 use Tungo\Sdk\Model\ChatMentionSearch;
 use Tungo\Sdk\Model\ChatMessageRated;
 use Tungo\Sdk\Model\ChatMessageRatingBody;
@@ -31,9 +33,14 @@ use Tungo\Sdk\Model\ChatRatingDismissed;
 use Tungo\Sdk\Model\ChatRatingOptions;
 use Tungo\Sdk\Model\ChatStopResult;
 use Tungo\Sdk\Model\ChatSuggestions;
+use Tungo\Sdk\Model\ChatThinkingTranslation;
 use Tungo\Sdk\Model\ChatTokenCount;
 use Tungo\Sdk\Model\ChatTokenCountRequest;
 use Tungo\Sdk\Model\ChatTurnResult;
+use Tungo\Sdk\Model\ChatUpload;
+use Tungo\Sdk\Model\ChatUploadCreate;
+use Tungo\Sdk\Model\ChatUploadPart;
+use Tungo\Sdk\Model\ListCompanyChatFilesFormat;
 use Tungo\Sdk\Model\ListCompanyChatRatingOptionsLang;
 use Tungo\Sdk\Model\ListCompanyChatSuggestionsLang;
 use Tungo\Sdk\Page;
@@ -278,6 +285,90 @@ final class ChatResource
     }
 
     /**
+     * Файлы от ИИ в своих разговорах, новые сверху
+     *
+     * GET /v1/companies/{co}/chat/files (permission: chat.use)
+     *
+     * Returns one page; use listFilesAll() to iterate over every item.
+     *
+     * @param string|null $cursor next_cursor прошлой страницы; без него — самые новые файлы. Фильтры — те же, что у первой страницы
+     * @param string|null $dialogId Только из этого разговора
+     * @param ListCompanyChatFilesFormat|string|null $format Только этого формата: xlsx, docx, pdf или csv
+     * @param int|null $limit Сколько на странице: 1–200, по умолчанию 50
+     * @param string|null $q Подстрока имени файла, без учёта регистра
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return Page<ChatFileItem, ChatFileList>
+     *
+     * @throws TungoError
+     */
+    public function listFiles(
+        ?string $cursor = null,
+        ?string $dialogId = null,
+        ListCompanyChatFilesFormat|string|null $format = null,
+        ?int $limit = null,
+        ?string $q = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): Page
+    {
+        $response = $this->engine->json(
+            new Operation(
+                'GET',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/files',
+                query: [['cursor', $cursor], ['dialog_id', $dialogId], ['format', $format], ['limit', $limit], ['q', $q]],
+            ),
+            $options,
+            ChatFileList::fromValue(...),
+            'ChatFileList',
+        );
+
+        return new Page(
+            $response->data->data,
+            $response->data->nextCursor,
+            $response->data,
+            $response,
+            fn (string $next): Page => $this->listFiles($next, $dialogId, $format, $limit, $q, $companyId, $options),
+        );
+    }
+
+    /**
+     * Every item of every page, fetched lazily: Файлы от ИИ в своих разговорах, новые сверху
+     *
+     * GET /v1/companies/{co}/chat/files (permission: chat.use)
+     *
+     * The next page is requested only when the loop needs it; leaving the loop stops fetching.
+     *
+     * @param string|null $cursor next_cursor прошлой страницы; без него — самые новые файлы. Фильтры — те же, что у первой страницы
+     * @param string|null $dialogId Только из этого разговора
+     * @param ListCompanyChatFilesFormat|string|null $format Только этого формата: xlsx, docx, pdf или csv
+     * @param int|null $limit Сколько на странице: 1–200, по умолчанию 50
+     * @param string|null $q Подстрока имени файла, без учёта регистра
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return \Generator<int, ChatFileItem>
+     *
+     * @throws TungoError
+     */
+    public function listFilesAll(
+        ?string $cursor = null,
+        ?string $dialogId = null,
+        ListCompanyChatFilesFormat|string|null $format = null,
+        ?int $limit = null,
+        ?string $q = null,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): \Generator
+    {
+        return Paginator::all(
+            fn (): Page => $this->listFiles($cursor, $dialogId, $format, $limit, $q, $companyId, $options),
+            $cursor,
+        );
+    }
+
+    /**
      * Что можно упомянуть через «(at)»
      *
      * GET /v1/companies/{co}/chat/mentions (permission: chat.use)
@@ -441,6 +532,164 @@ final class ChatResource
             $options,
             ChatSuggestions::fromValue(...),
             'ChatSuggestions',
+        );
+    }
+
+    /**
+     * Начать загрузку архива к сообщению
+     *
+     * POST /v1/companies/{co}/chat/uploads (permission: chat.use)
+     *
+     * @param ChatUploadCreate $body the request body
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatUpload
+     *
+     * @throws TungoError
+     */
+    public function createUpload(
+        ChatUploadCreate $body,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatUpload
+    {
+        return $this->createUploadWithResponse($body, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Начать загрузку архива к сообщению
+     *
+     * POST /v1/companies/{co}/chat/uploads (permission: chat.use)
+     *
+     * @param ChatUploadCreate $body the request body
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatUpload>
+     *
+     * @throws TungoError
+     */
+    public function createUploadWithResponse(
+        ChatUploadCreate $body,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'POST',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/uploads',
+                body: Json::encode($body),
+                contentType: 'application/json',
+            ),
+            $options,
+            ChatUpload::fromValue(...),
+            'ChatUpload',
+        );
+    }
+
+    /**
+     * Отменить загрузку архива
+     *
+     * DELETE /v1/companies/{co}/chat/uploads/{upload} (permission: chat.use)
+     *
+     * @param string $upload id загрузки (upl_…)
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @throws TungoError
+     */
+    public function deleteUpload(
+        string $upload,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): void
+    {
+        $this->deleteUploadWithResponse($upload, $companyId, $options);
+    }
+
+    /**
+     * The same call, returning the HTTP details (status, headers, request id, rate limit). Отменить загрузку архива
+     *
+     * DELETE /v1/companies/{co}/chat/uploads/{upload} (permission: chat.use)
+     *
+     * @param string $upload id загрузки (upl_…)
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<null>
+     *
+     * @throws TungoError
+     */
+    public function deleteUploadWithResponse(
+        string $upload,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->void(
+            new Operation(
+                'DELETE',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/uploads/' . Url::segment($upload, 'upload'),
+            ),
+            $options,
+        );
+    }
+
+    /**
+     * Часть архива
+     *
+     * PUT /v1/companies/{co}/chat/uploads/{upload}/parts/{n} (permission: chat.use)
+     *
+     * @param string $upload id загрузки (upl_…)
+     * @param string $n Номер части с 0
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatUploadPart
+     *
+     * @throws TungoError
+     */
+    public function putUploadPart(
+        string $upload,
+        string $n,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatUploadPart
+    {
+        return $this->putUploadPartWithResponse($upload, $n, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Часть архива
+     *
+     * PUT /v1/companies/{co}/chat/uploads/{upload}/parts/{n} (permission: chat.use)
+     *
+     * @param string $upload id загрузки (upl_…)
+     * @param string $n Номер части с 0
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatUploadPart>
+     *
+     * @throws TungoError
+     */
+    public function putUploadPartWithResponse(
+        string $upload,
+        string $n,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'PUT',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/uploads/' . Url::segment($upload, 'upload') . '/parts/' . Url::segment($n, 'n'),
+            ),
+            $options,
+            ChatUploadPart::fromValue(...),
+            'ChatUploadPart',
         );
     }
 
@@ -1024,6 +1273,62 @@ final class ChatResource
             $options,
             ChatStopResult::fromValue(...),
             'ChatStopResult',
+        );
+    }
+
+    /**
+     * Перевести размышление на русский
+     *
+     * POST /v1/companies/{co}/chat/{id}/thinking/{tid}/translate (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param string $tid id блока размышления не по-русски (16 hex): тот же в событии thinking и в истории
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ChatThinkingTranslation
+     *
+     * @throws TungoError
+     */
+    public function translateThinking(
+        string $id,
+        string $tid,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ChatThinkingTranslation
+    {
+        return $this->translateThinkingWithResponse($id, $tid, $companyId, $options)->data;
+    }
+
+    /**
+     * The same call, returning the decoded body together with the HTTP details (status, headers, request id, rate limit). Перевести размышление на русский
+     *
+     * POST /v1/companies/{co}/chat/{id}/thinking/{tid}/translate (permission: chat.use)
+     *
+     * @param string $id id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+     * @param string $tid id блока размышления не по-русски (16 hex): тот же в событии thinking и в истории
+     * @param string|null $companyId company id (co_...); the client's default company when null
+     * @param RequestOptions|null $options per-request options: timeout, retries, headers, idempotency key, cancellation
+     *
+     * @return ApiResponse<ChatThinkingTranslation>
+     *
+     * @throws TungoError
+     */
+    public function translateThinkingWithResponse(
+        string $id,
+        string $tid,
+        ?string $companyId = null,
+        ?RequestOptions $options = null,
+    ): ApiResponse
+    {
+        return $this->engine->json(
+            new Operation(
+                'POST',
+                '/v1/companies/' . $this->engine->company($companyId) . '/chat/' . Url::segment($id, 'id') . '/thinking/' . Url::segment($tid, 'tid') . '/translate',
+            ),
+            $options,
+            ChatThinkingTranslation::fromValue(...),
+            'ChatThinkingTranslation',
         );
     }
 }

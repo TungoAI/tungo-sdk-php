@@ -17,12 +17,14 @@ final readonly class PlatformAutoReload implements \JsonSerializable
     /**
      * @param int|null $amountTiyn На сколько пополнять, в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸); null — не задано
      * @param bool $enabled Включено ли автопополнение с карты организации
+     * @param int $monthlyCountMax Автопополнений за календарный месяц по Алматы не больше этого; месячный потолок трат исчерпан — автопополнения нет
      * @param int|null $monthlyLimitTiyn Сколько автопополнение может списать за месяц, в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸); null — предел платформы
      * @param int|null $thresholdTiyn Порог: баланс ниже — пополнить, в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸); null — не задан
      */
     public function __construct(
         public ?int $amountTiyn,
         public bool $enabled,
+        public int $monthlyCountMax,
         public ?int $monthlyLimitTiyn,
         public ?int $thresholdTiyn,
     ) {
@@ -48,6 +50,7 @@ final readonly class PlatformAutoReload implements \JsonSerializable
         return new self(
             amountTiyn: Wire::opt($data, 'amount_tiyn', $path, Wire::asInt(...)),
             enabled: Wire::req($data, 'enabled', $path, Wire::asBool(...)),
+            monthlyCountMax: Wire::req($data, 'monthly_count_max', $path, Wire::asInt(...)),
             monthlyLimitTiyn: Wire::opt($data, 'monthly_limit_tiyn', $path, Wire::asInt(...)),
             thresholdTiyn: Wire::opt($data, 'threshold_tiyn', $path, Wire::asInt(...)),
         );
@@ -71,6 +74,7 @@ final readonly class PlatformAutoReload implements \JsonSerializable
         $o = [];
         $o['amount_tiyn'] = $this->amountTiyn;
         $o['enabled'] = $this->enabled;
+        $o['monthly_count_max'] = $this->monthlyCountMax;
         $o['monthly_limit_tiyn'] = $this->monthlyLimitTiyn;
         $o['threshold_tiyn'] = $this->thresholdTiyn;
 

@@ -19,6 +19,7 @@ final readonly class ChatTurnResult implements \JsonSerializable
      * @param list<ChatCitation> $citations Источники ответа
      * @param string $dialogId id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают
      * @param list<ChatTurnError> $errors Ошибки хода (как error в событии error); пусто — без ошибок
+     * @param list<ChatTurnFile> $files Файлы (Excel, Word, PDF, CSV), которые ИИ собрал в этом ходе
      * @param list<string> $followups Вопросы-продолжения под ответом, до 3, на языке разговора: нажатие — обычный новый вопрос с этим текстом. Пусто — предложить нечего
      * @param ChatNextAction|null $nextAction Предложенное следующее действие; null — нет
      * @param ChatPendingQuestion|null $pendingQuestion Открытый уточняющий вопрос: ответ — POST …/chat/{dialog_id}/answer; null — вопроса нет
@@ -33,6 +34,7 @@ final readonly class ChatTurnResult implements \JsonSerializable
         public array $citations,
         public string $dialogId,
         public array $errors,
+        public array $files,
         public array $followups,
         public ?ChatNextAction $nextAction,
         public ?ChatPendingQuestion $pendingQuestion,
@@ -66,6 +68,7 @@ final readonly class ChatTurnResult implements \JsonSerializable
             citations: Wire::req($data, 'citations', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatCitation::fromValue(...))),
             dialogId: Wire::req($data, 'dialog_id', $path, Wire::asString(...)),
             errors: Wire::req($data, 'errors', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatTurnError::fromValue(...))),
+            files: Wire::req($data, 'files', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatTurnFile::fromValue(...))),
             followups: Wire::req($data, 'followups', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Wire::asString(...))),
             nextAction: Wire::opt($data, 'next_action', $path, ChatNextAction::fromValue(...)),
             pendingQuestion: Wire::opt($data, 'pending_question', $path, ChatPendingQuestion::fromValue(...)),
@@ -97,6 +100,7 @@ final readonly class ChatTurnResult implements \JsonSerializable
         $o['citations'] = Wire::list($this->citations);
         $o['dialog_id'] = $this->dialogId;
         $o['errors'] = Wire::list($this->errors);
+        $o['files'] = Wire::list($this->files);
         $o['followups'] = Wire::list($this->followups);
         $o['next_action'] = $this->nextAction;
         $o['pending_question'] = $this->pendingQuestion;

@@ -15,6 +15,9 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class PlatformLimitsFiles implements \JsonSerializable
 {
     /**
+     * @param int $archiveBytes Один архив, байт; в attachments_total_bytes не входит. Больше attachment_bytes — только загрузкой по частям (POST …/chat/uploads)
+     * @param int $archiveFiles Файлов в архиве вместе с вложенными архивами
+     * @param int $archivesPerMessage Архивов (.zip, .rar, .7z) в одном сообщении
      * @param int $attachmentBytes Один файл, байт (до кодирования в base64)
      * @param int $attachmentsPerMessage Сколько файлов в одном сообщении чата
      * @param int $attachmentsTotalBytes Все файлы сообщения вместе, байт (до кодирования в base64)
@@ -24,8 +27,12 @@ final readonly class PlatformLimitsFiles implements \JsonSerializable
      * @param int $imageBytes Одна картинка, байт
      * @param int $pdfPages Страниц в одном PDF
      * @param int $requestBytes Тело остальных запросов, байт; больше — 413 payload_too_large
+     * @param int $uploadPartBytes Часть загрузки архива (PUT …/chat/uploads/{upload_id}/parts/{n}), байт; последняя — остаток
      */
     public function __construct(
+        public int $archiveBytes,
+        public int $archiveFiles,
+        public int $archivesPerMessage,
         public int $attachmentBytes,
         public int $attachmentsPerMessage,
         public int $attachmentsTotalBytes,
@@ -35,6 +42,7 @@ final readonly class PlatformLimitsFiles implements \JsonSerializable
         public int $imageBytes,
         public int $pdfPages,
         public int $requestBytes,
+        public int $uploadPartBytes,
     ) {
     }
 
@@ -56,6 +64,9 @@ final readonly class PlatformLimitsFiles implements \JsonSerializable
         $data = Wire::asObject($value, $path);
 
         return new self(
+            archiveBytes: Wire::req($data, 'archive_bytes', $path, Wire::asInt(...)),
+            archiveFiles: Wire::req($data, 'archive_files', $path, Wire::asInt(...)),
+            archivesPerMessage: Wire::req($data, 'archives_per_message', $path, Wire::asInt(...)),
             attachmentBytes: Wire::req($data, 'attachment_bytes', $path, Wire::asInt(...)),
             attachmentsPerMessage: Wire::req($data, 'attachments_per_message', $path, Wire::asInt(...)),
             attachmentsTotalBytes: Wire::req($data, 'attachments_total_bytes', $path, Wire::asInt(...)),
@@ -65,6 +76,7 @@ final readonly class PlatformLimitsFiles implements \JsonSerializable
             imageBytes: Wire::req($data, 'image_bytes', $path, Wire::asInt(...)),
             pdfPages: Wire::req($data, 'pdf_pages', $path, Wire::asInt(...)),
             requestBytes: Wire::req($data, 'request_bytes', $path, Wire::asInt(...)),
+            uploadPartBytes: Wire::req($data, 'upload_part_bytes', $path, Wire::asInt(...)),
         );
     }
 
@@ -84,6 +96,9 @@ final readonly class PlatformLimitsFiles implements \JsonSerializable
     public function jsonSerialize(): \stdClass
     {
         $o = [];
+        $o['archive_bytes'] = $this->archiveBytes;
+        $o['archive_files'] = $this->archiveFiles;
+        $o['archives_per_message'] = $this->archivesPerMessage;
         $o['attachment_bytes'] = $this->attachmentBytes;
         $o['attachments_per_message'] = $this->attachmentsPerMessage;
         $o['attachments_total_bytes'] = $this->attachmentsTotalBytes;
@@ -93,6 +108,7 @@ final readonly class PlatformLimitsFiles implements \JsonSerializable
         $o['image_bytes'] = $this->imageBytes;
         $o['pdf_pages'] = $this->pdfPages;
         $o['request_bytes'] = $this->requestBytes;
+        $o['upload_part_bytes'] = $this->uploadPartBytes;
 
         return (object) $o;
     }

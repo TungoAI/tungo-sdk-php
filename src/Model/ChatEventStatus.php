@@ -16,11 +16,13 @@ final readonly class ChatEventStatus implements ChatEvent
 {
     /**
      * @param string $text Что происходит — показать серой строкой
-     * @param ChatEventStatusCode|string|null $code Что происходит: - `compacting` — сервер сжимает историю длинного разговора - `escalating` — ответ перепроверяется более сильной моделью — ход займёт дольше - `elsewhere` — ответ готовится на другом сервере Tungo — он поя…
+     * @param int|null $chars Только у code = writing: сколько знаков ответа уже написано (не убывает в пределах одного ответа). Текста ответа в событии нет — он придёт событием text
+     * @param ChatEventStatusCode|string|null $code Что происходит: - `compacting` — сервер сжимает историю длинного разговора - `escalating` — ответ перепроверяется более сильной моделью — ход займёт дольше - `checking_norm` — ответ сослался на норму, не открыв её: та же…
      * @param string $type Вид события: status
      */
     public function __construct(
         public string $text,
+        public ?int $chars = null,
         public ChatEventStatusCode|string|null $code = null,
         public string $type = 'status',
     ) {
@@ -44,6 +46,7 @@ final readonly class ChatEventStatus implements ChatEvent
         $data = Wire::asObject($value, $path);
 
         return new self(
+            chars: Wire::opt($data, 'chars', $path, Wire::asInt(...)),
             code: Wire::opt($data, 'code', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatEventStatusCode::class)),
             text: Wire::req($data, 'text', $path, Wire::asString(...)),
             type: Wire::req($data, 'type', $path, Wire::asString(...)),
@@ -66,6 +69,9 @@ final readonly class ChatEventStatus implements ChatEvent
     public function jsonSerialize(): \stdClass
     {
         $o = [];
+        if ($this->chars !== null) {
+            $o['chars'] = $this->chars;
+        }
         if ($this->code !== null) {
             $o['code'] = $this->code;
         }

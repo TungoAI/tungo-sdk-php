@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Tungo\Sdk\Model;
 
 use Tungo\Sdk\Internal\Json;
+use Tungo\Sdk\Internal\Unions;
 use Tungo\Sdk\Internal\Wire;
 
 /**
@@ -15,7 +16,7 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class ChatTokenCountRequest implements \JsonSerializable
 {
     /**
-     * @param list<ChatAttachment>|null $attachments Файлы, как в POST …/chat. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx…
+     * @param list<ChatAttachmentData|ChatAttachmentUpload>|null $attachments Файлы, как в POST …/chat. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .svg, .docx,…
      * @param string|null $dialogId Разговор, чья история считается; нет — новый разговор
      * @param string|null $message Текст вопроса; без него нужны файлы
      * @param ChatTokenCountRequestMode|string|null $mode Режим хода, как в POST …/chat: от него зависят инструменты
@@ -46,7 +47,7 @@ final readonly class ChatTokenCountRequest implements \JsonSerializable
         $data = Wire::asObject($value, $path);
 
         return new self(
-            attachments: Wire::opt($data, 'attachments', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, ChatAttachment::fromValue(...))),
+            attachments: Wire::opt($data, 'attachments', $path, static fn (mixed $v, string $p) => Wire::asList($v, $p, Unions::chatAttachment(...))),
             dialogId: Wire::opt($data, 'dialog_id', $path, Wire::asString(...)),
             message: Wire::opt($data, 'message', $path, Wire::asString(...)),
             mode: Wire::opt($data, 'mode', $path, static fn (mixed $v, string $p) => Wire::asEnum($v, $p, ChatTokenCountRequestMode::class)),

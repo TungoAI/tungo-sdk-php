@@ -16,6 +16,7 @@ final readonly class ChatDialogSummary implements \JsonSerializable
 {
     /**
      * @param string $id id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают
+     * @param bool $memory false — разговор «без памяти»
      * @param int|float $messageCount Сколько сообщений в разговоре (вопросы и ответы)
      * @param bool $running true — ИИ сейчас отвечает: показать индикатор
      * @param string $title Название одной строкой (до 64 знаков, длиннее — с «…»): человека, иначе от ИИ, иначе первый вопрос (вопрос из одних файлов — их имена). Откуда оно — title_source
@@ -24,6 +25,7 @@ final readonly class ChatDialogSummary implements \JsonSerializable
      */
     public function __construct(
         public string $id,
+        public bool $memory,
         public int|float $messageCount,
         public bool $running,
         public string $title,
@@ -51,6 +53,7 @@ final readonly class ChatDialogSummary implements \JsonSerializable
 
         return new self(
             id: Wire::req($data, 'id', $path, Wire::asString(...)),
+            memory: Wire::req($data, 'memory', $path, Wire::asBool(...)),
             messageCount: Wire::req($data, 'message_count', $path, Wire::asNumber(...)),
             running: Wire::req($data, 'running', $path, Wire::asBool(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
@@ -76,6 +79,7 @@ final readonly class ChatDialogSummary implements \JsonSerializable
     {
         $o = [];
         $o['id'] = $this->id;
+        $o['memory'] = $this->memory;
         $o['message_count'] = $this->messageCount;
         $o['running'] = $this->running;
         $o['title'] = $this->title;

@@ -20,9 +20,11 @@ final readonly class UsageRate implements \JsonSerializable
      * @param int $cacheWritePerMtokTiyn Цена 1 млн токенов записи в кэш модели на 5 минут в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
      * @param string $effectiveFrom С какого момента действует цена, ISO 8601 UTC
      * @param int $inputPerMtokTiyn Цена 1 млн входных токенов (вопрос и контекст; токен — кусочек текста) в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
+     * @param UsageRateLongContext|null $longContext Длинный контекст: если вход вызова вместе с кэшем длиннее above_tokens, весь вызов считается по этим ценам (как в прайсе провайдера); null — у модели одна цена
      * @param string $model Модель ИИ: tungo-1-flash, tungo-1, tungo-1-deep (tungo-search — поиск по нормам, tungo-legacy — прежняя)
      * @param int $outputPerMtokTiyn Цена 1 млн токенов ответа в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
      * @param string $title Название модели для людей
+     * @param int $webSearchPer1kTiyn Цена 1000 запросов поиска на официальных сайтах РК (когда нормы нет в базе знаний); 0 — модель не ищет в интернете в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)
      */
     public function __construct(
         public int $cacheReadPerMtokTiyn,
@@ -30,9 +32,11 @@ final readonly class UsageRate implements \JsonSerializable
         public int $cacheWritePerMtokTiyn,
         public string $effectiveFrom,
         public int $inputPerMtokTiyn,
+        public ?UsageRateLongContext $longContext,
         public string $model,
         public int $outputPerMtokTiyn,
         public string $title,
+        public int $webSearchPer1kTiyn,
     ) {
     }
 
@@ -59,9 +63,11 @@ final readonly class UsageRate implements \JsonSerializable
             cacheWritePerMtokTiyn: Wire::req($data, 'cache_write_per_mtok_tiyn', $path, Wire::asInt(...)),
             effectiveFrom: Wire::req($data, 'effective_from', $path, Wire::asString(...)),
             inputPerMtokTiyn: Wire::req($data, 'input_per_mtok_tiyn', $path, Wire::asInt(...)),
+            longContext: Wire::opt($data, 'long_context', $path, UsageRateLongContext::fromValue(...)),
             model: Wire::req($data, 'model', $path, Wire::asString(...)),
             outputPerMtokTiyn: Wire::req($data, 'output_per_mtok_tiyn', $path, Wire::asInt(...)),
             title: Wire::req($data, 'title', $path, Wire::asString(...)),
+            webSearchPer1kTiyn: Wire::req($data, 'web_search_per_1k_tiyn', $path, Wire::asInt(...)),
         );
     }
 
@@ -86,9 +92,11 @@ final readonly class UsageRate implements \JsonSerializable
         $o['cache_write_per_mtok_tiyn'] = $this->cacheWritePerMtokTiyn;
         $o['effective_from'] = $this->effectiveFrom;
         $o['input_per_mtok_tiyn'] = $this->inputPerMtokTiyn;
+        $o['long_context'] = $this->longContext;
         $o['model'] = $this->model;
         $o['output_per_mtok_tiyn'] = $this->outputPerMtokTiyn;
         $o['title'] = $this->title;
+        $o['web_search_per_1k_tiyn'] = $this->webSearchPer1kTiyn;
 
         return (object) $o;
     }

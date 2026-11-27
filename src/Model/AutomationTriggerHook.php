@@ -15,12 +15,12 @@ use Tungo\Sdk\Internal\Wire;
 final readonly class AutomationTriggerHook implements AutomationTrigger
 {
     /**
-     * @param string $hookId Хук, события которого запускают сценарий (hk_…)
+     * @param string|null $hookId Хук, события которого запускают сценарий; null — хук удалён: событиями сценарий больше не запускается, пока ему не назначат другой хук (PUT …/scenarios/{id}) (hk_…)
      * @param AutomationEventFilter|null $filter
      * @param string $kind `hook` — по событию хука
      */
     public function __construct(
-        public string $hookId,
+        public ?string $hookId,
         public ?AutomationEventFilter $filter = null,
         public string $kind = 'hook',
     ) {
@@ -45,7 +45,7 @@ final readonly class AutomationTriggerHook implements AutomationTrigger
 
         return new self(
             filter: Wire::opt($data, 'filter', $path, AutomationEventFilter::fromValue(...)),
-            hookId: Wire::req($data, 'hook_id', $path, Wire::asString(...)),
+            hookId: Wire::opt($data, 'hook_id', $path, Wire::asString(...)),
             kind: Wire::req($data, 'kind', $path, Wire::asString(...)),
         );
     }
